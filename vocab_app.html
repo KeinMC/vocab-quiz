@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Vocab Quiz</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap');
@@ -21,14 +24,16 @@
     --r: 14px;
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
 
-  body {
+  html, body {
     background: var(--bg);
     color: var(--text);
     font-family: 'DM Sans', sans-serif;
     min-height: 100vh;
+    min-height: -webkit-fill-available;
     overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
   }
 
   /* ── HEADER ── */
@@ -69,6 +74,10 @@
     cursor: pointer;
     border-bottom: 2px solid transparent;
     transition: all .2s;
+    -webkit-appearance: none;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
   }
   .tab.on { color: var(--accent); border-bottom-color: var(--accent); }
 
@@ -140,6 +149,8 @@
     font-size: 14px;
     cursor: pointer;
     margin-top: 4px;
+    -webkit-appearance: none;
+    touch-action: manipulation;
   }
 
   .freq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
@@ -153,6 +164,10 @@
     font-size: 14px;
     cursor: pointer;
     transition: all .15s;
+    -webkit-appearance: none;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
   }
   .freq-btn.on {
     background: rgba(124,106,247,0.15);
@@ -174,10 +189,11 @@
     cursor: pointer;
     margin-top: 8px;
     transition: opacity .15s, transform .1s;
+    -webkit-appearance: none;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
   }
-  .primary-btn:active { transform: scale(0.98); opacity: .9; }
-  .primary-btn:disabled { opacity: .35; cursor: not-allowed; }
-
   .ghost-btn {
     width: 100%;
     padding: 13px;
@@ -191,9 +207,11 @@
     cursor: pointer;
     margin-bottom: 12px;
     transition: background .15s;
+    -webkit-appearance: none;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
   }
-  .ghost-btn:hover { background: var(--surface2); }
-  .ghost-btn:disabled { opacity: .35; cursor: not-allowed; }
 
   /* ── STATS ── */
   .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
