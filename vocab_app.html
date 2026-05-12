@@ -5,147 +5,112 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>Vocab Quiz Pro</title>
+<title>VocabPro</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #0d0d12;
-  --s1: #14141c;
-  --s2: #1c1c28;
-  --s3: #242434;
-  --bd: rgba(255,255,255,0.07);
-  --bd2: rgba(255,255,255,0.13);
-  --t1: #f2f2f8;
-  --t2: #9898b8;
-  --t3: #5a5a7a;
-  --a: #7f77dd;
-  --a2: #1d9e75;
-  --a3: #d85a30;
-  --r: 16px;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
-html, body { background: var(--bg); color: var(--t1); font-family: 'Plus Jakarta Sans', sans-serif; min-height: 100vh; overscroll-behavior: none; -webkit-overflow-scrolling: touch; }
-
-/* HEADER */
-.hdr { padding: 52px 20px 0; }
-.hdr-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 20px; }
-.app-name { font-family: 'Playfair Display', serif; font-size: 28px; letter-spacing: -0.5px; line-height: 1.1; }
-.app-name span { color: var(--a); }
-.pill { background: var(--s2); border: 1px solid var(--bd2); border-radius: 20px; padding: 5px 14px; font-size: 13px; color: var(--a2); font-weight: 500; }
-
-/* TABS */
-.tabs { display: flex; border-bottom: 1px solid var(--bd); }
-.tab { flex: 1; padding: 12px 4px; background: none; border: none; border-bottom: 2px solid transparent; color: var(--t3); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; letter-spacing: .02em; transition: color .2s, border-color .2s; }
-.tab.on { color: var(--a); border-bottom-color: var(--a); }
-
-/* PANES */
-.pane { display: none; }
-.pane.on { display: block; }
-
-/* INDUSTRY SELECT */
-.sel-wrap { padding: 20px 20px 0; }
-.sel-label { font-size: 11px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--t3); margin-bottom: 10px; display: block; }
-.sel-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
-.sel-row::-webkit-scrollbar { display: none; }
-.sel-chip { flex-shrink: 0; padding: 8px 16px; background: var(--s2); border: 1px solid var(--bd); border-radius: 20px; color: var(--t2); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap; transition: all .2s; }
-.sel-chip.on { background: rgba(127,119,221,.15); border-color: var(--a); color: var(--a); }
-
-/* FLIP CARD */
-.card-wrap { padding: 20px; }
-.progress-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-.prog-txt { font-size: 13px; color: var(--t3); }
-.prog-bar { flex: 1; height: 3px; background: var(--s3); border-radius: 2px; margin: 0 12px; overflow: hidden; }
-.prog-fill { height: 100%; background: var(--a); border-radius: 2px; transition: width .4s ease; }
-
-.flip-scene { width: 100%; perspective: 1000px; margin-bottom: 16px; }
-.flip-card { width: 100%; min-height: 280px; position: relative; transform-style: preserve-3d; transition: transform .6s cubic-bezier(.4,0,.2,1); cursor: pointer; }
-.flip-card.flipped { transform: rotateY(180deg); }
-.flip-front, .flip-back { position: absolute; width: 100%; min-height: 280px; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: var(--r); padding: 28px 24px; display: flex; flex-direction: column; }
-.flip-front { background: var(--s1); border: 1px solid var(--bd); }
-.flip-back { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); border: 1px solid rgba(127,119,221,.25); transform: rotateY(180deg); }
-
-/* FRONT */
-.card-industry { font-size: 11px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--a); margin-bottom: 20px; }
-.card-word { font-family: 'Playfair Display', serif; font-size: 42px; font-weight: 700; color: var(--t1); line-height: 1.1; margin-bottom: 12px; }
-.card-phonetic { font-size: 15px; color: var(--t3); margin-bottom: auto; font-style: italic; }
-.card-hint { margin-top: 24px; font-size: 13px; color: var(--t3); text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px; }
-.card-hint::before, .card-hint::after { content: ''; flex: 1; height: 1px; background: var(--bd); }
-
-/* BACK */
-.card-meaning { font-family: 'Playfair Display', serif; font-size: 26px; color: #a5d8f3; margin-bottom: 8px; line-height: 1.2; }
-.card-meaning-sub { font-size: 14px; color: rgba(165,216,243,.6); margin-bottom: 20px; }
-.card-divider { height: 1px; background: rgba(255,255,255,.08); margin-bottom: 16px; }
-.card-row { display: flex; flex-direction: column; gap: 10px; }
-.card-field { font-size: 13px; line-height: 1.6; }
-.card-field-lbl { color: rgba(255,255,255,.35); font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; display: block; margin-bottom: 3px; }
-.card-field-val { color: rgba(255,255,255,.85); }
-.card-field-val.tip { color: #9fe1cb; }
-.card-field-val.err { color: #f0997b; }
-
-/* NAV BUTTONS */
-.nav-row { display: flex; gap: 10px; }
-.nav-btn { flex: 1; padding: 14px; background: var(--s2); border: 1px solid var(--bd); border-radius: 12px; color: var(--t2); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; font-weight: 500; cursor: pointer; transition: all .15s; }
-.nav-btn:active { transform: scale(.97); background: var(--s3); }
-.nav-btn.primary { background: rgba(127,119,221,.15); border-color: var(--a); color: var(--a); }
-
-/* GRAMMAR SECTION */
-.grammar-wrap { padding: 0 20px 32px; }
-.section-title { font-size: 13px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--t3); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
-.section-title::after { content: ''; flex: 1; height: 1px; background: var(--bd); }
-.grammar-card { background: var(--s1); border: 1px solid var(--bd); border-radius: var(--r); overflow: hidden; margin-bottom: 10px; }
-.grammar-hdr { padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
-.grammar-hdr-left { display: flex; flex-direction: column; gap: 3px; }
-.grammar-tag { font-size: 11px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--a2); }
-.grammar-title { font-size: 15px; font-weight: 500; color: var(--t1); }
-.grammar-arrow { color: var(--t3); font-size: 18px; transition: transform .25s; }
-.grammar-arrow.open { transform: rotate(180deg); }
-.grammar-body { display: none; padding: 0 16px 16px; }
-.grammar-body.open { display: block; }
-.grammar-rule { font-size: 14px; color: var(--t2); line-height: 1.7; margin-bottom: 12px; }
-.grammar-rule b { color: var(--t1); font-weight: 500; }
-.grammar-ex { background: var(--s2); border-left: 2px solid var(--a); border-radius: 0 8px 8px 0; padding: 10px 14px; margin-bottom: 8px; }
-.grammar-ex-en { font-size: 14px; color: var(--t1); margin-bottom: 2px; font-style: italic; }
-.grammar-ex-vi { font-size: 13px; color: var(--t3); }
-.grammar-note { background: rgba(29,158,117,.08); border: 1px solid rgba(29,158,117,.2); border-radius: 10px; padding: 10px 14px; font-size: 13px; color: #9fe1cb; line-height: 1.6; margin-top: 8px; }
-
+:root{--bg:#0d0d12;--s1:#14141c;--s2:#1c1c28;--s3:#242434;--bd:rgba(255,255,255,0.07);--bd2:rgba(255,255,255,0.13);--t1:#f2f2f8;--t2:#9898b8;--t3:#5a5a7a;--a:#7f77dd;--a2:#1d9e75;--a3:#d85a30;--r:16px}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+html,body{background:var(--bg);color:var(--t1);font-family:'Plus Jakarta Sans',sans-serif;min-height:100vh;overscroll-behavior:none;-webkit-overflow-scrolling:touch}
+.hdr{padding:52px 20px 0}
+.hdr-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px}
+.app-name{font-family:'Playfair Display',serif;font-size:28px;letter-spacing:-0.5px;line-height:1.1}
+.app-name span{color:var(--a)}
+.pill{background:var(--s2);border:1px solid var(--bd2);border-radius:20px;padding:5px 14px;font-size:13px;color:var(--a2);font-weight:500}
+.tabs{display:flex;border-bottom:1px solid var(--bd)}
+.tab{flex:1;padding:12px 4px;background:none;border:none;border-bottom:2px solid transparent;color:var(--t3);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:color .2s,border-color .2s}
+.tab.on{color:var(--a);border-bottom-color:var(--a)}
+.pane{display:none}
+.pane.on{display:block}
+/* CHIPS */
+.sel-wrap{padding:20px 20px 0}
+.sel-label{font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--t3);margin-bottom:10px;display:block}
+.sel-row{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.sel-row::-webkit-scrollbar{display:none}
+.sel-chip{flex-shrink:0;padding:8px 16px;background:var(--s2);border:1px solid var(--bd);border-radius:20px;color:var(--t2);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;transition:all .2s}
+.sel-chip.on{background:rgba(127,119,221,.15);border-color:var(--a);color:var(--a)}
+/* CARD */
+.card-wrap{padding:20px}
+.progress-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.prog-txt{font-size:13px;color:var(--t3)}
+.prog-bar{flex:1;height:3px;background:var(--s3);border-radius:2px;margin:0 12px;overflow:hidden}
+.prog-fill{height:100%;background:var(--a);border-radius:2px;transition:width .4s ease}
+.flip-scene{width:100%;perspective:1000px;margin-bottom:16px}
+.flip-card{width:100%;min-height:280px;position:relative;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.4,0,.2,1);cursor:pointer}
+.flip-card.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;width:100%;min-height:280px;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--r);padding:28px 24px;display:flex;flex-direction:column}
+.flip-front{background:var(--s1);border:1px solid var(--bd)}
+.flip-back{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);border:1px solid rgba(127,119,221,.25);transform:rotateY(180deg)}
+.card-industry{font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--a);margin-bottom:20px}
+.card-word{font-family:'Playfair Display',serif;font-size:42px;font-weight:700;color:var(--t1);line-height:1.1;margin-bottom:12px}
+.card-phonetic{font-size:15px;color:var(--t3);font-style:italic;margin-bottom:auto}
+.card-hint{margin-top:24px;font-size:13px;color:var(--t3);text-align:center;display:flex;align-items:center;justify-content:center;gap:6px}
+.card-hint::before,.card-hint::after{content:'';flex:1;height:1px;background:var(--bd)}
+.card-meaning{font-family:'Playfair Display',serif;font-size:26px;color:#a5d8f3;margin-bottom:4px;line-height:1.2}
+.card-meaning-sub{font-size:14px;color:rgba(165,216,243,.6);margin-bottom:18px}
+.card-divider{height:1px;background:rgba(255,255,255,.08);margin-bottom:14px}
+.card-row{display:flex;flex-direction:column;gap:10px}
+.card-field{font-size:13px;line-height:1.6}
+.card-field-lbl{color:rgba(255,255,255,.35);font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:3px}
+.card-field-val{color:rgba(255,255,255,.85)}
+.card-field-val.tip{color:#9fe1cb}
+.card-field-val.err{color:#f0997b}
+.nav-row{display:flex;gap:10px}
+.nav-btn{flex:1;padding:14px;background:var(--s2);border:1px solid var(--bd);border-radius:12px;color:var(--t2);font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;transition:all .15s}
+.nav-btn:active{transform:scale(.97);background:var(--s3)}
+.nav-btn.primary{background:rgba(127,119,221,.15);border-color:var(--a);color:var(--a)}
+/* GRAMMAR */
+.grammar-wrap{padding:0 20px 40px}
+.section-title{font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--t3);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.section-title::after{content:'';flex:1;height:1px;background:var(--bd)}
+.grammar-word-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(127,119,221,.12);border:1px solid rgba(127,119,221,.25);border-radius:20px;padding:4px 12px;font-size:12px;color:var(--a);margin-bottom:14px;font-weight:500}
+.grammar-card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;margin-bottom:10px;transition:border-color .2s}
+.grammar-card:hover{border-color:var(--bd2)}
+.grammar-hdr{padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+.grammar-hdr-left{display:flex;flex-direction:column;gap:3px}
+.grammar-tag{font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--a2)}
+.grammar-title{font-size:15px;font-weight:500;color:var(--t1)}
+.grammar-arrow{color:var(--t3);font-size:18px;transition:transform .25s;line-height:1}
+.grammar-arrow.open{transform:rotate(180deg)}
+.grammar-body{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.grammar-body.open{max-height:800px}
+.grammar-body-inner{padding:0 16px 16px}
+.grammar-rule{font-size:14px;color:var(--t2);line-height:1.7;margin-bottom:12px}
+.grammar-rule b{color:var(--t1);font-weight:500}
+.grammar-rule code{background:var(--s3);border:1px solid var(--bd2);border-radius:6px;padding:1px 7px;font-size:13px;color:var(--a);font-family:monospace}
+.grammar-ex{background:var(--s2);border-left:2px solid var(--a);border-radius:0 8px 8px 0;padding:10px 14px;margin-bottom:8px}
+.grammar-ex-en{font-size:14px;color:var(--t1);margin-bottom:3px;font-style:italic}
+.grammar-ex-vi{font-size:13px;color:var(--t3)}
+.grammar-ex-highlight{color:var(--a);font-style:normal;font-weight:500}
+.grammar-note{background:rgba(29,158,117,.08);border:1px solid rgba(29,158,117,.2);border-radius:10px;padding:10px 14px;font-size:13px;color:#9fe1cb;line-height:1.6;margin-top:8px}
 /* QUIZ */
-.quiz-wrap { padding: 20px; }
-.q-hdr { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-.q-cnt { font-size: 13px; color: var(--t3); }
-.q-sc { font-size: 13px; font-weight: 600; color: var(--a2); background: rgba(29,158,117,.1); border: 1px solid rgba(29,158,117,.2); padding: 4px 12px; border-radius: 20px; }
-.q-prog { height: 3px; background: var(--s3); border-radius: 2px; margin-bottom: 24px; overflow: hidden; }
-.q-fill { height: 100%; background: var(--a); border-radius: 2px; transition: width .4s; }
-.q-word { font-family: 'Playfair Display', serif; font-size: 40px; text-align: center; padding: 16px 0 6px; line-height: 1.1; }
-.q-sub { text-align: center; font-size: 13px; color: var(--t3); margin-bottom: 28px; }
-.opts { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
-.opt { width: 100%; padding: 16px 18px; background: var(--s1); border: 1px solid var(--bd); border-radius: 12px; color: var(--t1); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; text-align: left; cursor: pointer; transition: all .15s; line-height: 1.4; }
-.opt:active:not(:disabled) { transform: scale(.98); }
-.opt.correct { background: rgba(29,158,117,.12); border-color: var(--a2); color: #9fe1cb; }
-.opt.wrong { background: rgba(216,90,48,.12); border-color: var(--a3); color: #f0997b; }
-.opt:disabled { cursor: default; }
-.res-box { border-radius: 12px; padding: 14px 16px; font-size: 14px; line-height: 1.6; margin-bottom: 10px; }
-.res-box.ok { background: rgba(29,158,117,.1); border: 1px solid rgba(29,158,117,.2); color: #9fe1cb; }
-.res-box.no { background: rgba(216,90,48,.1); border: 1px solid rgba(216,90,48,.2); color: #f0997b; }
-.next-btn { width: 100%; padding: 14px; background: var(--s2); border: 1px solid var(--bd2); border-radius: 12px; color: var(--t1); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; font-weight: 500; cursor: pointer; }
-.score-screen { text-align: center; padding: 40px 0 20px; }
-.big-num { font-family: 'Playfair Display', serif; font-size: 80px; color: var(--a); line-height: 1; }
-.big-denom { font-size: 24px; color: var(--t3); margin-bottom: 8px; }
-.score-msg { font-size: 16px; color: var(--t2); margin-bottom: 32px; }
-.retry-btn { width: 100%; padding: 16px; background: var(--a); border: none; border-radius: 14px; color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 16px; font-weight: 600; cursor: pointer; }
-
-/* EMPTY */
-.empty { text-align: center; padding: 64px 24px; color: var(--t3); font-size: 15px; line-height: 1.7; }
-.empty-icon { font-size: 52px; margin-bottom: 16px; }
-
-/* WORD COUNT BADGE */
-.wc-row { display: flex; gap: 8px; padding: 12px 20px 0; }
-.wc-badge { background: var(--s2); border: 1px solid var(--bd); border-radius: 20px; padding: 5px 12px; font-size: 12px; color: var(--t2); }
-.wc-badge b { color: var(--t1); }
+.quiz-wrap{padding:20px}
+.q-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.q-cnt{font-size:13px;color:var(--t3)}
+.q-sc{font-size:13px;font-weight:600;color:var(--a2);background:rgba(29,158,117,.1);border:1px solid rgba(29,158,117,.2);padding:4px 12px;border-radius:20px}
+.q-prog{height:3px;background:var(--s3);border-radius:2px;margin-bottom:24px;overflow:hidden}
+.q-fill{height:100%;background:var(--a);border-radius:2px;transition:width .4s}
+.q-word{font-family:'Playfair Display',serif;font-size:40px;text-align:center;padding:16px 0 6px;line-height:1.1}
+.q-sub{text-align:center;font-size:13px;color:var(--t3);margin-bottom:28px}
+.opts{display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
+.opt{width:100%;padding:16px 18px;background:var(--s1);border:1px solid var(--bd);border-radius:12px;color:var(--t1);font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all .15s;line-height:1.4}
+.opt:active:not(:disabled){transform:scale(.98)}
+.opt.correct{background:rgba(29,158,117,.12);border-color:var(--a2);color:#9fe1cb}
+.opt.wrong{background:rgba(216,90,48,.12);border-color:var(--a3);color:#f0997b}
+.opt:disabled{cursor:default}
+.res-box{border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.6;margin-bottom:10px}
+.res-box.ok{background:rgba(29,158,117,.1);border:1px solid rgba(29,158,117,.2);color:#9fe1cb}
+.res-box.no{background:rgba(216,90,48,.1);border:1px solid rgba(216,90,48,.2);color:#f0997b}
+.next-btn{width:100%;padding:14px;background:var(--s2);border:1px solid var(--bd2);border-radius:12px;color:var(--t1);font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer}
+.score-screen{text-align:center;padding:40px 0 20px}
+.big-num{font-family:'Playfair Display',serif;font-size:80px;color:var(--a);line-height:1}
+.big-denom{font-size:24px;color:var(--t3);margin-bottom:8px}
+.score-msg{font-size:16px;color:var(--t2);margin-bottom:32px}
+.retry-btn{width:100%;padding:16px;background:var(--a);border:none;border-radius:14px;color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:600;cursor:pointer}
+.empty{text-align:center;padding:64px 24px;color:var(--t3);font-size:15px;line-height:1.7}
 </style>
 </head>
 <body>
-
 <div class="hdr">
   <div class="hdr-top">
     <div class="app-name">Vocab<span>Pro</span></div>
@@ -157,196 +122,581 @@ html, body { background: var(--bg); color: var(--t1); font-family: 'Plus Jakarta
   </div>
 </div>
 
-<!-- CARDS TAB -->
 <div id="tab-cards" class="pane on">
   <div class="sel-wrap">
     <span class="sel-label">Ngành nghề</span>
     <div class="sel-row" id="industry-chips"></div>
   </div>
-  <div class="wc-row" id="wc-row"></div>
   <div class="card-wrap" id="card-area"></div>
   <div class="grammar-wrap">
-    <div class="section-title">Ngữ pháp liên quan</div>
+    <div class="section-title">Ngữ pháp với từ này</div>
     <div id="grammar-area"></div>
   </div>
 </div>
 
-<!-- QUIZ TAB -->
 <div id="tab-quiz" class="pane">
   <div class="quiz-wrap" id="quiz-area"></div>
 </div>
 
 <script>
-// ═══════════════════════════════════════════
-// DATABASE
-// ═══════════════════════════════════════════
-var INDUSTRIES = {
-  it: '💻 IT',
-  marketing: '📣 Marketing',
-  finance: '💰 Tài chính',
-  hr: '👥 Nhân sự',
-  sales: '🤝 Sales',
-  business: '🏢 Văn phòng',
-  healthcare: '🏥 Y tế',
-  logistics: '🚚 Logistics',
-  legal: '⚖️ Pháp lý',
-  education: '🎓 Giáo dục',
-  construction: '🏗️ Xây dựng'
+// ═══════════════════════════════════
+// INDUSTRIES
+// ═══════════════════════════════════
+var IND = {
+  it:'💻 IT', marketing:'📣 Marketing', finance:'💰 Tài chính',
+  hr:'👥 Nhân sự', sales:'🤝 Sales', business:'🏢 Văn phòng',
+  healthcare:'🏥 Y tế', logistics:'🚚 Logistics', legal:'⚖️ Pháp lý',
+  education:'🎓 Giáo dục', construction:'🏗️ Xây dựng'
 };
 
+// ═══════════════════════════════════
+// DATABASE — mỗi từ có grammar[] riêng
+// ═══════════════════════════════════
 var DB = {
 it:[
-  {word:"Algorithm",phonetic:"/ˈælɡərɪðəm/",meaning:"Thuật toán",meaning_sub:"Phương pháp giải quyết vấn đề từng bước",example:"We need a better algorithm to sort this data.",situation:"Họp kỹ thuật, code review",mistake:"Không phân biệt được algorithm vs code",tip:"Algo = công thức giải quyết vấn đề",options:["Giao diện người dùng","Thuật toán","Cơ sở dữ liệu","Máy chủ"],answer:1},
-  {word:"API",phonetic:"/ˌeɪ piː ˈaɪ/",meaning:"Giao diện lập trình ứng dụng",meaning_sub:"Cầu nối giữa hai phần mềm",example:"We'll integrate via their REST API.",situation:"Họp kỹ thuật, tài liệu kỹ thuật",mistake:"Dùng API như danh từ chung chung",tip:"API = cầu nối giữa 2 phần mềm",options:["Giao diện lập trình ứng dụng","Phần mềm diệt virus","Ngôn ngữ lập trình","Hệ điều hành"],answer:0},
-  {word:"Backend",phonetic:"/ˈbækˌɛnd/",meaning:"Phần xử lý phía máy chủ",meaning_sub:"Logic và dữ liệu không hiển thị",example:"The backend handles all database queries.",situation:"Phân công công việc, họp team",mistake:"Nhầm backend với server vật lý",tip:"Back = phía sau, end = điểm cuối",options:["Giao diện người dùng","Phần xử lý phía máy chủ","Thiết kế đồ họa","Kiểm thử phần mềm"],answer:1},
-  {word:"Bug",phonetic:"/bʌɡ/",meaning:"Lỗi phần mềm",meaning_sub:"Sự cố không mong muốn trong code",example:"There's a critical bug in the payment module.",situation:"Báo cáo, email, họp kỹ thuật",mistake:"Dùng 'error' thay 'bug' khi nói về code",tip:"Bug = con bọ = lỗi ẩn trong code",options:["Tính năng mới","Lỗi phần mềm","Cập nhật hệ thống","Tài liệu kỹ thuật"],answer:1},
-  {word:"Deployment",phonetic:"/dɪˈplɔɪmənt/",meaning:"Triển khai phần mềm",meaning_sub:"Đưa code lên môi trường thực",example:"The deployment to production is scheduled for Friday.",situation:"Lên kế hoạch, báo cáo sprint",mistake:"Nhầm deployment với installation",tip:"Deploy = đưa code lên server thật",options:["Triển khai phần mềm","Viết code mới","Họp nhóm phát triển","Sao lưu dữ liệu"],answer:0},
-  {word:"Framework",phonetic:"/ˈfreɪmwɜːrk/",meaning:"Khung nền tảng lập trình",meaning_sub:"Bộ công cụ và quy tắc sẵn có",example:"React is our frontend framework of choice.",situation:"Thảo luận kỹ thuật, tuyển dụng",mistake:"Nhầm framework với library",tip:"Frame = khung = cấu trúc sẵn để xây lên",options:["Ngôn ngữ lập trình","Khung nền tảng lập trình","Cơ sở dữ liệu","Công cụ kiểm thử"],answer:1},
-  {word:"Agile",phonetic:"/ˈædʒaɪl/",meaning:"Phương pháp phát triển linh hoạt",meaning_sub:"Làm việc theo chu kỳ ngắn, thích ứng nhanh",example:"We follow Agile methodology for all projects.",situation:"Họp nhóm, báo cáo dự án",mistake:"Nghĩ Agile = không có kế hoạch",tip:"Agile = linh hoạt = thích ứng nhanh với thay đổi",options:["Phương pháp phát triển linh hoạt","Ngôn ngữ lập trình","Công cụ quản lý","Quy trình kiểm thử"],answer:0},
-  {word:"Scalability",phonetic:"/ˌskeɪləˈbɪlɪti/",meaning:"Khả năng mở rộng hệ thống",meaning_sub:"Hệ thống chịu được tải tăng cao",example:"Scalability is a key concern for our platform.",situation:"Thiết kế hệ thống, thuyết trình",mistake:"Nhầm scalability với performance",tip:"Scale = tăng quy mô, ability = khả năng",options:["Khả năng mở rộng hệ thống","Tốc độ xử lý","Độ bảo mật","Tính dễ sử dụng"],answer:0},
-  {word:"Sprint",phonetic:"/sprɪnt/",meaning:"Giai đoạn làm việc ngắn trong Agile",meaning_sub:"Chu kỳ phát triển 1-2 tuần",example:"This feature will be completed in the next sprint.",situation:"Họp Scrum, lên kế hoạch",mistake:"Nghĩ sprint = chạy nhanh",tip:"Sprint = chạy nước rút = làm nhanh trong thời gian ngắn",options:["Giai đoạn làm việc ngắn trong Agile","Phiên bản phần mềm","Báo cáo hàng tháng","Tài liệu yêu cầu"],answer:0},
-  {word:"Debugging",phonetic:"/diːˈbʌɡɪŋ/",meaning:"Tìm và sửa lỗi code",meaning_sub:"Quy trình phát hiện và xử lý bug",example:"I spent all morning debugging this function.",situation:"Báo cáo tiến độ, họp team",mistake:"Nhầm debugging với testing",tip:"De-bug = loại bỏ bug khỏi code",options:["Viết tài liệu","Tìm và sửa lỗi code","Thiết kế giao diện","Triển khai hệ thống"],answer:1},
-  {word:"Repository",phonetic:"/rɪˈpɒzɪtəri/",meaning:"Kho lưu trữ code",meaning_sub:"Nơi chứa toàn bộ lịch sử code",example:"Push your code to the repository.",situation:"Làm việc nhóm, quản lý code",mistake:"Nhầm repository với server",tip:"Repo = kho chứa mọi phiên bản code",options:["Kho lưu trữ code","Máy chủ web","Công cụ debug","Trình soạn thảo code"],answer:0},
-  {word:"Encryption",phonetic:"/ɪnˈkrɪpʃən/",meaning:"Mã hóa dữ liệu",meaning_sub:"Chuyển dữ liệu thành dạng không đọc được",example:"All passwords are stored with encryption.",situation:"Báo cáo bảo mật, email kỹ thuật",mistake:"Nhầm encryption với compression",tip:"En-crypt = khóa dữ liệu bằng mật mã",options:["Nén dữ liệu","Sao lưu dữ liệu","Mã hóa dữ liệu","Truyền dữ liệu"],answer:2},
-  {word:"Cache",phonetic:"/kæʃ/",meaning:"Bộ nhớ đệm tạm thời",meaning_sub:"Lưu tạm dữ liệu để truy cập nhanh",example:"Clear the cache to fix the display issue.",situation:"Hỗ trợ kỹ thuật, debug",mistake:"Đọc sai thành 'catch'",tip:"Cache = kho tạm = truy cập nhanh hơn",options:["Mật khẩu","Bộ nhớ đệm tạm thời","Kết nối mạng","Màn hình hiển thị"],answer:1},
-  {word:"Latency",phonetic:"/ˈleɪtənsi/",meaning:"Độ trễ mạng/hệ thống",meaning_sub:"Thời gian chờ phản hồi",example:"High latency is causing slow page loads.",situation:"Báo cáo hiệu năng, debug",mistake:"Nhầm latency với bandwidth",tip:"Late = chậm = thời gian chờ phản hồi",options:["Tốc độ tải xuống","Độ trễ mạng/hệ thống","Dung lượng lưu trữ","Số người dùng"],answer:1},
-  {word:"Version control",phonetic:"/ˈvɜːrʒən kənˈtroʊl/",meaning:"Quản lý phiên bản code",meaning_sub:"Theo dõi mọi thay đổi trong code",example:"Version control lets us revert to previous states.",situation:"Làm việc nhóm, quản lý dự án",mistake:"Không commit thường xuyên",tip:"Version = phiên bản, control = kiểm soát",options:["Quản lý phiên bản code","Cập nhật phần mềm","Sao lưu dữ liệu","Phân quyền hệ thống"],answer:0}
+{word:"Algorithm",phonetic:"/ˈælɡərɪðəm/",meaning:"Thuật toán",meaning_sub:"Phương pháp giải quyết vấn đề từng bước",example:"We need a better algorithm to sort this data.",situation:"Họp kỹ thuật, code review",mistake:"Nhầm algorithm với code thông thường",tip:"Algo = công thức = các bước giải quyết vấn đề",options:["Giao diện người dùng","Thuật toán","Cơ sở dữ liệu","Máy chủ"],answer:1,
+grammar:[
+{tag:"Danh từ",title:"Algorithm dùng như danh từ đếm được",
+rule:"<b>Algorithm</b> là danh từ đếm được — dùng <code>an algorithm</code>, <code>algorithms</code>, <code>the algorithm</code>",
+examples:[
+{en:"We need <em>an algorithm</em> to solve this problem.",vi:"Chúng ta cần <em>một thuật toán</em> để giải quyết vấn đề này.",hl:"an algorithm"},
+{en:"<em>The algorithm</em> runs in O(n log n) time.",vi:"<em>Thuật toán</em> chạy trong thời gian O(n log n).",hl:"The algorithm"}
+],
+note:"💡 'An algorithm' (chưa xác định) vs 'The algorithm' (đã biết rõ thuật toán nào)"},
+{tag:"Bị động",title:"Mô tả algorithm bằng câu bị động",
+rule:"Dùng <b>is designed to / is used to / is based on</b> để mô tả chức năng",
+examples:[
+{en:"This algorithm <em>is designed to</em> detect anomalies.",vi:"Thuật toán này <em>được thiết kế để</em> phát hiện bất thường.",hl:"is designed to"},
+{en:"The sorting algorithm <em>is based on</em> binary search.",vi:"Thuật toán sắp xếp <em>dựa trên</em> tìm kiếm nhị phân.",hl:"is based on"}
+],
+note:"💡 Câu bị động rất phổ biến trong tài liệu kỹ thuật khi mô tả hệ thống"}
+]},
+{word:"API",phonetic:"/ˌeɪ piː ˈaɪ/",meaning:"Giao diện lập trình ứng dụng",meaning_sub:"Cầu nối giữa hai phần mềm",example:"We'll integrate via their REST API.",situation:"Họp kỹ thuật, tài liệu kỹ thuật",mistake:"Dùng API như danh từ chung chung",tip:"API = cầu nối giữa 2 phần mềm",options:["Giao diện lập trình ứng dụng","Phần mềm diệt virus","Ngôn ngữ lập trình","Hệ điều hành"],answer:0,
+grammar:[
+{tag:"Động từ kết hợp",title:"Cụm động từ thường dùng với API",
+rule:"API thường đi với: <code>call</code>, <code>hit</code>, <code>consume</code>, <code>expose</code>, <code>integrate</code>",
+examples:[
+{en:"The app <em>calls the API</em> every 30 seconds.",vi:"App <em>gọi API</em> mỗi 30 giây.",hl:"calls the API"},
+{en:"We need to <em>integrate with</em> their payment API.",vi:"Chúng ta cần <em>tích hợp với</em> API thanh toán của họ.",hl:"integrate with"}
+],
+note:"💡 'Hit an API' = gọi API (informal), 'Consume an API' = dùng API (technical doc)"},
+{tag:"Giới từ",title:"Giới từ đi với API",
+rule:"Dùng <b>via / through / using</b> khi nói cách kết nối qua API",
+examples:[
+{en:"Data is transferred <em>via</em> the REST API.",vi:"Dữ liệu được truyền <em>qua</em> REST API.",hl:"via"},
+{en:"Authentication is handled <em>through</em> the OAuth API.",vi:"Xác thực được xử lý <em>thông qua</em> OAuth API.",hl:"through"}
+],
+note:"💡 'Via' = 'through' = 'using' — dùng thay nhau được, 'via' ngắn gọn hơn trong email"}
+]},
+{word:"Bug",phonetic:"/bʌɡ/",meaning:"Lỗi phần mềm",meaning_sub:"Sự cố không mong muốn trong code",example:"There's a critical bug in the payment module.",situation:"Báo cáo, email, họp kỹ thuật",mistake:"Dùng 'error' thay 'bug' khi nói về code",tip:"Bug = con bọ = lỗi ẩn trong code",options:["Tính năng mới","Lỗi phần mềm","Cập nhật hệ thống","Tài liệu kỹ thuật"],answer:1,
+grammar:[
+{tag:"Cấu trúc báo lỗi",title:"Cách báo cáo bug bằng tiếng Anh",
+rule:"Dùng <b>There is a bug / found a bug / reproduce a bug</b>",
+examples:[
+{en:"<em>There's a bug</em> in the login flow that causes logout.",vi:"<em>Có một lỗi</em> trong luồng đăng nhập gây ra đăng xuất.",hl:"There's a bug"},
+{en:"I <em>found a bug</em> where the button doesn't respond on iOS.",vi:"Tôi <em>tìm thấy lỗi</em> khi nút không phản hồi trên iOS.",hl:"found a bug"}
+],
+note:"💡 Nói 'There IS a bug' không phải 'There HAS a bug' — lỗi thường gặp nhất!"},
+{tag:"Tính từ",title:"Mô tả mức độ nghiêm trọng của bug",
+rule:"<b>critical / major / minor / blocking</b> bug — từ nặng đến nhẹ",
+examples:[
+{en:"This is a <em>critical bug</em> — it crashes the app on launch.",vi:"Đây là <em>lỗi nghiêm trọng</em> — ứng dụng crash khi khởi động.",hl:"critical bug"},
+{en:"The date format issue is a <em>minor bug</em> we can fix later.",vi:"Vấn đề định dạng ngày là <em>lỗi nhỏ</em> có thể sửa sau.",hl:"minor bug"}
+],
+note:"💡 Trong Jira/report: P0=critical, P1=major, P2=minor — biết để phân loại đúng"}
+]},
+{word:"Deployment",phonetic:"/dɪˈplɔɪmənt/",meaning:"Triển khai phần mềm",meaning_sub:"Đưa code lên môi trường thực",example:"The deployment to production is scheduled for Friday.",situation:"Lên kế hoạch, báo cáo sprint",mistake:"Nhầm deployment với installation",tip:"Deploy = đưa code lên server thật",options:["Triển khai phần mềm","Viết code mới","Họp nhóm phát triển","Sao lưu dữ liệu"],answer:0,
+grammar:[
+{tag:"Giới từ chỉ nơi chốn",title:"Deployment to / into / on",
+rule:"<b>deployment to</b> + môi trường (production, staging) là cụm phổ biến nhất",
+examples:[
+{en:"<em>Deployment to production</em> is scheduled for Friday.",vi:"<em>Triển khai lên production</em> được lên kế hoạch vào thứ Sáu.",hl:"Deployment to production"},
+{en:"The code was deployed <em>to the staging environment</em> for testing.",vi:"Code đã được triển khai <em>lên môi trường staging</em> để kiểm thử.",hl:"to the staging environment"}
+],
+note:"💡 'Deploy to production' (lên môi trường thật) vs 'deploy to staging' (môi trường test)"},
+{tag:"Thì bị động",title:"Thông báo deployment bằng bị động",
+rule:"Dùng <b>has been deployed / will be deployed / is being deployed</b>",
+examples:[
+{en:"The new version <em>has been deployed</em> successfully.",vi:"Phiên bản mới <em>đã được triển khai</em> thành công.",hl:"has been deployed"},
+{en:"The patch <em>will be deployed</em> during maintenance window.",vi:"Bản vá <em>sẽ được triển khai</em> trong cửa sổ bảo trì.",hl:"will be deployed"}
+],
+note:"💡 Bị động phổ biến trong email thông báo vì hành động quan trọng hơn người làm"}
+]},
+{word:"Debugging",phonetic:"/diːˈbʌɡɪŋ/",meaning:"Tìm và sửa lỗi code",meaning_sub:"Quy trình phát hiện và xử lý bug",example:"I spent all morning debugging this function.",situation:"Báo cáo tiến độ, họp team",mistake:"Nhầm debugging với testing",tip:"De-bug = loại bỏ bug khỏi code",options:["Viết tài liệu","Tìm và sửa lỗi code","Thiết kế giao diện","Triển khai hệ thống"],answer:1,
+grammar:[
+{tag:"Danh động từ",title:"Debugging dùng như danh động từ",
+rule:"<b>Debugging</b> = V-ing dùng như danh từ — là chủ ngữ, tân ngữ, hoặc sau giới từ",
+examples:[
+{en:"<em>Debugging</em> this issue took 3 hours.",vi:"<em>Tìm và sửa lỗi</em> này mất 3 tiếng.",hl:"Debugging"},
+{en:"I'm spending most of my time <em>debugging</em> the authentication module.",vi:"Tôi đang dành phần lớn thời gian <em>tìm lỗi</em> module xác thực.",hl:"debugging"}
+],
+note:"💡 'I debug' (động từ) vs 'Debugging is hard' (danh động từ) — dùng linh hoạt"},
+{tag:"Thì tiến diễn",title:"Nói đang trong quá trình debug",
+rule:"Dùng <b>am/is/are debugging</b> để nói đang làm việc đó",
+examples:[
+{en:"I <em>am currently debugging</em> the production issue.",vi:"Tôi <em>đang debug</em> sự cố production.",hl:"am currently debugging"},
+{en:"The team <em>has been debugging</em> this for two days.",vi:"Nhóm <em>đã debug</em> cái này hai ngày rồi.",hl:"has been debugging"}
+],
+note:"💡 'Has been debugging' = bắt đầu trong quá khứ, vẫn đang tiếp tục — dùng khi báo cáo tiến độ"}
+]},
+{word:"Encryption",phonetic:"/ɪnˈkrɪpʃən/",meaning:"Mã hóa dữ liệu",meaning_sub:"Chuyển dữ liệu thành dạng không đọc được",example:"All passwords are stored with encryption.",situation:"Báo cáo bảo mật, email kỹ thuật",mistake:"Nhầm encryption với compression",tip:"En-crypt = khóa dữ liệu bằng mật mã",options:["Nén dữ liệu","Sao lưu dữ liệu","Mã hóa dữ liệu","Truyền dữ liệu"],answer:2,
+grammar:[
+{tag:"Bị động",title:"Encryption trong câu bị động kỹ thuật",
+rule:"Dùng <b>is encrypted / is protected by encryption / encrypted with</b>",
+examples:[
+{en:"All user data <em>is encrypted</em> at rest and in transit.",vi:"Tất cả dữ liệu người dùng <em>được mã hóa</em> khi lưu trữ và truyền tải.",hl:"is encrypted"},
+{en:"Passwords are stored <em>encrypted with</em> AES-256.",vi:"Mật khẩu được lưu <em>mã hóa bằng</em> AES-256.",hl:"encrypted with"}
+],
+note:"💡 Câu bị động = chuẩn trong tài liệu bảo mật vì chủ thể làm (hệ thống) ít quan trọng hơn"},
+{tag:"Cụm danh từ",title:"Các cụm với encryption",
+rule:"<b>end-to-end encryption, data encryption, encryption key, encryption algorithm</b>",
+examples:[
+{en:"We use <em>end-to-end encryption</em> for all messages.",vi:"Chúng tôi dùng <em>mã hóa đầu cuối</em> cho tất cả tin nhắn.",hl:"end-to-end encryption"},
+{en:"The <em>encryption key</em> must be stored securely.",vi:"<em>Khóa mã hóa</em> phải được lưu trữ an toàn.",hl:"encryption key"}
+],
+note:"💡 'Encryption' thường đứng trước danh từ khác như tính từ (noun adjunct) — rất phổ biến trong IT"}
+]},
+{word:"Agile",phonetic:"/ˈædʒaɪl/",meaning:"Phương pháp phát triển linh hoạt",meaning_sub:"Làm việc theo chu kỳ ngắn, thích ứng nhanh",example:"We follow Agile methodology for all projects.",situation:"Họp nhóm, báo cáo dự án",mistake:"Nghĩ Agile = không có kế hoạch",tip:"Agile = linh hoạt = thích ứng nhanh với thay đổi",options:["Phương pháp phát triển linh hoạt","Ngôn ngữ lập trình","Công cụ quản lý","Quy trình kiểm thử"],answer:0,
+grammar:[
+{tag:"Tính từ vs Danh từ",title:"Agile dùng như tính từ và danh từ riêng",
+rule:"<b>Agile</b> (viết hoa) = phương pháp luận (danh từ riêng). <b>agile</b> (thường) = tính từ 'linh hoạt'",
+examples:[
+{en:"We follow <em>Agile</em> methodology.",vi:"Chúng tôi theo phương pháp <em>Agile</em>.",hl:"Agile"},
+{en:"Our team needs to be more <em>agile</em> in responding to changes.",vi:"Nhóm chúng tôi cần <em>linh hoạt</em> hơn trong việc đáp ứng thay đổi.",hl:"agile"}
+],
+note:"💡 Chú ý viết hoa: 'Agile framework' (phương pháp) vs 'agile response' (tính từ thông thường)"},
+{tag:"Cụm từ Agile",title:"Cụm từ phổ biến trong môi trường Agile",
+rule:"<b>Agile methodology, Agile team, Agile sprint, Agile mindset</b>",
+examples:[
+{en:"The team adopted an <em>Agile mindset</em> to improve delivery.",vi:"Nhóm áp dụng <em>tư duy Agile</em> để cải thiện hiệu suất bàn giao.",hl:"Agile mindset"},
+{en:"Our <em>Agile team</em> works in two-week sprints.",vi:"<em>Nhóm Agile</em> của chúng tôi làm việc theo sprint 2 tuần.",hl:"Agile team"}
+],
+note:"💡 'Agile' + danh từ rất phổ biến trong email và báo cáo — học thuộc một vài cụm hay dùng"}
+]},
+{word:"Scalability",phonetic:"/ˌskeɪləˈbɪlɪti/",meaning:"Khả năng mở rộng hệ thống",meaning_sub:"Hệ thống chịu được tải tăng cao",example:"Scalability is a key concern for our platform.",situation:"Thiết kế hệ thống, thuyết trình",mistake:"Nhầm scalability với performance",tip:"Scale = tăng quy mô, ability = khả năng",options:["Khả năng mở rộng hệ thống","Tốc độ xử lý","Độ bảo mật","Tính dễ sử dụng"],answer:0,
+grammar:[
+{tag:"Cấu trúc định nghĩa",title:"Định nghĩa và mô tả scalability",
+rule:"Dùng <b>refers to / is the ability to / ensures that</b>",
+examples:[
+{en:"<em>Scalability refers to</em> a system's ability to handle growing load.",vi:"<em>Scalability đề cập đến</em> khả năng xử lý tải tăng trưởng của hệ thống.",hl:"Scalability refers to"},
+{en:"Good architecture <em>ensures that</em> the system can scale.",vi:"Kiến trúc tốt <em>đảm bảo</em> hệ thống có thể mở rộng.",hl:"ensures that"}
+],
+note:"💡 'Scalability refers to...' — cách mở đầu chuẩn khi giải thích khái niệm kỹ thuật"},
+{tag:"Tính từ phái sinh",title:"Scalable — tính từ từ scalability",
+rule:"<b>scalable</b> = có khả năng mở rộng — dùng trực tiếp trước danh từ",
+examples:[
+{en:"We need to build a <em>scalable</em> architecture from day one.",vi:"Chúng ta cần xây dựng kiến trúc <em>có thể mở rộng</em> ngay từ đầu.",hl:"scalable"},
+{en:"The system is highly <em>scalable</em> and handles millions of users.",vi:"Hệ thống <em>rất dễ mở rộng</em> và xử lý hàng triệu người dùng.",hl:"scalable"}
+],
+note:"💡 'Scalable solution / scalable system / scalable architecture' — cụm hay gặp trong pitches"}
+]},
+{word:"Sprint",phonetic:"/sprɪnt/",meaning:"Giai đoạn làm việc ngắn trong Agile",meaning_sub:"Chu kỳ phát triển 1-2 tuần",example:"This feature will be completed in the next sprint.",situation:"Họp Scrum, lên kế hoạch",mistake:"Nghĩ sprint = chạy nhanh",tip:"Sprint = chạy nước rút = làm nhanh trong thời gian ngắn",options:["Giai đoạn làm việc ngắn trong Agile","Phiên bản phần mềm","Báo cáo hàng tháng","Tài liệu yêu cầu"],answer:0,
+grammar:[
+{tag:"Giới từ thời gian",title:"In / during / at the end of a sprint",
+rule:"<b>in the next sprint, during this sprint, at the end of the sprint</b>",
+examples:[
+{en:"This feature will ship <em>in the next sprint</em>.",vi:"Tính năng này sẽ ra mắt <em>trong sprint tiếp theo</em>.",hl:"in the next sprint"},
+{en:"We review progress <em>at the end of each sprint</em>.",vi:"Chúng tôi xem xét tiến độ <em>vào cuối mỗi sprint</em>.",hl:"at the end of each sprint"}
+],
+note:"💡 'In sprint 5' (tên cụ thể) vs 'in the next sprint' (tương đối) — chọn theo ngữ cảnh"},
+{tag:"Động từ Scrum",title:"Động từ thường dùng với sprint",
+rule:"<b>kick off / plan / run / complete / review</b> a sprint",
+examples:[
+{en:"We <em>kick off</em> each sprint with a planning meeting.",vi:"Chúng tôi <em>khởi động</em> mỗi sprint bằng cuộc họp lập kế hoạch.",hl:"kick off"},
+{en:"The team <em>completed</em> 8 story points this sprint.",vi:"Nhóm <em>hoàn thành</em> 8 story points trong sprint này.",hl:"completed"}
+],
+note:"💡 'Kick off a sprint' = bắt đầu sprint — cụm chuẩn trong Scrum ceremonies"}
+]}
 ],
 marketing:[
-  {word:"Brand awareness",phonetic:"/brænd əˈweənəs/",meaning:"Độ nhận diện thương hiệu",meaning_sub:"Mức độ khách hàng biết đến thương hiệu",example:"Our campaign increased brand awareness by 40%.",situation:"Báo cáo marketing, họp chiến lược",mistake:"Nhầm brand awareness với brand image",tip:"Aware = nhận biết = bao nhiêu người biết thương hiệu",options:["Doanh thu bán hàng","Độ nhận diện thương hiệu","Lợi nhuận thương hiệu","Chi phí quảng cáo"],answer:1},
-  {word:"Conversion rate",phonetic:"/kənˈvɜːrʒən reɪt/",meaning:"Tỷ lệ chuyển đổi",meaning_sub:"% khách thăm trở thành khách mua",example:"Our conversion rate improved from 2% to 5%.",situation:"Báo cáo digital, họp performance",mistake:"Nhầm conversion rate với click rate",tip:"Convert = chuyển đổi = từ khách thăm → khách mua",options:["Tỷ lệ nhấp chuột","Tỷ lệ chuyển đổi","Tỷ lệ mở email","Tỷ lệ thoát trang"],answer:1},
-  {word:"Content marketing",phonetic:"/ˈkɒntent ˈmɑːrkɪtɪŋ/",meaning:"Tiếp thị bằng nội dung",meaning_sub:"Thu hút khách hàng qua nội dung hữu ích",example:"Our blog is the core of our content marketing strategy.",situation:"Họp chiến lược, đề xuất kế hoạch",mistake:"Nghĩ content marketing = đăng bài mạng xã hội",tip:"Content = nội dung hữu ích = thu hút KH tự nhiên",options:["Quảng cáo trả phí","Tiếp thị bằng nội dung","Tiếp thị qua email","Tiếp thị liên kết"],answer:1},
-  {word:"Customer journey",phonetic:"/ˈkʌstəmər ˈdʒɜːrni/",meaning:"Hành trình trải nghiệm khách hàng",meaning_sub:"Từ nhận biết → mua → trung thành",example:"Map the customer journey to find pain points.",situation:"Họp chiến lược, nghiên cứu thị trường",mistake:"Chỉ tập trung vào giai đoạn mua hàng",tip:"Journey = hành trình = toàn bộ trải nghiệm KH",options:["Hành trình trải nghiệm khách hàng","Chiến lược giá","Kênh phân phối","Chương trình khuyến mãi"],answer:0},
-  {word:"SEO",phonetic:"/ˌɛs iː ˈoʊ/",meaning:"Tối ưu hóa công cụ tìm kiếm",meaning_sub:"Cải thiện thứ hạng trên Google",example:"Good SEO brings free organic traffic.",situation:"Digital marketing, họp kỹ thuật",mistake:"Nghĩ SEO là nhồi từ khóa vào bài",tip:"Search Engine Optimize = giúp Google tìm thấy bạn",options:["Quảng cáo Google","Tối ưu hóa công cụ tìm kiếm","Thiết kế website","Email marketing"],answer:1},
-  {word:"ROI",phonetic:"/ˌɑːr oʊ ˈaɪ/",meaning:"Tỷ lệ hoàn vốn đầu tư",meaning_sub:"Lợi nhuận so với chi phí bỏ ra",example:"The campaign ROI was 300%.",situation:"Báo cáo tài chính, thuyết phục lãnh đạo",mistake:"Tính ROI chỉ dựa trên doanh thu",tip:"ROI = (lợi nhuận - chi phí) / chi phí × 100%",options:["Tỷ lệ hoàn vốn đầu tư","Doanh thu thuần","Lợi nhuận gộp","Chi phí marketing"],answer:0},
-  {word:"Engagement rate",phonetic:"/ɪnˈɡeɪdʒmənt reɪt/",meaning:"Tỷ lệ tương tác",meaning_sub:"Mức độ người dùng tương tác với nội dung",example:"Our Instagram engagement rate is above industry average.",situation:"Báo cáo social media, họp marketing",mistake:"Nhầm engagement với reach",tip:"Engage = tương tác = like, comment, share",options:["Số lượng người theo dõi","Tỷ lệ tương tác","Số lượng bài đăng","Chi phí quảng cáo"],answer:1},
-  {word:"Target audience",phonetic:"/ˈtɑːrɡɪt ˈɔːdiəns/",meaning:"Đối tượng mục tiêu",meaning_sub:"Nhóm khách hàng cụ thể muốn tiếp cận",example:"Define your target audience before creating content.",situation:"Lập kế hoạch marketing, họp sáng tạo",mistake:"Xác định target audience quá rộng",tip:"Target = nhắm mục tiêu = đúng người, đúng thời điểm",options:["Đối tượng mục tiêu","Khách hàng hiện tại","Đối thủ cạnh tranh","Đối tác kinh doanh"],answer:0},
-  {word:"Funnel",phonetic:"/ˈfʌnəl/",meaning:"Phễu marketing/bán hàng",meaning_sub:"Quy trình lọc khách từ rộng đến hẹp",example:"We need to optimize the top of the funnel.",situation:"Họp chiến lược, phân tích bán hàng",mistake:"Bỏ qua giai đoạn trên đỉnh phễu",tip:"Funnel = phễu = rộng trên, hẹp dưới",options:["Phễu marketing/bán hàng","Chiến dịch quảng cáo","Kênh phân phối","Nhóm khách hàng"],answer:0},
-  {word:"Pain point",phonetic:"/peɪn pɔɪnt/",meaning:"Vấn đề khách hàng gặp phải",meaning_sub:"Điểm gây khó chịu cần được giải quyết",example:"Identify customer pain points before pitching.",situation:"Nghiên cứu KH, họp bán hàng",mistake:"Giả định pain point thay vì hỏi KH",tip:"Pain = đau = vấn đề KH cần giải quyết",options:["Điểm mạnh của sản phẩm","Vấn đề khách hàng gặp phải","Lợi thế cạnh tranh","Tính năng nổi bật"],answer:1},
-  {word:"USP",phonetic:"/ˌjuː ɛs ˈpiː/",meaning:"Đề xuất bán hàng độc đáo",meaning_sub:"Lý do duy nhất khách chọn bạn",example:"Our USP is 24/7 customer support.",situation:"Thuyết trình, họp chiến lược",mistake:"USP quá chung chung, không khác biệt",tip:"USP = lý do duy nhất KH nên chọn bạn thay vì đối thủ",options:["Đề xuất bán hàng độc đáo","Chính sách giá","Chính sách đổi trả","Chương trình khuyến mãi"],answer:0},
-  {word:"Persona",phonetic:"/pərˈsoʊnə/",meaning:"Hình mẫu khách hàng đại diện",meaning_sub:"Nhân vật đại diện cho nhóm KH mục tiêu",example:"We have 3 buyer personas for our product.",situation:"Nghiên cứu thị trường, lập chiến lược",mistake:"Tạo persona dựa trên giả định không có data",tip:"Persona = nhân vật = hình mẫu KH điển hình có tên tuổi",options:["Hình mẫu khách hàng đại diện","Phân tích đối thủ","Danh sách khách hàng","Nhóm KH VIP"],answer:0}
+{word:"Brand awareness",phonetic:"/brænd əˈweənəs/",meaning:"Độ nhận diện thương hiệu",meaning_sub:"Mức độ khách hàng biết đến thương hiệu",example:"Our campaign increased brand awareness by 40%.",situation:"Báo cáo marketing, họp chiến lược",mistake:"Nhầm brand awareness với brand image",tip:"Aware = nhận biết = bao nhiêu người biết thương hiệu",options:["Doanh thu bán hàng","Độ nhận diện thương hiệu","Lợi nhuận thương hiệu","Chi phí quảng cáo"],answer:1,
+grammar:[
+{tag:"Tăng/Giảm",title:"Diễn đạt brand awareness tăng/giảm",
+rule:"<b>increase / boost / raise / build</b> brand awareness — hoặc <b>brand awareness grew/rose/improved</b>",
+examples:[
+{en:"The campaign <em>increased brand awareness</em> by 40%.",vi:"Chiến dịch <em>tăng độ nhận diện thương hiệu</em> lên 40%.",hl:"increased brand awareness"},
+{en:"<em>Brand awareness grew</em> significantly after the viral video.",vi:"<em>Độ nhận diện thương hiệu tăng</em> đáng kể sau video viral.",hl:"Brand awareness grew"}
+],
+note:"💡 'Increase BY 40%' (tăng thêm 40%) vs 'increase TO 40%' (tăng lên mức 40%) — hay nhầm!"},
+{tag:"Đo lường",title:"Cách nói về mức độ brand awareness",
+rule:"<b>high / low / strong / weak / growing</b> brand awareness",
+examples:[
+{en:"We have <em>strong brand awareness</em> in the 25-35 age group.",vi:"Chúng tôi có <em>độ nhận diện thương hiệu mạnh</em> ở nhóm 25-35 tuổi.",hl:"strong brand awareness"},
+{en:"Our <em>brand awareness</em> in rural areas is still <em>low</em>.",vi:"<em>Độ nhận diện thương hiệu</em> của chúng tôi ở nông thôn vẫn còn <em>thấp</em>.",hl:"brand awareness"}
+],
+note:"💡 Dùng tính từ trước 'brand awareness' để mô tả mức độ — rất hay trong báo cáo"}
+]},
+{word:"Conversion rate",phonetic:"/kənˈvɜːrʒən reɪt/",meaning:"Tỷ lệ chuyển đổi",meaning_sub:"% khách thăm trở thành khách mua",example:"Our conversion rate improved from 2% to 5%.",situation:"Báo cáo digital, họp performance",mistake:"Nhầm conversion rate với click rate",tip:"Convert = chuyển đổi = từ khách thăm → khách mua",options:["Tỷ lệ nhấp chuột","Tỷ lệ chuyển đổi","Tỷ lệ mở email","Tỷ lệ thoát trang"],answer:1,
+grammar:[
+{tag:"Thay đổi số liệu",title:"Diễn đạt sự thay đổi của conversion rate",
+rule:"<b>improved from X to Y / increased by / dropped to / stands at</b>",
+examples:[
+{en:"Our conversion rate <em>improved from 2% to 5%</em> this month.",vi:"Tỷ lệ chuyển đổi <em>cải thiện từ 2% lên 5%</em> tháng này.",hl:"improved from 2% to 5%"},
+{en:"The <em>conversion rate stands at</em> 3.5% for mobile users.",vi:"<em>Tỷ lệ chuyển đổi đang ở mức</em> 3.5% cho người dùng mobile.",hl:"conversion rate stands at"}
+],
+note:"💡 'Stands at' = hiện đang ở mức — dùng khi báo cáo con số tại thời điểm hiện tại"},
+{tag:"Mệnh đề quan hệ",title:"Giải thích conversion rate bằng mệnh đề quan hệ",
+rule:"<b>which measures / that tracks / which shows</b>",
+examples:[
+{en:"Conversion rate, <em>which measures</em> the percentage of visitors who take action, is our key metric.",vi:"Tỷ lệ chuyển đổi, <em>đo lường</em> % khách truy cập có hành động, là chỉ số chính của chúng tôi.",hl:"which measures"},
+{en:"The A/B test <em>that tracked</em> conversion rate showed a 30% improvement.",vi:"Bài test A/B <em>theo dõi</em> tỷ lệ chuyển đổi cho thấy cải thiện 30%.",hl:"that tracked"}
+],
+note:"💡 Mệnh đề quan hệ (which/that) giúp định nghĩa thuật ngữ kỹ thuật trong presentation"}
+]},
+{word:"SEO",phonetic:"/ˌɛs iː ˈoʊ/",meaning:"Tối ưu hóa công cụ tìm kiếm",meaning_sub:"Cải thiện thứ hạng tự nhiên trên Google",example:"Good SEO brings free organic traffic.",situation:"Digital marketing, họp kỹ thuật",mistake:"Nghĩ SEO là nhồi từ khóa vào bài",tip:"Search Engine Optimize = giúp Google tìm thấy bạn",options:["Quảng cáo Google","Tối ưu hóa công cụ tìm kiếm","Thiết kế website","Email marketing"],answer:1,
+grammar:[
+{tag:"Động từ + SEO",title:"Cụm động từ thường dùng với SEO",
+rule:"<b>optimize for SEO, improve SEO, rank higher, drive organic traffic</b>",
+examples:[
+{en:"We need to <em>optimize our content for SEO</em>.",vi:"Chúng ta cần <em>tối ưu nội dung cho SEO</em>.",hl:"optimize our content for SEO"},
+{en:"Good backlinks help your site <em>rank higher</em> on Google.",vi:"Backlink tốt giúp trang của bạn <em>xếp hạng cao hơn</em> trên Google.",hl:"rank higher"}
+],
+note:"💡 'Rank higher' (thứ hạng cao hơn) — không nói 'rank up' trong SEO context"},
+{tag:"Phân loại",title:"On-page vs Off-page SEO",
+rule:"Dùng <b>on-page / off-page / technical</b> trước SEO như tính từ",
+examples:[
+{en:"<em>On-page SEO</em> includes title tags and meta descriptions.",vi:"<em>SEO on-page</em> bao gồm thẻ tiêu đề và mô tả meta.",hl:"On-page SEO"},
+{en:"<em>Technical SEO</em> focuses on site speed and crawlability.",vi:"<em>SEO kỹ thuật</em> tập trung vào tốc độ trang và khả năng lập chỉ mục.",hl:"Technical SEO"}
+],
+note:"💡 Phân loại SEO thành on-page / off-page / technical — hay xuất hiện trong báo cáo và interview"}
+]},
+{word:"ROI",phonetic:"/ˌɑːr oʊ ˈaɪ/",meaning:"Tỷ lệ hoàn vốn đầu tư",meaning_sub:"Lợi nhuận so với chi phí bỏ ra",example:"The campaign ROI was 300%.",situation:"Báo cáo tài chính, thuyết phục lãnh đạo",mistake:"Tính ROI chỉ dựa trên doanh thu",tip:"ROI = (lợi nhuận - chi phí) / chi phí × 100%",options:["Tỷ lệ hoàn vốn đầu tư","Doanh thu thuần","Lợi nhuận gộp","Chi phí marketing"],answer:0,
+grammar:[
+{tag:"Cấu trúc tính toán",title:"Nói về ROI bằng tiếng Anh",
+rule:"<b>ROI of X% / generate an ROI of / deliver a positive ROI</b>",
+examples:[
+{en:"The campaign <em>generated an ROI of</em> 300%.",vi:"Chiến dịch <em>tạo ra ROI</em> 300%.",hl:"generated an ROI of"},
+{en:"We need to <em>deliver a positive ROI</em> within 6 months.",vi:"Chúng ta cần <em>mang lại ROI dương</em> trong 6 tháng.",hl:"deliver a positive ROI"}
+],
+note:"💡 'Positive ROI' = có lợi nhuận, 'negative ROI' = lỗ. Dùng 'deliver' hoặc 'generate' với ROI"},
+{tag:"Đặt câu hỏi",title:"Hỏi về ROI trong cuộc họp",
+rule:"<b>What is the ROI on / How does the ROI compare / Can you quantify the ROI</b>",
+examples:[
+{en:"<em>What is the ROI on</em> this marketing campaign?",vi:"<em>ROI của</em> chiến dịch marketing này là bao nhiêu?",hl:"What is the ROI on"},
+{en:"<em>Can you quantify the ROI</em> of this investment?",vi:"Bạn có thể <em>định lượng ROI</em> của khoản đầu tư này không?",hl:"Can you quantify the ROI"}
+],
+note:"💡 'Quantify the ROI' = tính toán/đo lường ROI — dùng khi yêu cầu số liệu cụ thể"}
+]},
+{word:"Target audience",phonetic:"/ˈtɑːrɡɪt ˈɔːdiəns/",meaning:"Đối tượng mục tiêu",meaning_sub:"Nhóm khách hàng cụ thể muốn tiếp cận",example:"Define your target audience before creating content.",situation:"Lập kế hoạch marketing, họp sáng tạo",mistake:"Xác định target audience quá rộng",tip:"Target = nhắm mục tiêu = đúng người, đúng thời điểm",options:["Đối tượng mục tiêu","Khách hàng hiện tại","Đối thủ cạnh tranh","Đối tác kinh doanh"],answer:0,
+grammar:[
+{tag:"Động từ xác định",title:"Cách xác định target audience",
+rule:"<b>define / identify / reach / target / appeal to</b> your target audience",
+examples:[
+{en:"<em>Define your target audience</em> before creating any content.",vi:"<em>Xác định đối tượng mục tiêu</em> trước khi tạo bất kỳ nội dung nào.",hl:"Define your target audience"},
+{en:"This campaign is designed to <em>reach our target audience</em> on mobile.",vi:"Chiến dịch này được thiết kế để <em>tiếp cận đối tượng mục tiêu</em> trên mobile.",hl:"reach our target audience"}
+],
+note:"💡 'Target audience' thường đi với 'define, identify, reach, appeal to' — học thuộc các cụm này"},
+{tag:"Mô tả",title:"Mô tả đặc điểm target audience",
+rule:"Dùng <b>aged X-Y, primarily, mainly, consisting of</b>",
+examples:[
+{en:"Our target audience is <em>primarily</em> women <em>aged 25-35</em>.",vi:"Đối tượng mục tiêu của chúng tôi <em>chủ yếu</em> là phụ nữ <em>25-35 tuổi</em>.",hl:"primarily"},
+{en:"The campaign targets millennials <em>consisting of</em> urban professionals.",vi:"Chiến dịch nhắm vào millennials <em>bao gồm</em> các chuyên gia thành thị.",hl:"consisting of"}
+],
+note:"💡 'Primarily / mainly' = chủ yếu — dùng thay cho 'mostly' trong văn viết chuyên nghiệp"}
+]}
 ],
 finance:[
-  {word:"Cash flow",phonetic:"/kæʃ floʊ/",meaning:"Dòng tiền",meaning_sub:"Tiền thực tế vào và ra khỏi doanh nghiệp",example:"Positive cash flow is critical for survival.",situation:"Báo cáo tài chính, họp ban lãnh đạo",mistake:"Nghĩ lợi nhuận cao = dòng tiền tốt",tip:"Cash flow = tiền thực vào/ra, khác lợi nhuận trên giấy",options:["Lợi nhuận ròng","Doanh thu thuần","Dòng tiền","Vốn chủ sở hữu"],answer:2},
-  {word:"Revenue",phonetic:"/ˈrevənjuː/",meaning:"Doanh thu",meaning_sub:"Tổng tiền thu được trước khi trừ chi phí",example:"Revenue grew 30% compared to last year.",situation:"Báo cáo kinh doanh, họp ban lãnh đạo",mistake:"Nhầm revenue với profit",tip:"Revenue = tổng tiền bán được, chưa trừ chi phí",options:["Lợi nhuận ròng","Tiền mặt","Doanh thu","Vốn chủ sở hữu"],answer:2},
-  {word:"ROI",phonetic:"/ˌɑːr oʊ ˈaɪ/",meaning:"Tỷ lệ hoàn vốn đầu tư",meaning_sub:"Hiệu quả tài chính của khoản đầu tư",example:"The project ROI was 150% in the first year.",situation:"Đánh giá dự án, thuyết trình đầu tư",mistake:"Quên tính thời gian hoàn vốn",tip:"ROI = (lợi nhuận - chi phí) / chi phí × 100%",options:["Tỷ lệ hoàn vốn đầu tư","Tỷ lệ tăng trưởng","Tỷ lệ lợi nhuận gộp","Tỷ lệ chi phí"],answer:0},
-  {word:"EBITDA",phonetic:"/iːˌbɪtˈdɑː/",meaning:"Lợi nhuận trước lãi vay, thuế và khấu hao",meaning_sub:"Chỉ số đo hiệu quả hoạt động kinh doanh",example:"Our EBITDA margin improved to 25%.",situation:"Báo cáo tài chính, thuyết trình với nhà đầu tư",mistake:"Nhầm EBITDA với lợi nhuận ròng",tip:"E=Earnings B=Before I=Interest T=Tax D=Depreciation A=Amortization",options:["Lợi nhuận ròng sau thuế","Doanh thu thuần","Lợi nhuận trước lãi vay thuế khấu hao","Chi phí hoạt động"],answer:2},
-  {word:"Balance sheet",phonetic:"/ˈbæləns ʃiːt/",meaning:"Bảng cân đối kế toán",meaning_sub:"Tài sản = Nợ + Vốn chủ sở hữu",example:"Review the balance sheet before the investor meeting.",situation:"Họp ban lãnh đạo, báo cáo tài chính",mistake:"Nhầm balance sheet với income statement",tip:"Balance = cân bằng = tài sản = nợ + vốn",options:["Báo cáo kết quả kinh doanh","Bảng cân đối kế toán","Báo cáo lưu chuyển tiền tệ","Kế hoạch ngân sách"],answer:1},
-  {word:"Gross profit",phonetic:"/ɡroʊs ˈprɒfɪt/",meaning:"Lợi nhuận gộp",meaning_sub:"Doanh thu trừ giá vốn hàng bán",example:"Gross profit margin is 45% this quarter.",situation:"Báo cáo kinh doanh, phân tích tài chính",mistake:"Nhầm gross profit với net profit",tip:"Gross = tổng = doanh thu trừ giá vốn hàng bán",options:["Lợi nhuận sau tất cả chi phí","Lợi nhuận gộp","Doanh thu thuần","Thu nhập khác"],answer:1},
-  {word:"Budget",phonetic:"/ˈbʌdʒɪt/",meaning:"Ngân sách",meaning_sub:"Giới hạn tiền được phép chi tiêu",example:"We need to stay within the marketing budget.",situation:"Họp kế hoạch, phê duyệt chi tiêu",mistake:"Nhầm budget với forecast",tip:"Budget = giới hạn tiền được phép dùng",options:["Dự báo tài chính","Ngân sách","Doanh thu thực tế","Chi phí phát sinh"],answer:1},
-  {word:"Invoice",phonetic:"/ˈɪnvɔɪs/",meaning:"Hóa đơn",meaning_sub:"Yêu cầu thanh toán chính thức",example:"Please send the invoice within 3 days.",situation:"Giao dịch với KH/NCC, kế toán",mistake:"Nhầm invoice với receipt",tip:"Invoice = yêu cầu thanh toán, receipt = biên lai đã trả",options:["Biên lai thanh toán","Hợp đồng mua bán","Hóa đơn","Phiếu nhập kho"],answer:2}
+{word:"Cash flow",phonetic:"/kæʃ floʊ/",meaning:"Dòng tiền",meaning_sub:"Tiền thực tế vào và ra khỏi doanh nghiệp",example:"Positive cash flow is critical for survival.",situation:"Báo cáo tài chính, họp ban lãnh đạo",mistake:"Nghĩ lợi nhuận cao = dòng tiền tốt",tip:"Cash flow = tiền thực vào/ra, khác lợi nhuận trên giấy",options:["Lợi nhuận ròng","Doanh thu thuần","Dòng tiền","Vốn chủ sở hữu"],answer:2,
+grammar:[
+{tag:"Tính từ mô tả",title:"Loại cash flow trong báo cáo",
+rule:"<b>positive / negative / strong / healthy / operating cash flow</b>",
+examples:[
+{en:"<em>Positive cash flow</em> means more money comes in than goes out.",vi:"<em>Dòng tiền dương</em> nghĩa là tiền vào nhiều hơn tiền ra.",hl:"Positive cash flow"},
+{en:"The company maintains <em>healthy cash flow</em> despite low profits.",vi:"Công ty duy trì <em>dòng tiền lành mạnh</em> dù lợi nhuận thấp.",hl:"healthy cash flow"}
+],
+note:"💡 'Healthy cash flow' thường được dùng trong báo cáo thường niên và investor presentation"},
+{tag:"Động từ quản lý",title:"Động từ dùng với cash flow",
+rule:"<b>manage / improve / generate / monitor / maintain</b> cash flow",
+examples:[
+{en:"We need to <em>improve cash flow</em> before the next quarter.",vi:"Chúng ta cần <em>cải thiện dòng tiền</em> trước quý tới.",hl:"improve cash flow"},
+{en:"Finance team <em>monitors cash flow</em> on a weekly basis.",vi:"Nhóm tài chính <em>theo dõi dòng tiền</em> hàng tuần.",hl:"monitors cash flow"}
+],
+note:"💡 'On a weekly/monthly basis' = hàng tuần/tháng — thay cho 'every week/month' trong văn chuyên nghiệp"}
+]},
+{word:"Revenue",phonetic:"/ˈrevənjuː/",meaning:"Doanh thu",meaning_sub:"Tổng tiền thu được trước khi trừ chi phí",example:"Revenue grew 30% compared to last year.",situation:"Báo cáo kinh doanh, họp ban lãnh đạo",mistake:"Nhầm revenue với profit",tip:"Revenue = tổng tiền bán được, chưa trừ chi phí",options:["Lợi nhuận ròng","Tiền mặt","Doanh thu","Vốn chủ sở hữu"],answer:2,
+grammar:[
+{tag:"So sánh thời gian",title:"So sánh revenue giữa các kỳ",
+rule:"<b>compared to / year-over-year / quarter-on-quarter / versus</b>",
+examples:[
+{en:"Revenue <em>grew 30% compared to</em> the same period last year.",vi:"Doanh thu <em>tăng 30% so với</em> cùng kỳ năm ngoái.",hl:"grew 30% compared to"},
+{en:"<em>Year-over-year</em> revenue growth stands at 25%.",vi:"Tăng trưởng doanh thu <em>so sánh năm</em> đạt 25%.",hl:"Year-over-year"}
+],
+note:"💡 'Year-over-year (YoY)' và 'Quarter-on-quarter (QoQ)' — cụm viết tắt phổ biến trong báo cáo"},
+{tag:"Phân loại doanh thu",title:"Các loại revenue trong kinh doanh",
+rule:"<b>total / annual / recurring / net revenue</b>",
+examples:[
+{en:"<em>Recurring revenue</em> from subscriptions accounts for 60% of total.",vi:"<em>Doanh thu định kỳ</em> từ đăng ký chiếm 60% tổng doanh thu.",hl:"Recurring revenue"},
+{en:"<em>Net revenue</em> after refunds is $1.8 million.",vi:"<em>Doanh thu thuần</em> sau hoàn tiền là 1,8 triệu đô.",hl:"Net revenue"}
+],
+note:"💡 'Recurring revenue' (MRR/ARR) = chỉ số quan trọng nhất trong SaaS business"}
+]},
+{word:"Budget",phonetic:"/ˈbʌdʒɪt/",meaning:"Ngân sách",meaning_sub:"Giới hạn tiền được phép chi tiêu",example:"We need to stay within the marketing budget.",situation:"Họp kế hoạch, phê duyệt chi tiêu",mistake:"Nhầm budget với forecast",tip:"Budget = giới hạn tiền được phép dùng",options:["Dự báo tài chính","Ngân sách","Doanh thu thực tế","Chi phí phát sinh"],answer:1,
+grammar:[
+{tag:"Giới từ với budget",title:"Stay within / exceed / allocate budget",
+rule:"<b>within budget / over budget / allocate budget / set a budget</b>",
+examples:[
+{en:"The project was completed <em>within budget</em>.",vi:"Dự án được hoàn thành <em>trong ngân sách</em>.",hl:"within budget"},
+{en:"Marketing <em>exceeded its budget</em> by 15% this quarter.",vi:"Marketing <em>vượt ngân sách</em> 15% quý này.",hl:"exceeded its budget"}
+],
+note:"💡 'Within budget' (đúng ngân sách) vs 'over budget' (vượt ngân sách) vs 'under budget' (tiết kiệm hơn)"},
+{tag:"Lập ngân sách",title:"Động từ dùng khi lập/phân bổ ngân sách",
+rule:"<b>set / allocate / approve / cut / request</b> a budget",
+examples:[
+{en:"We need to <em>allocate budget</em> for the new marketing campaign.",vi:"Chúng ta cần <em>phân bổ ngân sách</em> cho chiến dịch marketing mới.",hl:"allocate budget"},
+{en:"The board <em>approved a budget</em> of $500K for Q4.",vi:"Ban lãnh đạo <em>phê duyệt ngân sách</em> $500K cho Q4.",hl:"approved a budget"}
+],
+note:"💡 'Allocate budget to/for something' — 'allocate' chuyên nghiệp hơn 'give money to'"}
+]}
 ],
 hr:[
-  {word:"Onboarding",phonetic:"/ˈɒnˌbɔːrdɪŋ/",meaning:"Quy trình hội nhập nhân viên mới",meaning_sub:"Giúp người mới thích nghi với môi trường",example:"Good onboarding reduces early turnover.",situation:"Tuyển dụng, quản lý nhân sự",mistake:"Kết thúc onboarding sau ngày đầu tiên",tip:"On board = lên tàu = giúp người mới hòa nhập",options:["Quy trình tuyển dụng","Đánh giá thử việc","Quy trình hội nhập nhân viên mới","Đào tạo chuyên môn"],answer:2},
-  {word:"Employee engagement",phonetic:"/ɪmˈplɔɪiː ɪnˈɡeɪdʒmənt/",meaning:"Mức độ gắn kết nhân viên",meaning_sub:"Sự tận tâm và đầu tư của nhân viên",example:"Employee engagement scores improved after the survey.",situation:"Khảo sát nhân viên, báo cáo HR",mistake:"Nhầm engagement với satisfaction",tip:"Engage = gắn kết = nhân viên tận tâm, không chỉ hài lòng",options:["Năng suất làm việc","Tỷ lệ đi làm đúng giờ","Mức độ gắn kết nhân viên","Kết quả đánh giá"],answer:2},
-  {word:"Turnover rate",phonetic:"/ˈtɜːrnˌoʊvər reɪt/",meaning:"Tỷ lệ nghỉ việc",meaning_sub:"% nhân viên rời công ty trong một kỳ",example:"High turnover rate indicates low morale.",situation:"Báo cáo HR, phân tích nhân sự",mistake:"Không phân biệt voluntary vs involuntary",tip:"Turn over = nhân viên vào rồi ra, đo bằng %/năm",options:["Tỷ lệ tuyển dụng thành công","Tỷ lệ nghỉ việc","Tỷ lệ thăng tiến","Tỷ lệ hài lòng công việc"],answer:1},
-  {word:"Performance appraisal",phonetic:"/pərˈfɔːrməns əˈpreɪzəl/",meaning:"Đánh giá hiệu suất nhân viên",meaning_sub:"Đánh giá toàn diện kết quả và hành vi",example:"Annual performance appraisal is in December.",situation:"Đánh giá định kỳ, điều chỉnh lương",mistake:"Chỉ đánh giá kết quả, bỏ qua hành vi",tip:"Appraise = định giá = đánh giá toàn diện nhân viên",options:["Đào tạo nhân viên","Đánh giá hiệu suất nhân viên","Tuyển dụng nhân sự","Xây dựng văn hóa"],answer:1},
-  {word:"Retention",phonetic:"/rɪˈtɛnʃən/",meaning:"Giữ chân nhân viên",meaning_sub:"Chiến lược giữ người tài ở lại",example:"Employee retention is a top priority.",situation:"Chiến lược nhân sự, báo cáo HR",mistake:"Chỉ tăng lương để retention",tip:"Retain = giữ lại = chiến lược toàn diện giữ người tài",options:["Tuyển dụng nhân viên mới","Đào tạo và phát triển","Giữ chân nhân viên","Đánh giá hiệu suất"],answer:2},
-  {word:"KPI",phonetic:"/ˌkeɪ piː ˈaɪ/",meaning:"Chỉ số đánh giá hiệu suất",meaning_sub:"Thước đo cụ thể để đánh giá kết quả",example:"Set clear KPIs for every employee.",situation:"Đánh giá nhân viên, họp quản lý",mistake:"KPI quá nhiều và không đo được",tip:"KPI = thước đo cụ thể = biết nhân viên có hoàn thành không",options:["Chỉ số đánh giá hiệu suất","Mục tiêu cá nhân","Kế hoạch phát triển","Thang lương"],answer:0}
+{word:"Onboarding",phonetic:"/ˈɒnˌbɔːrdɪŋ/",meaning:"Quy trình hội nhập nhân viên mới",meaning_sub:"Giúp người mới thích nghi với môi trường",example:"Good onboarding reduces early turnover.",situation:"Tuyển dụng, quản lý nhân sự",mistake:"Kết thúc onboarding sau ngày đầu tiên",tip:"On board = lên tàu = giúp người mới hòa nhập",options:["Quy trình tuyển dụng","Đánh giá thử việc","Quy trình hội nhập nhân viên mới","Đào tạo chuyên môn"],answer:2,
+grammar:[
+{tag:"Động từ + Onboarding",title:"Cụm động từ với onboarding",
+rule:"<b>complete / go through / streamline / improve</b> onboarding",
+examples:[
+{en:"New hires <em>go through</em> a 30-day <em>onboarding</em> program.",vi:"Nhân viên mới <em>trải qua</em> chương trình <em>hội nhập</em> 30 ngày.",hl:"go through"},
+{en:"We need to <em>streamline our onboarding</em> process.",vi:"Chúng ta cần <em>tinh gọn quy trình hội nhập</em>.",hl:"streamline our onboarding"}
+],
+note:"💡 'Streamline' = tinh gọn/tối ưu hóa — dùng khi nói cải thiện quy trình trong HR"},
+{tag:"Thì hoàn thành",title:"Thông báo hoàn thành onboarding",
+rule:"<b>has completed / has been onboarded / has successfully joined</b>",
+examples:[
+{en:"Sarah <em>has successfully completed</em> her onboarding.",vi:"Sarah <em>đã hoàn thành thành công</em> quá trình hội nhập.",hl:"has successfully completed"},
+{en:"All new hires <em>have been onboarded</em> and are ready to start.",vi:"Tất cả nhân viên mới <em>đã được hội nhập</em> và sẵn sàng bắt đầu.",hl:"have been onboarded"}
+],
+note:"💡 Thì hiện tại hoàn thành (has/have + PP) phổ biến trong email HR thông báo kết quả"}
+]},
+{word:"KPI",phonetic:"/ˌkeɪ piː ˈaɪ/",meaning:"Chỉ số đánh giá hiệu suất",meaning_sub:"Thước đo cụ thể để đánh giá kết quả",example:"Set clear KPIs for every employee.",situation:"Đánh giá nhân viên, họp quản lý",mistake:"KPI quá nhiều và không đo được",tip:"KPI = thước đo cụ thể = biết nhân viên có hoàn thành không",options:["Chỉ số đánh giá hiệu suất","Mục tiêu cá nhân","Kế hoạch phát triển","Thang lương"],answer:0,
+grammar:[
+{tag:"Đặt KPI",title:"Cách nói về thiết lập KPI",
+rule:"<b>set / define / establish / meet / exceed / miss</b> KPIs",
+examples:[
+{en:"Managers should <em>set clear KPIs</em> at the beginning of each quarter.",vi:"Quản lý nên <em>đặt KPI rõ ràng</em> vào đầu mỗi quý.",hl:"set clear KPIs"},
+{en:"She <em>exceeded her KPIs</em> by 120% this year.",vi:"Cô ấy <em>vượt KPI</em> 120% năm nay.",hl:"exceeded her KPIs"}
+],
+note:"💡 'Meet KPIs' (đạt) / 'exceed KPIs' (vượt) / 'miss KPIs' (không đạt) — 3 cụm hay dùng nhất"},
+{tag:"Mô tả KPI",title:"Tính từ và mệnh đề mô tả KPI tốt",
+rule:"KPI tốt cần: <b>specific, measurable, achievable, relevant, time-bound (SMART)</b>",
+examples:[
+{en:"KPIs should be <em>specific and measurable</em>.",vi:"KPI cần phải <em>cụ thể và đo được</em>.",hl:"specific and measurable"},
+{en:"Each KPI must be <em>time-bound</em> with a clear deadline.",vi:"Mỗi KPI phải <em>có thời hạn</em> với deadline rõ ràng.",hl:"time-bound"}
+],
+note:"💡 SMART = Specific, Measurable, Achievable, Relevant, Time-bound — framework đặt KPI chuẩn"}
+]}
 ],
 sales:[
-  {word:"Closing",phonetic:"/ˈkloʊzɪŋ/",meaning:"Chốt đơn hàng",meaning_sub:"Kết thúc thương vụ bằng hợp đồng",example:"Always be closing — follow up every lead.",situation:"Bán hàng trực tiếp, đào tạo sales",mistake:"Chốt quá sớm khi KH chưa sẵn sàng",tip:"Close = đóng lại = kết thúc thương vụ bằng đơn hàng",options:["Mở đầu cuộc gặp","Chốt đơn hàng","Xây dựng quan hệ","Tìm kiếm khách hàng"],answer:1},
-  {word:"Lead",phonetic:"/liːd/",meaning:"Khách hàng tiềm năng chưa xác nhận",meaning_sub:"Mối liên hệ chưa chắc sẽ mua",example:"We generated 50 new leads from the event.",situation:"Tìm kiếm KH, báo cáo marketing",mistake:"Đối xử với mọi lead như khách sẵn sàng mua",tip:"Lead = dây dẫn = mối liên hệ chưa chắc sẽ mua",options:["Khách hàng đã mua hàng","Khách hàng tiềm năng chưa xác nhận","Đối tác kinh doanh","Khách hàng thân thiết"],answer:1},
-  {word:"Quota",phonetic:"/ˈkwoʊtə/",meaning:"Chỉ tiêu doanh số",meaning_sub:"Mục tiêu tối thiểu phải đạt",example:"Every sales rep has a monthly quota.",situation:"Quản lý đội bán hàng, đánh giá KPI",mistake:"Đặt quota không thực tế gây mất động lực",tip:"Quota = phần được giao = mục tiêu tối thiểu phải đạt",options:["Doanh số thực tế","Mức thưởng","Chỉ tiêu doanh số","Lương cơ bản"],answer:2},
-  {word:"Value proposition",phonetic:"/ˈvæljuː ˌprɒpəˈzɪʃən/",meaning:"Đề xuất giá trị cho khách hàng",meaning_sub:"Lý do khách chọn bạn thay vì đối thủ",example:"Our value proposition is saving 50% of time.",situation:"Thuyết trình bán hàng, marketing",mistake:"Value proposition quá tập trung vào tính năng",tip:"Value = giá trị = lý do KH nên chọn bạn",options:["Danh sách tính năng sản phẩm","Chính sách giá","Đề xuất giá trị cho khách hàng","Chính sách hậu mãi"],answer:2},
-  {word:"Upselling",phonetic:"/ˈʌpˌsɛlɪŋ/",meaning:"Bán sản phẩm cao cấp hơn",meaning_sub:"Nâng KH lên gói/sản phẩm tốt hơn",example:"Upsell the premium plan when clients are satisfied.",situation:"Tư vấn bán hàng, chăm sóc KH",mistake:"Upsell trước khi KH hài lòng với sản phẩm hiện tại",tip:"Up = lên cao = nâng KH lên gói tốt hơn",options:["Giảm giá cho KH","Bán thêm sản phẩm khác","Hoàn tiền cho KH","Bán sản phẩm cao cấp hơn"],answer:3}
+{word:"Closing",phonetic:"/ˈkloʊzɪŋ/",meaning:"Chốt đơn hàng",meaning_sub:"Kết thúc thương vụ bằng hợp đồng",example:"Always be closing — follow up every lead.",situation:"Bán hàng trực tiếp, đào tạo sales",mistake:"Chốt quá sớm khi KH chưa sẵn sàng",tip:"Close = đóng lại = kết thúc thương vụ bằng đơn hàng",options:["Mở đầu cuộc gặp","Chốt đơn hàng","Xây dựng quan hệ","Tìm kiếm khách hàng"],answer:1,
+grammar:[
+{tag:"Cấu trúc chốt sale",title:"Câu hỏi chốt hàng bằng tiếng Anh",
+rule:"Dùng câu hỏi giả định: <b>If I can... would you...? / Shall we move forward?</b>",
+examples:[
+{en:"<em>If I can</em> arrange delivery by Friday, <em>would you</em> be ready to sign?",vi:"<em>Nếu tôi có thể</em> sắp xếp giao hàng trước thứ Sáu, <em>bạn có</em> sẵn sàng ký không?",hl:"If I can"},
+{en:"<em>Shall we move forward</em> with the proposal?",vi:"<em>Chúng ta tiến hành</em> với đề xuất này nhé?",hl:"Shall we move forward"}
+],
+note:"💡 'Shall we...' = lịch sự hơn 'Should we...' khi đề xuất bước tiếp theo"},
+{tag:"Thì tương lai",title:"Xác nhận bước tiếp sau khi chốt",
+rule:"<b>will send / I'll arrange / we'll start / you'll receive</b>",
+examples:[
+{en:"<em>I'll send</em> the contract over this afternoon.",vi:"<em>Tôi sẽ gửi</em> hợp đồng vào chiều nay.",hl:"I'll send"},
+{en:"<em>You'll receive</em> the invoice within 24 hours.",vi:"<em>Bạn sẽ nhận</em> hóa đơn trong vòng 24 giờ.",hl:"You'll receive"}
+],
+note:"💡 Sau khi chốt, dùng will/I'll để xác nhận hành động tiếp theo — tạo cảm giác đáng tin cậy"}
+]},
+{word:"Lead",phonetic:"/liːd/",meaning:"Khách hàng tiềm năng chưa xác nhận",meaning_sub:"Mối liên hệ chưa chắc sẽ mua",example:"We generated 50 new leads from the event.",situation:"Tìm kiếm KH, báo cáo marketing",mistake:"Đối xử với mọi lead như khách sẵn sàng mua",tip:"Lead = dây dẫn = mối liên hệ chưa chắc sẽ mua",options:["Khách hàng đã mua hàng","Khách hàng tiềm năng chưa xác nhận","Đối tác kinh doanh","Khách hàng thân thiết"],answer:1,
+grammar:[
+{tag:"Số nhiều và đếm",title:"Lead là danh từ đếm được",
+rule:"<b>a lead, leads, qualify a lead, generate leads, follow up on leads</b>",
+examples:[
+{en:"We <em>generated 50 new leads</em> from the trade show.",vi:"Chúng tôi <em>tạo ra 50 lead mới</em> từ triển lãm thương mại.",hl:"generated 50 new leads"},
+{en:"Always <em>qualify a lead</em> before booking a demo.",vi:"Luôn <em>đánh giá lead</em> trước khi đặt lịch demo.",hl:"qualify a lead"}
+],
+note:"💡 'Qualify a lead' = kiểm tra xem lead có đủ điều kiện (budget, need, authority) không"},
+{tag:"Phân loại lead",title:"Các loại lead trong sales",
+rule:"<b>cold lead, warm lead, hot lead, inbound lead, outbound lead</b>",
+examples:[
+{en:"This is a <em>warm lead</em> — they visited our pricing page twice.",vi:"Đây là <em>lead ấm</em> — họ đã xem trang giá của chúng tôi hai lần.",hl:"warm lead"},
+{en:"<em>Inbound leads</em> typically convert 3x better than outbound.",vi:"<em>Lead inbound</em> thường chuyển đổi tốt hơn outbound 3 lần.",hl:"Inbound leads"}
+],
+note:"💡 Cold → Warm → Hot = mức độ quan tâm tăng dần — ưu tiên hot lead trước"}
+]}
 ],
 business:[
-  {word:"Agenda",phonetic:"/əˈdʒɛndə/",meaning:"Chương trình/lịch trình cuộc họp",meaning_sub:"Danh sách chủ đề sẽ thảo luận",example:"Please review the agenda before the meeting.",situation:"Cuộc họp, email chuẩn bị",mistake:"Không gửi agenda trước, họp lan man",tip:"Agenda = danh sách những gì sẽ thảo luận theo thứ tự",options:["Biên bản cuộc họp","Thành phần tham dự","Chương trình/lịch trình cuộc họp","Kết quả cuộc họp"],answer:2},
-  {word:"Stakeholder",phonetic:"/ˈsteɪkˌhoʊldər/",meaning:"Các bên liên quan",meaning_sub:"Người có quyền lợi trong dự án/quyết định",example:"Identify all stakeholders before starting the project.",situation:"Quản lý dự án, truyền thông",mistake:"Bỏ quên stakeholder quan trọng",tip:"Stake = cược, holder = người có quyền lợi liên quan",options:["Nhà đầu tư","Nhân viên trong team","Các bên liên quan","Khách hàng chính"],answer:2},
-  {word:"Deadline",phonetic:"/ˈdɛdˌlaɪn/",meaning:"Hạn chót hoàn thành",meaning_sub:"Mốc thời gian không được vượt qua",example:"The deadline for the report is Friday 5PM.",situation:"Quản lý dự án, giao việc",mistake:"Đặt deadline không thực tế",tip:"Dead = chết, line = vạch = vạch cuối không được vượt",options:["Ngày bắt đầu","Thời gian ước tính","Hạn chót hoàn thành","Ngày xem xét"],answer:2},
-  {word:"Follow up",phonetic:"/ˈfɒloʊ ʌp/",meaning:"Theo dõi/liên hệ lại sau",meaning_sub:"Tiếp tục theo đuổi sau lần đầu tiếp xúc",example:"I'll follow up with the client next week.",situation:"Email, sau cuộc họp, bán hàng",mistake:"Quên follow up sau khi hứa",tip:"Follow = theo, up = lên = không bỏ dở",options:["Hủy lịch hẹn","Gửi báo giá","Theo dõi/liên hệ lại sau","Kết thúc dự án"],answer:2},
-  {word:"Milestone",phonetic:"/ˈmaɪlˌstoʊn/",meaning:"Cột mốc quan trọng trong dự án",meaning_sub:"Điểm kiểm tra quan trọng trên hành trình",example:"Hitting this milestone means we're on track.",situation:"Quản lý dự án, báo cáo tiến độ",mistake:"Quá nhiều milestone làm mất ý nghĩa",tip:"Mile stone = đá dặm = điểm kiểm tra quan trọng",options:["Cột mốc quan trọng trong dự án","Deadline hàng tuần","Cuộc họp định kỳ","Kết quả bàn giao"],answer:0},
-  {word:"Synergy",phonetic:"/ˈsɪnərdʒi/",meaning:"Sức mạnh cộng hưởng",meaning_sub:"Kết hợp tạo ra nhiều hơn tổng hai phần",example:"The merger created significant synergies.",situation:"Họp chiến lược, M&A",mistake:"Dùng synergy như từ thời thượng không thực chất",tip:"Syn = cùng + ergy = năng lượng = 1+1 > 2",options:["Sự cạnh tranh","Sức mạnh cộng hưởng","Sự hợp tác đơn giản","Chi phí hợp tác"],answer:1}
+{word:"Agenda",phonetic:"/əˈdʒɛndə/",meaning:"Chương trình/lịch trình cuộc họp",meaning_sub:"Danh sách chủ đề sẽ thảo luận",example:"Please review the agenda before the meeting.",situation:"Cuộc họp, email chuẩn bị",mistake:"Không gửi agenda trước, họp lan man",tip:"Agenda = danh sách những gì sẽ thảo luận theo thứ tự",options:["Biên bản cuộc họp","Thành phần tham dự","Chương trình/lịch trình cuộc họp","Kết quả cuộc họp"],answer:2,
+grammar:[
+{tag:"Giới từ với agenda",title:"On the agenda / agenda item",
+rule:"<b>on the agenda, agenda item, top of the agenda, set the agenda</b>",
+examples:[
+{en:"Budget review is <em>on the agenda</em> for today's meeting.",vi:"Xem xét ngân sách <em>nằm trong chương trình</em> cuộc họp hôm nay.",hl:"on the agenda"},
+{en:"The first <em>agenda item</em> is the Q4 sales review.",vi:"<em>Mục đầu tiên trong chương trình</em> là xem xét doanh số Q4.",hl:"agenda item"}
+],
+note:"💡 'Set the agenda' = quyết định những gì sẽ thảo luận — người set agenda có quyền kiểm soát cuộc họp"},
+{tag:"Gửi agenda",title:"Email gửi agenda cuộc họp",
+rule:"<b>Please find the agenda attached / I've attached the agenda / As per the agenda</b>",
+examples:[
+{en:"<em>Please find the agenda attached</em> for tomorrow's meeting.",vi:"<em>Vui lòng xem chương trình đính kèm</em> cho cuộc họp ngày mai.",hl:"Please find the agenda attached"},
+{en:"<em>As per the agenda</em>, we'll start with the budget review.",vi:"<em>Theo chương trình</em>, chúng ta sẽ bắt đầu với xem xét ngân sách.",hl:"As per the agenda"}
+],
+note:"💡 'As per the agenda' = theo đúng chương trình — dùng để dẫn dắt cuộc họp đi đúng hướng"}
+]},
+{word:"Deadline",phonetic:"/ˈdɛdˌlaɪn/",meaning:"Hạn chót hoàn thành",meaning_sub:"Mốc thời gian không được vượt qua",example:"The deadline for the report is Friday 5PM.",situation:"Quản lý dự án, giao việc",mistake:"Đặt deadline không thực tế",tip:"Dead = chết, line = vạch = vạch cuối không được vượt",options:["Ngày bắt đầu","Thời gian ước tính","Hạn chót hoàn thành","Ngày xem xét"],answer:2,
+grammar:[
+{tag:"Giới từ với deadline",title:"Meet / miss / extend a deadline",
+rule:"<b>meet a deadline, miss a deadline, extend / push back a deadline</b>",
+examples:[
+{en:"We need to <em>meet the deadline</em> of Friday 5PM.",vi:"Chúng ta cần <em>đáp ứng deadline</em> thứ Sáu 5 giờ chiều.",hl:"meet the deadline"},
+{en:"Can we <em>push back the deadline</em> by one week?",vi:"Chúng ta có thể <em>lùi deadline</em> một tuần không?",hl:"push back the deadline"}
+],
+note:"💡 'Push back' = lùi lịch (informal) vs 'extend' = gia hạn (formal) — chọn theo văn cảnh"},
+{tag:"Nói về deadline sắp đến",title:"Diễn đạt deadline cấp bách",
+rule:"<b>approaching / upcoming / tight / hard deadline</b>",
+examples:[
+{en:"We have a <em>tight deadline</em> — just 2 days left.",vi:"Chúng ta có <em>deadline gấp</em> — chỉ còn 2 ngày.",hl:"tight deadline"},
+{en:"This is a <em>hard deadline</em> — the client cannot accept delays.",vi:"Đây là <em>deadline cứng</em> — khách hàng không chấp nhận chậm trễ.",hl:"hard deadline"}
+],
+note:"💡 'Hard deadline' = không thể thay đổi, 'soft deadline' = có thể linh hoạt một chút"}
+]}
 ],
 healthcare:[
-  {word:"Diagnosis",phonetic:"/ˌdaɪəɡˈnoʊsɪs/",meaning:"Chẩn đoán bệnh",meaning_sub:"Xác định tình trạng bệnh của bệnh nhân",example:"The diagnosis confirmed stage 2 hypertension.",situation:"Tư vấn bệnh nhân, hồ sơ y tế",mistake:"Nhầm diagnosis với prognosis",tip:"Dia = xuyên, gnosis = kiến thức = hiểu rõ bệnh gì",options:["Điều trị bệnh","Chẩn đoán bệnh","Phòng ngừa bệnh","Tiên lượng bệnh"],answer:1},
-  {word:"Vital signs",phonetic:"/ˈvaɪtəl saɪnz/",meaning:"Dấu hiệu sinh tồn",meaning_sub:"Nhiệt độ, huyết áp, nhịp tim, nhịp thở",example:"Check vital signs every 4 hours.",situation:"Theo dõi bệnh nhân, hồ sơ y tế",mistake:"Bỏ sót một trong các chỉ số vital signs",tip:"Vital = sống còn = các chỉ số cơ bản của sự sống",options:["Kết quả xét nghiệm máu","Chỉ số BMI","Dấu hiệu sinh tồn","Kết quả chẩn đoán hình ảnh"],answer:2},
-  {word:"Triage",phonetic:"/ˈtriːɑːʒ/",meaning:"Phân loại ưu tiên cấp cứu",meaning_sub:"Ưu tiên điều trị theo mức độ nguy hiểm",example:"Triage patients by severity in the ER.",situation:"Cấp cứu, quản lý khối lượng bệnh nhân",mistake:"Không triage đúng dẫn đến bệnh nặng chờ lâu",tip:"Triage = phân loại = ưu tiên ai điều trị trước",options:["Điều trị bệnh nhân","Chẩn đoán bệnh nhân","Phân loại ưu tiên cấp cứu","Xuất viện bệnh nhân"],answer:2},
-  {word:"Informed consent",phonetic:"/ɪnˈfɔːrmd kənˈsɛnt/",meaning:"Đồng ý có thông tin đầy đủ",meaning_sub:"Bệnh nhân hiểu và tự nguyện đồng ý",example:"Obtain informed consent before surgery.",situation:"Trước thủ thuật, nghiên cứu lâm sàng",mistake:"Cho ký giấy mà không giải thích đủ",tip:"Informed = được thông báo đầy đủ trước khi đồng ý",options:["Đồng ý có thông tin đầy đủ","Giấy nhập viện","Đơn xin ra viện","Hợp đồng điều trị"],answer:0}
+{word:"Diagnosis",phonetic:"/ˌdaɪəɡˈnoʊsɪs/",meaning:"Chẩn đoán bệnh",meaning_sub:"Xác định tình trạng bệnh của bệnh nhân",example:"The diagnosis confirmed stage 2 hypertension.",situation:"Tư vấn bệnh nhân, hồ sơ y tế",mistake:"Nhầm diagnosis với prognosis",tip:"Dia = xuyên, gnosis = kiến thức = hiểu rõ bệnh gì",options:["Điều trị bệnh","Chẩn đoán bệnh","Phòng ngừa bệnh","Tiên lượng bệnh"],answer:1,
+grammar:[
+{tag:"Động từ + Diagnosis",title:"Confirm / make / receive a diagnosis",
+rule:"<b>confirm a diagnosis, make a diagnosis, receive a diagnosis</b>",
+examples:[
+{en:"The test <em>confirmed the diagnosis</em> of type 2 diabetes.",vi:"Xét nghiệm <em>xác nhận chẩn đoán</em> tiểu đường type 2.",hl:"confirmed the diagnosis"},
+{en:"The patient <em>received a diagnosis</em> of hypertension.",vi:"Bệnh nhân <em>nhận được chẩn đoán</em> tăng huyết áp.",hl:"received a diagnosis"}
+],
+note:"💡 'Make a diagnosis' (bác sĩ) vs 'receive a diagnosis' (bệnh nhân) — chủ thể khác nhau"},
+{tag:"Số nhiều đặc biệt",title:"Diagnosis → Diagnoses (số nhiều bất quy tắc)",
+rule:"<b>diagnosis → diagnoses</b> (số nhiều). Đọc: /daɪəɡˈnoʊsiːz/",
+examples:[
+{en:"The patient has multiple <em>diagnoses</em>.",vi:"Bệnh nhân có nhiều <em>chẩn đoán</em>.",hl:"diagnoses"},
+{en:"<em>Differential diagnoses</em> help rule out other conditions.",vi:"<em>Chẩn đoán phân biệt</em> giúp loại trừ các bệnh khác.",hl:"Differential diagnoses"}
+],
+note:"💡 Nhiều từ y khoa gốc Latin/Greek có số nhiều bất quy tắc: diagnosis→diagnoses, criterion→criteria"}
+]},
+{word:"Triage",phonetic:"/ˈtriːɑːʒ/",meaning:"Phân loại ưu tiên cấp cứu",meaning_sub:"Ưu tiên điều trị theo mức độ nguy hiểm",example:"Triage patients by severity in the ER.",situation:"Cấp cứu, quản lý khối lượng bệnh nhân",mistake:"Không triage đúng dẫn đến bệnh nặng chờ lâu",tip:"Triage = phân loại = ưu tiên ai điều trị trước",options:["Điều trị bệnh nhân","Chẩn đoán bệnh nhân","Phân loại ưu tiên cấp cứu","Xuất viện bệnh nhân"],answer:2,
+grammar:[
+{tag:"Động từ và danh từ",title:"Triage dùng như động từ và danh từ",
+rule:"<b>to triage (v)</b> = phân loại. <b>triage (n)</b> = quy trình phân loại",
+examples:[
+{en:"Nurses <em>triage</em> patients as they arrive.",vi:"Y tá <em>phân loại</em> bệnh nhân khi họ đến.",hl:"triage"},
+{en:"The <em>triage</em> system categorizes patients into 3 levels.",vi:"Hệ thống <em>phân loại</em> chia bệnh nhân thành 3 cấp độ.",hl:"triage"}
+],
+note:"💡 Triage là từ gốc Pháp — phát âm '/triːɑːʒ/' không phải '/traɪˈɑːdʒ/'"},
+{tag:"Ưu tiên",title:"Diễn đạt mức độ ưu tiên trong triage",
+rule:"<b>high / medium / low priority, critical, stable, non-urgent</b>",
+examples:[
+{en:"This patient is <em>high priority</em> — chest pain with shortness of breath.",vi:"Bệnh nhân này <em>ưu tiên cao</em> — đau ngực kèm khó thở.",hl:"high priority"},
+{en:"The fracture is <em>non-urgent</em> and can wait 30 minutes.",vi:"Gãy xương là <em>không khẩn cấp</em> và có thể chờ 30 phút.",hl:"non-urgent"}
+],
+note:"💡 'Non-urgent' = compound adjective dùng gạch nối — phổ biến hơn 'not urgent' trong văn y tế"}
+]}
 ],
 logistics:[
-  {word:"Supply chain",phonetic:"/səˈplaɪ tʃeɪn/",meaning:"Chuỗi cung ứng",meaning_sub:"Từ nguyên liệu đến tay người tiêu dùng",example:"Disruptions in the supply chain affect production.",situation:"Quản lý vận hành, họp chiến lược",mistake:"Nghĩ supply chain chỉ là vận chuyển",tip:"Supply chain = toàn bộ chuỗi từ đầu đến cuối",options:["Quy trình sản xuất","Hệ thống phân phối","Chuỗi cung ứng","Mạng lưới bán lẻ"],answer:2},
-  {word:"Lead time",phonetic:"/liːd taɪm/",meaning:"Thời gian từ đặt hàng đến nhận hàng",meaning_sub:"Khoảng thời gian cần để hoàn thành đơn hàng",example:"Lead time for this supplier is 4 weeks.",situation:"Lập kế hoạch mua hàng, quản lý tồn kho",mistake:"Không tính lead time khi đặt hàng",tip:"Lead = dẫn đầu, time = bao lâu từ order đến nhận hàng",options:["Thời gian sản xuất","Thời gian vận chuyển","Thời gian từ đặt hàng đến nhận hàng","Thời gian thông quan"],answer:2},
-  {word:"ETA",phonetic:"/ˌiː tiː ˈeɪ/",meaning:"Thời gian dự kiến đến nơi",meaning_sub:"Estimated Time of Arrival",example:"What's the ETA for this shipment?",situation:"Theo dõi đơn hàng, giao tiếp với KH",mistake:"Đưa ra ETA không tính buffer time",tip:"ETA = Estimated Time of Arrival = dự kiến tới lúc mấy giờ",options:["Thời gian xuất phát","Thời gian dự kiến đến nơi","Thời gian bốc xếp","Thời gian thông quan"],answer:1},
-  {word:"Inventory",phonetic:"/ˈɪnvəntɔːri/",meaning:"Hàng tồn kho",meaning_sub:"Toàn bộ hàng hóa đang có trong kho",example:"Conduct a monthly inventory count.",situation:"Quản lý kho, báo cáo tài chính",mistake:"Nhầm inventory với stock",tip:"Inventory = danh mục kiểm kê = toàn bộ hàng hóa đang có",options:["Đơn đặt hàng","Hàng tồn kho","Dự báo bán hàng","Kế hoạch sản xuất"],answer:1}
+{word:"Supply chain",phonetic:"/səˈplaɪ tʃeɪn/",meaning:"Chuỗi cung ứng",meaning_sub:"Từ nguyên liệu đến tay người tiêu dùng",example:"Disruptions in the supply chain affect production.",situation:"Quản lý vận hành, họp chiến lược",mistake:"Nghĩ supply chain chỉ là vận chuyển",tip:"Supply chain = toàn bộ chuỗi từ đầu đến cuối",options:["Quy trình sản xuất","Hệ thống phân phối","Chuỗi cung ứng","Mạng lưới bán lẻ"],answer:2,
+grammar:[
+{tag:"Sự cố chuỗi cung ứng",title:"Nói về gián đoạn supply chain",
+rule:"<b>disruption in / to the supply chain, supply chain issues / bottleneck</b>",
+examples:[
+{en:"<em>Disruptions in the supply chain</em> led to production delays.",vi:"<em>Gián đoạn trong chuỗi cung ứng</em> dẫn đến trễ sản xuất.",hl:"Disruptions in the supply chain"},
+{en:"The pandemic exposed <em>supply chain vulnerabilities</em>.",vi:"Đại dịch phơi bày <em>điểm yếu của chuỗi cung ứng</em>.",hl:"supply chain vulnerabilities"}
+],
+note:"💡 'Expose vulnerabilities' = phơi bày điểm yếu — cụm hay dùng khi phân tích rủi ro"},
+{tag:"Tối ưu hóa",title:"Nói về cải thiện supply chain",
+rule:"<b>optimize / streamline / strengthen / diversify</b> the supply chain",
+examples:[
+{en:"We need to <em>diversify our supply chain</em> to reduce risk.",vi:"Chúng ta cần <em>đa dạng hóa chuỗi cung ứng</em> để giảm rủi ro.",hl:"diversify our supply chain"},
+{en:"The company invested in technology to <em>optimize the supply chain</em>.",vi:"Công ty đầu tư vào công nghệ để <em>tối ưu hóa chuỗi cung ứng</em>.",hl:"optimize the supply chain"}
+],
+note:"💡 'Diversify' = đa dạng hóa nhà cung cấp/nguồn hàng — bài học từ COVID-19"}
+]},
+{word:"Lead time",phonetic:"/liːd taɪm/",meaning:"Thời gian từ đặt hàng đến nhận hàng",meaning_sub:"Khoảng thời gian cần để hoàn thành đơn",example:"Lead time for this supplier is 4 weeks.",situation:"Lập kế hoạch mua hàng, quản lý tồn kho",mistake:"Không tính lead time khi đặt hàng",tip:"Lead time = bao lâu từ order đến nhận hàng",options:["Thời gian sản xuất","Thời gian vận chuyển","Thời gian từ đặt hàng đến nhận hàng","Thời gian thông quan"],answer:2,
+grammar:[
+{tag:"Mô tả thời gian",title:"Diễn đạt lead time cụ thể",
+rule:"<b>lead time of X weeks/days, a long/short lead time</b>",
+examples:[
+{en:"The supplier has <em>a lead time of 4 weeks</em>.",vi:"Nhà cung cấp có <em>thời gian giao hàng 4 tuần</em>.",hl:"a lead time of 4 weeks"},
+{en:"We need to reduce our <em>lead time</em> from 30 to 15 days.",vi:"Chúng ta cần giảm <em>thời gian giao hàng</em> từ 30 xuống 15 ngày.",hl:"lead time"}
+],
+note:"💡 'Reduce lead time' là mục tiêu quan trọng trong lean manufacturing và supply chain"},
+{tag:"Ảnh hưởng của lead time",title:"Nói về tác động của lead time",
+rule:"<b>account for lead time, factor in lead time, allow for lead time</b>",
+examples:[
+{en:"Always <em>account for lead time</em> when planning inventory.",vi:"Luôn <em>tính đến thời gian giao hàng</em> khi lập kế hoạch tồn kho.",hl:"account for lead time"},
+{en:"<em>Factoring in lead time</em>, we need to order by Monday.",vi:"<em>Tính đến thời gian giao hàng</em>, chúng ta cần đặt hàng trước thứ Hai.",hl:"Factoring in lead time"}
+],
+note:"💡 'Account for / factor in / allow for' = tính đến — 3 cụm thay nhau được khi lên kế hoạch"}
+]}
 ],
 legal:[
-  {word:"Compliance",phonetic:"/kəmˈplaɪəns/",meaning:"Tuân thủ quy định pháp luật",meaning_sub:"Đáp ứng đầy đủ mọi quy định liên quan",example:"Ensure full compliance with labor laws.",situation:"Quản lý rủi ro pháp lý, kiểm toán",mistake:"Nghĩ compliance chỉ là làm theo luật cơ bản",tip:"Comply = tuân theo = đáp ứng đầy đủ mọi quy định",options:["Kiểm tra nội bộ","Tuân thủ quy định pháp luật","Báo cáo tài chính","Đào tạo nhân viên"],answer:1},
-  {word:"Liability",phonetic:"/ˌlaɪəˈbɪlɪti/",meaning:"Trách nhiệm pháp lý",meaning_sub:"Nghĩa vụ pháp lý phải đền bù thiệt hại",example:"Limit your personal liability with an LLC.",situation:"Thành lập doanh nghiệp, quản lý rủi ro",mistake:"Nhầm liability với responsibility",tip:"Liable = chịu trách nhiệm pháp lý = phải đền bù",options:["Trách nhiệm đạo đức","Trách nhiệm pháp lý","Nghĩa vụ tài chính","Nghĩa vụ xã hội"],answer:1},
-  {word:"Force majeure",phonetic:"/fɔːrs mæˈʒɜːr/",meaning:"Bất khả kháng",meaning_sub:"Sự kiện ngoài tầm kiểm soát",example:"The pandemic triggered the force majeure clause.",situation:"Tranh chấp hợp đồng, rủi ro pháp lý",mistake:"Lạm dụng force majeure cho mọi trễ hạn",tip:"Force majeure = sức mạnh lớn hơn = thiên tai, dịch bệnh",options:["Vi phạm hợp đồng","Hủy hợp đồng","Gia hạn hợp đồng","Bất khả kháng"],answer:3}
+{word:"Compliance",phonetic:"/kəmˈplaɪəns/",meaning:"Tuân thủ quy định pháp luật",meaning_sub:"Đáp ứng đầy đủ mọi quy định liên quan",example:"Ensure full compliance with labor laws.",situation:"Quản lý rủi ro pháp lý, kiểm toán",mistake:"Nghĩ compliance chỉ là làm theo luật cơ bản",tip:"Comply = tuân theo = đáp ứng đầy đủ mọi quy định",options:["Kiểm tra nội bộ","Tuân thủ quy định pháp luật","Báo cáo tài chính","Đào tạo nhân viên"],answer:1,
+grammar:[
+{tag:"Cụm động từ",title:"Ensure / achieve / maintain compliance",
+rule:"<b>ensure / achieve / maintain / be in compliance with</b>",
+examples:[
+{en:"All departments must <em>ensure compliance</em> with data protection laws.",vi:"Tất cả phòng ban phải <em>đảm bảo tuân thủ</em> luật bảo vệ dữ liệu.",hl:"ensure compliance"},
+{en:"The company <em>is in full compliance with</em> local regulations.",vi:"Công ty <em>hoàn toàn tuân thủ</em> các quy định địa phương.",hl:"is in full compliance with"}
+],
+note:"💡 'Be in compliance with' (formal) vs 'comply with' (informal) — dùng theo mức độ chính thức"},
+{tag:"Hậu quả",title:"Nói về không tuân thủ",
+rule:"<b>non-compliance, fail to comply, in breach of compliance</b>",
+examples:[
+{en:"<em>Non-compliance</em> with GDPR can result in heavy fines.",vi:"<em>Không tuân thủ</em> GDPR có thể dẫn đến phạt nặng.",hl:"Non-compliance"},
+{en:"The company <em>failed to comply</em> and faced a $1M penalty.",vi:"Công ty <em>không tuân thủ</em> và đối mặt với phạt $1M.",hl:"failed to comply"}
+],
+note:"💡 'Non-compliance' = danh từ ghép (không gạch nối) vs 'fail to comply' = mệnh đề động từ"}
+]}
 ],
 education:[
-  {word:"Curriculum",phonetic:"/kəˈrɪkjʊləm/",meaning:"Chương trình giảng dạy",meaning_sub:"Tổng thể chương trình học cả khóa",example:"The curriculum needs to be updated annually.",situation:"Thiết kế giáo dục, họp chuyên môn",mistake:"Nhầm curriculum với syllabus",tip:"Curriculum = tổng thể, syllabus = chi tiết 1 môn",options:["Chương trình giảng dạy","Kế hoạch bài học","Tài liệu giáo khoa","Phương pháp đánh giá"],answer:0},
-  {word:"Assessment",phonetic:"/əˈsɛsmənt/",meaning:"Đánh giá kết quả học tập",meaning_sub:"Đo lường mức độ hiểu biết và kỹ năng",example:"Formative assessment helps track student progress.",situation:"Giảng dạy, thiết kế chương trình",mistake:"Nhầm assessment với testing",tip:"Assess = đo lường hiểu biết, không chỉ là thi",options:["Phương pháp giảng dạy","Đánh giá kết quả học tập","Chương trình học","Tài liệu giảng dạy"],answer:1},
-  {word:"E-learning",phonetic:"/iː ˈlɜːrnɪŋ/",meaning:"Học trực tuyến qua internet",meaning_sub:"Giáo dục qua thiết bị điện tử",example:"E-learning reduces training costs significantly.",situation:"Đào tạo doanh nghiệp, giáo dục hiện đại",mistake:"Nghĩ e-learning chỉ là xem video",tip:"E = electronic = học qua thiết bị điện tử",options:["Học qua sách giáo khoa","Học trực tiếp trên lớp","Học trực tuyến qua internet","Học qua đài phát thanh"],answer:2}
+{word:"Curriculum",phonetic:"/kəˈrɪkjʊləm/",meaning:"Chương trình giảng dạy",meaning_sub:"Tổng thể chương trình học cả khóa",example:"The curriculum needs to be updated annually.",situation:"Thiết kế giáo dục, họp chuyên môn",mistake:"Nhầm curriculum với syllabus",tip:"Curriculum = tổng thể, syllabus = chi tiết 1 môn",options:["Chương trình giảng dạy","Kế hoạch bài học","Tài liệu giáo khoa","Phương pháp đánh giá"],answer:0,
+grammar:[
+{tag:"Số nhiều đặc biệt",title:"Curriculum → Curricula (số nhiều)",
+rule:"<b>curriculum → curricula</b> (Latin). Cũng có thể dùng 'curriculums'",
+examples:[
+{en:"The school updated its <em>curricula</em> across all grade levels.",vi:"Trường cập nhật <em>chương trình học</em> trên tất cả các cấp.",hl:"curricula"},
+{en:"Different schools follow different <em>curricula</em>.",vi:"Các trường khác nhau theo <em>chương trình học</em> khác nhau.",hl:"curricula"}
+],
+note:"💡 'Curricula' (chính thức/học thuật) vs 'curriculums' (thông dụng hơn) — cả hai đều đúng"},
+{tag:"Thiết kế chương trình",title:"Động từ dùng với curriculum",
+rule:"<b>design / develop / implement / review / update</b> the curriculum",
+examples:[
+{en:"Teachers collaborated to <em>design a new curriculum</em>.",vi:"Giáo viên cộng tác để <em>thiết kế chương trình mới</em>.",hl:"design a new curriculum"},
+{en:"The curriculum should be <em>reviewed</em> every 3 years.",vi:"Chương trình học nên được <em>xem xét lại</em> mỗi 3 năm.",hl:"reviewed"}
+],
+note:"💡 'Develop a curriculum' (xây dựng mới) vs 'review/update a curriculum' (cải tiến)"}
+]}
 ],
 construction:[
-  {word:"Blueprint",phonetic:"/ˈbluːˌprɪnt/",meaning:"Bản vẽ kỹ thuật chi tiết",meaning_sub:"Bản vẽ thiết kế gốc của công trình",example:"Review the blueprint before starting construction.",situation:"Quản lý dự án xây dựng, họp kỹ thuật",mistake:"Không kiểm tra blueprint kỹ trước khi thi công",tip:"Blue print = bản vẽ thiết kế gốc chi tiết",options:["Giấy phép xây dựng","Bản vẽ kỹ thuật chi tiết","Hợp đồng xây dựng","Báo cáo kiểm định"],answer:1},
-  {word:"Contractor",phonetic:"/kənˈtræktər/",meaning:"Nhà thầu xây dựng",meaning_sub:"Đơn vị ký hợp đồng và thực hiện thi công",example:"The general contractor manages all subcontractors.",situation:"Đấu thầu, quản lý dự án",mistake:"Nhầm general contractor với subcontractor",tip:"Contract = hợp đồng, or = người ký hợp đồng thi công",options:["Chủ đầu tư","Kỹ sư tư vấn","Nhà thầu xây dựng","Nhà cung cấp vật liệu"],answer:2},
-  {word:"Feasibility study",phonetic:"/ˌfiːzəˈbɪlɪti ˈstʌdi/",meaning:"Nghiên cứu khả thi",meaning_sub:"Đánh giá xem dự án có nên thực hiện không",example:"Conduct a feasibility study before land purchase.",situation:"Lập dự án, quyết định đầu tư",mistake:"Bỏ qua feasibility study để tiết kiệm",tip:"Feasible = khả thi = có nên làm không",options:["Khảo sát địa chất","Thiết kế sơ bộ","Nghiên cứu khả thi","Phân tích thị trường"],answer:2}
-]
-};
+{word:"Blueprint",phonetic:"/ˈbluːˌprɪnt/",meaning:"Bản vẽ kỹ thuật chi tiết",meaning_sub:"Bản vẽ thiết kế gốc của công trình",example:"Review the blueprint before starting construction.",situation:"Quản lý dự án xây dựng, họp kỹ thuật",mistake:"Không kiểm tra blueprint kỹ trước khi thi công",tip:"Blue print = bản vẽ thiết kế gốc chi tiết",options:["Giấy phép xây dựng","Bản vẽ kỹ thuật chi tiết","Hợp đồng xây dựng","Báo cáo kiểm định"],answer:1,
+grammar:[
+{tag:"Nghĩa mở rộng",title:"Blueprint dùng nghĩa bóng trong kinh doanh",
+rule:"<b>a blueprint for success/change/growth</b> = kế hoạch chi tiết để thành công",
+examples:[
+{en:"This strategy serves as <em>a blueprint for</em> company growth.",vi:"Chiến lược này đóng vai trò như <em>bản thiết kế cho</em> sự tăng trưởng.",hl:"a blueprint for"},
+{en:"The new policy is <em>a blueprint for</em> sustainable development.",vi:"Chính sách mới là <em>bản thiết kế cho</em> phát triển bền vững.",hl:"a blueprint for"}
+],
+note:"💡 'Blueprint for...' (nghĩa bóng) rất phổ biến trong văn kinh doanh và chính sách — không chỉ dùng trong xây dựng"},
+{tag:"Động từ với blueprint",title:"Read / follow / approve a blueprint",
+rule:"<b>review / read / follow / approve / deviate from</b> the blueprint",
+examples:[
+{en:"All workers must <em>follow the blueprint</em> exactly.",vi:"Tất cả công nhân phải <em>tuân theo bản vẽ</em> chính xác.",hl:"follow the blueprint"},
+{en:"Never <em>deviate from the blueprint</em> without engineer approval.",vi:"Không bao giờ <em>sai lệch khỏi bản vẽ</em> mà không có phê duyệt kỹ sư.",hl:"deviate from the blueprint"}
+],
+note:"💡 'Deviate from' = đi lệch khỏi — cụm từ quan trọng trong an toàn xây dựng"}
+]}
+]};
 
-// GRAMMAR DATA
-var GRAMMAR = {
-it:[
-  {tag:"Cấu trúc",title:"Nói về lỗi / sự cố",rule:"Khi báo cáo lỗi, dùng <b>There is/There are + lỗi</b> hoặc <b>Subject + is/are + adjective</b>",examples:[{en:"There's a critical bug in the payment module.",vi:"Có một lỗi nghiêm trọng trong module thanh toán."},{en:"The server is down. / The system is unresponsive.",vi:"Máy chủ đang ngừng hoạt động."}],note:"💡 Thay vì 'The code has error', hãy nói 'There's an error in the code' hoặc 'The code throws an error'"},
-  {tag:"Thì",title:"Hiện tại tiếp diễn trong IT",rule:"Dùng <b>is/are + V-ing</b> để mô tả trạng thái đang xảy ra của hệ thống hoặc quá trình đang chạy",examples:[{en:"The system is processing 10,000 requests per second.",vi:"Hệ thống đang xử lý 10.000 yêu cầu mỗi giây."},{en:"We are deploying the new version right now.",vi:"Chúng tôi đang triển khai phiên bản mới ngay lúc này."}],note:"💡 'The build is running' (đang chạy) vs 'The build runs every hour' (lịch cố định — dùng hiện tại đơn)"},
-  {tag:"Bị động",title:"Câu bị động trong kỹ thuật",rule:"Dùng <b>is/are + past participle</b> khi hành động quan trọng hơn chủ thể thực hiện",examples:[{en:"The data is encrypted before being stored.",vi:"Dữ liệu được mã hóa trước khi lưu trữ."},{en:"Bugs are tracked using Jira.",vi:"Lỗi được theo dõi bằng Jira."}],note:"💡 Câu bị động rất phổ biến trong tài liệu kỹ thuật và email báo cáo"},
-  {tag:"Điều kiện",title:"If/When trong xử lý lỗi",rule:"Dùng <b>If + hiện tại đơn, will/should + V</b> để mô tả điều kiện kỹ thuật",examples:[{en:"If the server is down, users will see an error page.",vi:"Nếu máy chủ ngừng hoạt động, người dùng sẽ thấy trang lỗi."},{en:"When the cache is cleared, the page should reload.",vi:"Khi xóa cache, trang sẽ tải lại."}],note:"💡 'When' = chắc chắn xảy ra, 'If' = có thể xảy ra"}
-],
-marketing:[
-  {tag:"Cấu trúc",title:"Trình bày số liệu tăng/giảm",rule:"Dùng <b>increase/decrease/grow/drop + by + %</b> hoặc <b>from X to Y</b>",examples:[{en:"Engagement rate increased by 25% after the campaign.",vi:"Tỷ lệ tương tác tăng 25% sau chiến dịch."},{en:"Bounce rate dropped from 70% to 45%.",vi:"Tỷ lệ thoát giảm từ 70% xuống 45%."}],note:"💡 'Increase by 25%' (tăng 25%) vs 'Increase to 25%' (tăng lên 25%) — khác nhau hoàn toàn!"},
-  {tag:"Thuyết phục",title:"Câu đề xuất và khuyến nghị",rule:"Dùng <b>We should / I recommend / It's worth + V-ing</b> để đề xuất chiến lược marketing",examples:[{en:"We should target millennials for this campaign.",vi:"Chúng ta nên nhắm vào thế hệ millennials cho chiến dịch này."},{en:"I recommend A/B testing the email subject lines.",vi:"Tôi khuyến nghị A/B testing các tiêu đề email."}],note:"💡 'We should' mềm hơn 'We must/have to' — phù hợp khi đề xuất trong họp"},
-  {tag:"So sánh",title:"So sánh chiến dịch và kết quả",rule:"Dùng <b>compared to / in comparison with / unlike</b> để so sánh dữ liệu",examples:[{en:"Compared to last quarter, conversion rate improved significantly.",vi:"So với quý trước, tỷ lệ chuyển đổi cải thiện đáng kể."},{en:"Unlike outbound marketing, SEO brings long-term results.",vi:"Khác với outbound marketing, SEO mang lại kết quả lâu dài."}],note:"💡 'Compared to' (so sánh 2 thứ) vs 'Compared with' (phân tích chi tiết hơn)"}
-],
-finance:[
-  {tag:"Cấu trúc",title:"Trình bày báo cáo tài chính",rule:"Dùng <b>stand at / amount to / come in at</b> để nêu con số tài chính",examples:[{en:"Revenue stands at $2 million for Q3.",vi:"Doanh thu đạt 2 triệu đô trong Q3."},{en:"Total costs amount to 60% of revenue.",vi:"Tổng chi phí chiếm 60% doanh thu."}],note:"💡 'Stand at' thường dùng khi số liệu là kết quả cuối cùng; 'come in at' khi vừa có kết quả"},
-  {tag:"Thì",title:"Thì hoàn thành trong tài chính",rule:"Dùng <b>has/have + past participle</b> cho kết quả đến hiện tại",examples:[{en:"Net profit has grown by 20% year over year.",vi:"Lợi nhuận ròng đã tăng 20% so với năm ngoái."},{en:"The company has exceeded its revenue target.",vi:"Công ty đã vượt mục tiêu doanh thu."}],note:"💡 Thì hiện tại hoàn thành rất phổ biến trong báo cáo tài chính quý/năm"},
-  {tag:"Điều kiện",title:"Dự báo tài chính",rule:"Dùng <b>If + quá khứ đơn, would + V</b> cho giả thuyết tài chính",examples:[{en:"If we reduced overhead by 10%, profit margin would improve.",vi:"Nếu giảm chi phí gián tiếp 10%, biên lợi nhuận sẽ cải thiện."},{en:"Revenue would grow faster if we entered new markets.",vi:"Doanh thu sẽ tăng nhanh hơn nếu chúng ta gia nhập thị trường mới."}],note:"💡 Điều kiện loại 2 (giả thuyết) rất phổ biến trong phân tích 'what-if' tài chính"}
-],
-hr:[
-  {tag:"Cấu trúc",title:"Mô tả công việc và yêu cầu",rule:"Dùng <b>responsible for + V-ing</b> hoặc <b>required to + V</b> trong JD và email nhân sự",examples:[{en:"This role is responsible for managing a team of 10.",vi:"Vị trí này chịu trách nhiệm quản lý đội nhóm 10 người."},{en:"Candidates are required to have 3 years of experience.",vi:"Ứng viên cần có 3 năm kinh nghiệm."}],note:"💡 'Responsible for + V-ing' (trách nhiệm) vs 'In charge of + V-ing' (phụ trách) — cùng nghĩa, dùng thay nhau"},
-  {tag:"Phản hồi",title:"Đưa ra phản hồi tích cực",rule:"Dùng <b>I appreciate / I'd like to acknowledge / One thing I noticed</b> để phản hồi nhân viên",examples:[{en:"I appreciate the effort you've put into this project.",vi:"Tôi đánh giá cao nỗ lực bạn đã bỏ ra cho dự án này."},{en:"One thing I noticed is that your reports have improved significantly.",vi:"Một điều tôi nhận thấy là báo cáo của bạn đã cải thiện đáng kể."}],note:"💡 Tránh dùng 'but' sau lời khen — dùng 'and' hoặc 'however' để phần phản hồi không bị giảm giá trị"}
-],
-sales:[
-  {tag:"Thuyết phục",title:"Câu hỏi khám phá nhu cầu KH",rule:"Dùng <b>What / How / Could you tell me</b> — câu hỏi mở để hiểu KH",examples:[{en:"What are the biggest challenges you're facing right now?",vi:"Thách thức lớn nhất bạn đang đối mặt là gì?"},{en:"How does your current solution handle this problem?",vi:"Giải pháp hiện tại của bạn xử lý vấn đề này như thế nào?"}],note:"💡 Câu hỏi mở (What/How/Why) giúp KH nói nhiều hơn, bạn hiểu pain point hơn"},
-  {tag:"Đàm phán",title:"Xử lý phản đối về giá",rule:"Dùng <b>I understand... however / That's fair... and</b> để đồng cảm rồi phản hồi",examples:[{en:"I understand the price is a concern. However, consider the long-term ROI.",vi:"Tôi hiểu giá là một mối quan tâm. Tuy nhiên, hãy xem xét ROI dài hạn."},{en:"That's a fair point. And that's exactly why we offer flexible payment plans.",vi:"Đó là một điểm hợp lý. Và đó chính là lý do chúng tôi có kế hoạch thanh toán linh hoạt."}],note:"💡 Đừng dùng 'but' khi xử lý phản đối — nó vô hiệu hóa điều bạn vừa đồng ý"}
-],
-business:[
-  {tag:"Cuộc họp",title:"Điều phối và chuyển chủ đề",rule:"Dùng <b>Moving on to / Let's turn to / Before we wrap up</b> để dẫn dắt cuộc họp",examples:[{en:"Moving on to the next agenda item — Q4 budget.",vi:"Chuyển sang mục tiếp theo trong chương trình — ngân sách Q4."},{en:"Before we wrap up, let's confirm the action items.",vi:"Trước khi kết thúc, hãy xác nhận các việc cần làm."}],note:"💡 Dùng các cụm này để cuộc họp luôn đúng hướng và không lan man"},
-  {tag:"Email",title:"Mở đầu email chuyên nghiệp",rule:"Dùng <b>I hope this finds you well / I'm writing to / Further to</b>",examples:[{en:"I hope this email finds you well. I'm writing to follow up on our meeting.",vi:"Tôi hy vọng bạn khỏe. Tôi viết email này để theo dõi cuộc họp của chúng ta."},{en:"Further to our conversation yesterday, please find the report attached.",vi:"Tiếp theo cuộc trò chuyện hôm qua, vui lòng xem báo cáo đính kèm."}],note:"💡 'Further to' = tiếp theo sau một liên lạc trước đó — rất phổ biến trong email văn phòng"},
-  {tag:"Đề xuất",title:"Cách trình bày ý kiến lịch sự",rule:"Dùng <b>I'd suggest / It might be worth / Have you considered</b>",examples:[{en:"I'd suggest we push the deadline by one week.",vi:"Tôi đề xuất gia hạn deadline thêm một tuần."},{en:"Have you considered outsourcing this part of the project?",vi:"Bạn có xem xét thuê ngoài phần này của dự án không?"}],note:"💡 Câu hỏi ('Have you considered...') ít gây phòng thủ hơn câu khẳng định ('You should...')"}
-],
-healthcare:[
-  {tag:"Giao tiếp",title:"Giải thích tình trạng bệnh cho BN",rule:"Dùng ngôn ngữ đơn giản: <b>What this means is / In other words / Think of it as</b>",examples:[{en:"Your blood pressure is high. What this means is your heart is working harder than it should.",vi:"Huyết áp của bạn cao. Điều này có nghĩa là tim bạn đang làm việc khó hơn mức cần thiết."},{en:"Think of your arteries as pipes. When they narrow, blood flow decreases.",vi:"Hãy nghĩ động mạch như ống nước. Khi chúng hẹp lại, lưu lượng máu giảm."}],note:"💡 Tránh dùng thuật ngữ y khoa mà không giải thích — BN sẽ không hiểu và không tuân thủ điều trị"}
-],
-logistics:[
-  {tag:"Theo dõi",title:"Cập nhật trạng thái đơn hàng",rule:"Dùng <b>is currently / has been / is expected to</b> để cập nhật tiến độ vận chuyển",examples:[{en:"Your shipment is currently in customs clearance.",vi:"Lô hàng của bạn hiện đang trong quá trình thông quan."},{en:"The package is expected to arrive by Friday.",vi:"Gói hàng dự kiến sẽ đến vào thứ Sáu."}],note:"💡 'Is expected to' (dự kiến) nhẹ hơn 'will' — tốt hơn khi ETA còn có thể thay đổi"}
-],
-legal:[
-  {tag:"Hợp đồng",title:"Ngôn ngữ hợp đồng tiêu chuẩn",rule:"Hợp đồng dùng <b>shall (bắt buộc) / may (được phép) / shall not (cấm)</b>",examples:[{en:"The contractor shall deliver the goods within 30 days.",vi:"Nhà thầu phải giao hàng trong vòng 30 ngày."},{en:"Either party may terminate this agreement with 30 days notice.",vi:"Một trong hai bên có thể chấm dứt thỏa thuận này với thông báo 30 ngày."}],note:"💡 'Shall' trong hợp đồng = bắt buộc (mạnh hơn 'must'). Đọc kỹ — mỗi từ đều có ý nghĩa pháp lý"}
-],
-education:[
-  {tag:"Giảng dạy",title:"Hướng dẫn và giải thích",rule:"Dùng <b>Let's look at / What this means is / As you can see</b> khi giảng dạy",examples:[{en:"Let's look at an example to make this clearer.",vi:"Hãy xem một ví dụ để làm rõ điều này."},{en:"As you can see from the diagram, the process has three stages.",vi:"Như bạn thấy trong sơ đồ, quy trình có ba giai đoạn."}],note:"💡 'Let's' tạo cảm giác cùng nhau khám phá, không phải thầy dạy trò — rất hiệu quả trong lớp học"}
-],
-construction:[
-  {tag:"Dự án",title:"Báo cáo tiến độ thi công",rule:"Dùng <b>is on track / has been completed / is behind schedule</b>",examples:[{en:"The foundation work has been completed ahead of schedule.",vi:"Công tác thi công móng đã hoàn thành trước tiến độ."},{en:"Electrical installation is currently behind schedule due to material delays.",vi:"Lắp đặt điện hiện đang chậm tiến độ do chậm vật liệu."}],note:"💡 Luôn kèm lý do khi báo cáo chậm tiến độ ('due to...') — chuyên nghiệp và cụ thể hơn"}
-]
-};
-
-// ═══════════════════════════════════════════
+// ═══════════════════════════════════
 // STATE
-// ═══════════════════════════════════════════
-var S = {industry:'it', cardIdx:0, flipped:false, qList:[], qIdx:0, qScore:0, answered:false};
-try { var _s = JSON.parse(localStorage.getItem('vqpv4')||'{}'); if(_s.industry) S.industry=_s.industry; } catch(e){}
-function save() { try { localStorage.setItem('vqpv4', JSON.stringify({industry:S.industry})); } catch(e){} }
+// ═══════════════════════════════════
+var S = {industry:'it', cardIdx:0, flipped:false};
+try{var _s=JSON.parse(localStorage.getItem('vqpv5')||'{}');if(_s.industry)S.industry=_s.industry;}catch(e){}
+function save(){try{localStorage.setItem('vqpv5',JSON.stringify({industry:S.industry}));}catch(e){}}
 
-// ═══════════════════════════════════════════
+// ═══════════════════════════════════
 // TABS
-// ═══════════════════════════════════════════
-function goTab(name, btn) {
+// ═══════════════════════════════════
+function goTab(name,btn){
   document.querySelectorAll('.pane').forEach(function(p){p.classList.remove('on');});
   document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on');});
   document.getElementById('tab-'+name).classList.add('on');
@@ -354,48 +704,35 @@ function goTab(name, btn) {
   if(name==='quiz') initQuiz();
 }
 
-// ═══════════════════════════════════════════
-// INDUSTRY CHIPS
-// ═══════════════════════════════════════════
-function renderChips() {
-  var el = document.getElementById('industry-chips');
-  el.innerHTML = Object.keys(INDUSTRIES).map(function(k) {
+// ═══════════════════════════════════
+// CHIPS
+// ═══════════════════════════════════
+function renderChips(){
+  document.getElementById('industry-chips').innerHTML = Object.keys(IND).map(function(k){
     return '<button class="sel-chip'+(k===S.industry?' on':'')+'" onclick="setIndustry(\''+k+'\')">'
-      +INDUSTRIES[k]+'</button>';
+      +IND[k]+'</button>';
   }).join('');
 }
-function setIndustry(k) {
-  S.industry = k; S.cardIdx = 0; S.flipped = false;
-  save();
-  renderChips();
-  renderWC();
+function setIndustry(k){
+  S.industry=k; S.cardIdx=0; S.flipped=false;
+  save(); renderChips();
+  document.getElementById('hdr-pill').textContent=(DB[k]||[]).length+' từ';
   renderCard();
-  renderGrammar();
 }
 
-// ═══════════════════════════════════════════
-// WORD COUNT
-// ═══════════════════════════════════════════
-function renderWC() {
-  var words = DB[S.industry]||[];
-  document.getElementById('hdr-pill').textContent = words.length + ' từ';
-  document.getElementById('wc-row').innerHTML =
-    '<div class="wc-badge"><b>'+words.length+'</b> từ vựng</div>'
-    +'<div class="wc-badge">'+INDUSTRIES[S.industry]+'</div>';
-}
-
-// ═══════════════════════════════════════════
-// FLIP CARD
-// ═══════════════════════════════════════════
-function renderCard() {
-  var words = DB[S.industry]||[];
-  if(!words.length) {
-    document.getElementById('card-area').innerHTML = '<div class="empty"><div class="empty-icon">📚</div>Chưa có từ vựng cho ngành này.</div>';
+// ═══════════════════════════════════
+// CARD
+// ═══════════════════════════════════
+function renderCard(){
+  var words=DB[S.industry]||[];
+  if(!words.length){
+    document.getElementById('card-area').innerHTML='<div class="empty">Chưa có từ vựng cho ngành này.</div>';
+    document.getElementById('grammar-area').innerHTML='';
     return;
   }
-  var w = words[S.cardIdx];
-  var pct = Math.round(((S.cardIdx+1)/words.length)*100);
-  document.getElementById('card-area').innerHTML =
+  var w=words[S.cardIdx];
+  var pct=Math.round(((S.cardIdx+1)/words.length)*100);
+  document.getElementById('card-area').innerHTML=
     '<div class="progress-row">'
       +'<span class="prog-txt">'+(S.cardIdx+1)+' / '+words.length+'</span>'
       +'<div class="prog-bar"><div class="prog-fill" style="width:'+pct+'%"></div></div>'
@@ -403,7 +740,7 @@ function renderCard() {
     +'</div>'
     +'<div class="flip-scene"><div class="flip-card" id="fc" onclick="flipCard()">'
       +'<div class="flip-front">'
-        +'<div class="card-industry">'+INDUSTRIES[w.industry||S.industry]+'</div>'
+        +'<div class="card-industry">'+IND[S.industry]+'</div>'
         +'<div class="card-word">'+w.word+'</div>'
         +'<div class="card-phonetic">'+(w.phonetic||'')+'</div>'
         +'<div class="card-hint">Tap để xem nghĩa</div>'
@@ -416,7 +753,7 @@ function renderCard() {
           +(w.example?'<div class="card-field"><span class="card-field-lbl">Ví dụ</span><span class="card-field-val">'+w.example+'</span></div>':'')
           +(w.situation?'<div class="card-field"><span class="card-field-lbl">Dùng khi</span><span class="card-field-val">'+w.situation+'</span></div>':'')
           +(w.tip?'<div class="card-field"><span class="card-field-lbl">Mẹo nhớ</span><span class="card-field-val tip">💡 '+w.tip+'</span></div>':'')
-          +(w.mistake?'<div class="card-field"><span class="card-field-lbl">Lỗi thường gặp</span><span class="card-field-val err">⚠️ '+w.mistake+'</span></div>':'')
+          +(w.mistake?'<div class="card-field"><span class="card-field-lbl">Lỗi hay gặp</span><span class="card-field-val err">⚠️ '+w.mistake+'</span></div>':'')
         +'</div>'
       +'</div>'
     +'</div></div>'
@@ -425,138 +762,135 @@ function renderCard() {
       +'<button class="nav-btn primary" onclick="flipCard()">Lật thẻ</button>'
       +'<button class="nav-btn" onclick="nextCard()">Tiếp →</button>'
     +'</div>';
-  S.flipped = false;
+  S.flipped=false;
+  renderGrammar(w);
 }
-function flipCard() {
-  var fc = document.getElementById('fc');
-  if(!fc) return;
-  S.flipped = !S.flipped;
-  fc.classList.toggle('flipped', S.flipped);
+function flipCard(){
+  var fc=document.getElementById('fc');
+  if(!fc)return;
+  S.flipped=!S.flipped;
+  fc.classList.toggle('flipped',S.flipped);
 }
-function nextCard() {
-  var words = DB[S.industry]||[];
-  S.cardIdx = (S.cardIdx+1) % words.length;
-  S.flipped = false;
+function nextCard(){
+  var words=DB[S.industry]||[];
+  S.cardIdx=(S.cardIdx+1)%words.length;
   renderCard();
 }
-function prevCard() {
-  var words = DB[S.industry]||[];
-  S.cardIdx = (S.cardIdx-1+words.length) % words.length;
-  S.flipped = false;
+function prevCard(){
+  var words=DB[S.industry]||[];
+  S.cardIdx=(S.cardIdx-1+words.length)%words.length;
   renderCard();
 }
 
-// ═══════════════════════════════════════════
-// GRAMMAR
-// ═══════════════════════════════════════════
-function renderGrammar() {
-  var items = GRAMMAR[S.industry]||[];
-  if(!items.length) { document.getElementById('grammar-area').innerHTML=''; return; }
-  document.getElementById('grammar-area').innerHTML = items.map(function(g,i){
-    return '<div class="grammar-card">'
-      +'<div class="grammar-hdr" onclick="toggleGrammar('+i+')">'
-        +'<div class="grammar-hdr-left">'
-          +'<span class="grammar-tag">'+g.tag+'</span>'
-          +'<span class="grammar-title">'+g.title+'</span>'
+// ═══════════════════════════════════
+// GRAMMAR — động theo từng thẻ
+// ═══════════════════════════════════
+function hl(text, word){
+  if(!word) return text;
+  var escaped = word.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  return text.replace(new RegExp('('+escaped+')','gi'),
+    '<span class="grammar-ex-highlight">$1</span>');
+}
+function renderGrammar(w){
+  var items=w.grammar||[];
+  if(!items.length){document.getElementById('grammar-area').innerHTML='';return;}
+  document.getElementById('grammar-area').innerHTML=
+    '<div class="grammar-word-badge">📖 Ngữ pháp với từ "'+w.word+'"</div>'
+    +items.map(function(g,i){
+      return '<div class="grammar-card">'
+        +'<div class="grammar-hdr" onclick="toggleG('+i+')">'
+          +'<div class="grammar-hdr-left">'
+            +'<span class="grammar-tag">'+g.tag+'</span>'
+            +'<span class="grammar-title">'+g.title+'</span>'
+          +'</div>'
+          +'<span class="grammar-arrow" id="ga-'+i+'">▾</span>'
         +'</div>'
-        +'<span class="grammar-arrow" id="garrow-'+i+'">▾</span>'
-      +'</div>'
-      +'<div class="grammar-body" id="gbody-'+i+'">'
-        +'<div class="grammar-rule">'+g.rule+'</div>'
-        +g.examples.map(function(ex){
-          return '<div class="grammar-ex">'
-            +'<div class="grammar-ex-en">'+ex.en+'</div>'
-            +'<div class="grammar-ex-vi">'+ex.vi+'</div>'
-          +'</div>';
-        }).join('')
-        +(g.note?'<div class="grammar-note">'+g.note+'</div>':'')
-      +'</div>'
-    +'</div>';
-  }).join('');
+        +'<div class="grammar-body" id="gb-'+i+'">'
+          +'<div class="grammar-body-inner">'
+            +'<div class="grammar-rule">'+g.rule+'</div>'
+            +g.examples.map(function(ex){
+              return '<div class="grammar-ex">'
+                +'<div class="grammar-ex-en">'+hl(ex.en, ex.hl)+'</div>'
+                +'<div class="grammar-ex-vi">'+ex.vi+'</div>'
+              +'</div>';
+            }).join('')
+            +(g.note?'<div class="grammar-note">'+g.note+'</div>':'')
+          +'</div>'
+        +'</div>'
+      +'</div>';
+    }).join('');
+  toggleG(0);
 }
-function toggleGrammar(i) {
-  var body = document.getElementById('gbody-'+i);
-  var arrow = document.getElementById('garrow-'+i);
-  var isOpen = body.classList.contains('open');
-  body.classList.toggle('open', !isOpen);
-  arrow.classList.toggle('open', !isOpen);
+function toggleG(i){
+  var body=document.getElementById('gb-'+i);
+  var arrow=document.getElementById('ga-'+i);
+  if(!body)return;
+  var isOpen=body.classList.contains('open');
+  body.classList.toggle('open',!isOpen);
+  arrow.classList.toggle('open',!isOpen);
 }
 
-// ═══════════════════════════════════════════
+// ═══════════════════════════════════
 // QUIZ
-// ═══════════════════════════════════════════
-function shuffle(arr) {
-  var a=arr.slice();
-  for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}
-  return a;
-}
-function initQuiz() {
-  var all = [];
-  Object.keys(DB).forEach(function(k){ all = all.concat(DB[k]); });
-  S.qList = shuffle(all).slice(0,10);
-  S.qIdx = 0; S.qScore = 0; S.answered = false;
+// ═══════════════════════════════════
+function shuffle(arr){var a=arr.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+var QS={list:[],idx:0,score:0,answered:false};
+function initQuiz(){
+  var all=[];
+  Object.keys(DB).forEach(function(k){DB[k].forEach(function(w){var r=Object.assign({},w);r.industry=k;all.push(r);});});
+  QS.list=shuffle(all).slice(0,10);QS.idx=0;QS.score=0;QS.answered=false;
   renderQ();
 }
-function renderQ() {
-  if(!S.qList.length) { document.getElementById('quiz-area').innerHTML='<div class="empty"><div class="empty-icon">🧠</div>Chưa có từ để luyện!</div>'; return; }
-  var total = S.qList.length;
-  var w = S.qList[S.qIdx];
-  var pct = Math.round((S.qIdx/total)*100);
-  S.answered = false;
-  document.getElementById('quiz-area').innerHTML =
-    '<div class="q-hdr"><span class="q-cnt">'+(S.qIdx+1)+' / '+total+'</span><span class="q-sc">'+S.qScore+' điểm</span></div>'
+function renderQ(){
+  if(!QS.list.length){document.getElementById('quiz-area').innerHTML='<div class="empty">Chưa có từ!</div>';return;}
+  var w=QS.list[QS.idx];var total=QS.list.length;
+  var pct=Math.round((QS.idx/total)*100);QS.answered=false;
+  document.getElementById('quiz-area').innerHTML=
+    '<div class="q-hdr"><span class="q-cnt">'+(QS.idx+1)+' / '+total+'</span><span class="q-sc">'+QS.score+' điểm</span></div>'
     +'<div class="q-prog"><div class="q-fill" style="width:'+pct+'%"></div></div>'
     +'<div class="q-word">'+w.word+'</div>'
-    +'<div class="q-sub">'+(INDUSTRIES[w.industry||'']||'')+'</div>'
-    +'<div class="opts">'
-    +w.options.map(function(o,i){
+    +'<div class="q-sub">'+(IND[w.industry]||'')+'</div>'
+    +'<div class="opts">'+w.options.map(function(o,i){
       return '<button class="opt" onclick="checkAns('+i+','+w.answer+',this)">'+o+'</button>';
-    }).join('')
-    +'</div><div id="q-res"></div>';
+    }).join('')+'</div>'
+    +'<div id="q-res"></div>';
 }
-function checkAns(chosen, correct, btn) {
-  if(S.answered) return;
-  S.answered = true;
+function checkAns(chosen,correct,btn){
+  if(QS.answered)return;QS.answered=true;
   document.querySelectorAll('.opt').forEach(function(b,i){
     b.disabled=true;
-    if(i===correct) b.classList.add('correct');
-    else if(i===chosen&&chosen!==correct) b.classList.add('wrong');
+    if(i===correct)b.classList.add('correct');
+    else if(i===chosen&&chosen!==correct)b.classList.add('wrong');
   });
-  var w = S.qList[S.qIdx];
-  var ok = chosen===correct;
-  if(ok) S.qScore++;
-  var msg = ok
-    ? '✅ Chính xác! '+(w.tip?'💡 '+w.tip:'')
-    : '❌ Chưa đúng — <b>'+w.word+'</b> = '+w.meaning+(w.tip?' | 💡 '+w.tip:'');
-  document.getElementById('q-res').innerHTML =
-    '<div class="res-box '+(ok?'ok':'no')+'">'+msg+'</div>'
-    +'<button class="next-btn" onclick="nextQ()">'+(S.qIdx+1>=S.qList.length?'Xem kết quả →':'Câu tiếp →')+'</button>';
+  var w=QS.list[QS.idx];var ok=chosen===correct;
+  if(ok)QS.score++;
+  document.getElementById('q-res').innerHTML=
+    '<div class="res-box '+(ok?'ok':'no')+'">'
+      +(ok?'✅ Chính xác! '+(w.tip?'💡 '+w.tip:'')
+          :'❌ Chưa đúng — <b>'+w.word+'</b> = '+w.meaning+(w.tip?' | 💡 '+w.tip:''))
+    +'</div>'
+    +'<button class="next-btn" onclick="nextQ()">'+(QS.idx+1>=QS.list.length?'Xem kết quả →':'Câu tiếp →')+'</button>';
 }
-function nextQ() {
-  S.qIdx++;
-  if(S.qIdx>=S.qList.length) {
-    var total=S.qList.length;
-    var pct=Math.round((S.qScore/total)*100);
-    var msg = pct>=80?'🎉 Xuất sắc!':pct>=50?'💪 Khá tốt, tiếp tục nhé!':'📖 Cần ôn thêm!';
+function nextQ(){
+  QS.idx++;
+  if(QS.idx>=QS.list.length){
+    var t=QS.list.length;var p=Math.round((QS.score/t)*100);
     document.getElementById('quiz-area').innerHTML=
       '<div class="score-screen">'
-      +'<div class="big-num">'+S.qScore+'</div>'
-      +'<div class="big-denom">/ '+total+' câu</div>'
-      +'<div class="score-msg">'+msg+'</div>'
+      +'<div class="big-num">'+QS.score+'</div><div class="big-denom">/ '+t+' câu</div>'
+      +'<div class="score-msg">'+(p>=80?'🎉 Xuất sắc!':p>=50?'💪 Khá tốt!':'📖 Ôn thêm nhé!')+'</div>'
       +'<button class="retry-btn" onclick="initQuiz()">🔁 Luyện lại</button>'
       +'</div>';
     return;
-  }
-  renderQ();
+  }renderQ();
 }
 
-// ═══════════════════════════════════════════
+// ═══════════════════════════════════
 // INIT
-// ═══════════════════════════════════════════
+// ═══════════════════════════════════
 renderChips();
-renderWC();
+document.getElementById('hdr-pill').textContent=(DB[S.industry]||[]).length+' từ';
 renderCard();
-renderGrammar();
 </script>
 </body>
 </html>
