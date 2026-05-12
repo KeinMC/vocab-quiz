@@ -546,7 +546,7 @@ function generateWords(){
       .trim();
     var start = clean.indexOf('[');
     var end = clean.lastIndexOf(']');
-    if(start === -1 || end === -1) throw new Error('Không tìm thấy JSON array trong response');
+    if(start === -1 || end === -1) throw new Error('Raw: ' + text.substring(0,200));
     clean = clean.substring(start, end+1);
     var arr = JSON.parse(clean);
     var day = Math.floor(S.words.length/15)+1;
