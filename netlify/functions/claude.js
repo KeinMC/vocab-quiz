@@ -34,6 +34,9 @@ exports.handler = async function(event, context) {
     const data = await response.json();
     const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
 
+    console.log('Gemini response:', JSON.stringify(data).substring(0, 500));
+    console.log('Extracted text:', text.substring(0, 300));
+
     return {
       statusCode: 200,
       headers: {
@@ -41,7 +44,8 @@ exports.handler = async function(event, context) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        content: [{ type: 'text', text: text }]
+        content: [{ type: 'text', text: text }],
+        debug_raw: text.substring(0, 200)
       })
     };
   } catch (err) {
