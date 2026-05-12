@@ -570,7 +570,7 @@ function renderWords(){
     html+='<div class="day-label">Ngày '+d+' — '+grouped[d].length+' từ</div>';
     grouped[d].forEach(function(w){
       html+='<div class="word-item">'
-        +'<div class="w-tag">'+（w.day?'Ngày '+w.day:'')+'</div>'
+        +'<div class="w-tag">'+(w.day?'Ngày '+w.day:'')+'</div>'
         +'<div class="w-en">'+w.word+'</div>'
         +'<div class="w-vn">'+w.meaning+'</div>';
       if(w.example) html+='<div class="w-detail"><b>Ví dụ:</b> '+w.example+'</div>';
@@ -620,7 +620,7 @@ function renderQuestion(){
   document.getElementById('quiz-area').innerHTML=
     '<div class="quiz-wrap">'
     +'<div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:'+pct+'%"></div></div>'
-    +'<div class="quiz-meta"><span class="quiz-counter">'+（S.qIdx+1)+' / '+total+'</span><span class="quiz-score">+'+S.qScore+'</span></div>'
+    +'<div class="quiz-meta"><span class="quiz-counter">'+(S.qIdx+1)+' / '+total+'</span><span class="quiz-score">+'+S.qScore+'</span></div>'
     +'<div class="quiz-word">'+w.word+'</div>'
     +'<div class="quiz-hint">Chọn nghĩa đúng trong tiếng Việt</div>'
     +'<div class="opts">'+opts+'</div>'
