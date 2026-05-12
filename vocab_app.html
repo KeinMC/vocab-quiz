@@ -5,677 +5,477 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Vocab Quiz</title>
+<title>Vocab Quiz Pro</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap');
-
-  :root {
-    --bg: #0a0a0f;
-    --surface: #13131a;
-    --surface2: #1c1c26;
-    --border: rgba(255,255,255,0.08);
-    --text: #f0f0f5;
-    --muted: #7a7a90;
-    --accent: #7c6af7;
-    --accent2: #4ecdc4;
-    --danger: #ff6b6b;
-    --success: #4ecdc4;
-    --r: 14px;
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
-
-  html, body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    min-height: 100vh;
-    min-height: -webkit-fill-available;
-    overscroll-behavior: none;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  /* ── HEADER ── */
-  .header {
-    padding: 52px 20px 16px;
-    background: linear-gradient(180deg, #1a1530 0%, transparent 100%);
-    position: relative;
-  }
-  .header-row { display: flex; align-items: center; justify-content: space-between; }
-  .app-title { font-family: 'DM Serif Display', serif; font-size: 26px; color: var(--text); letter-spacing: -0.5px; }
-  .streak-badge {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 6px 14px;
-    font-size: 13px;
-    color: var(--accent2);
-    font-weight: 500;
-  }
-
-  /* ── TABS ── */
-  .tabs {
-    display: flex;
-    padding: 0 20px;
-    gap: 4px;
-    margin: 12px 0 0;
-    border-bottom: 1px solid var(--border);
-  }
-  .tab {
-    flex: 1;
-    padding: 10px 4px;
-    background: none;
-    border: none;
-    color: var(--muted);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    border-bottom: 2px solid transparent;
-    transition: all .2s;
-    -webkit-appearance: none;
-    touch-action: manipulation;
-    user-select: none;
-    -webkit-user-select: none;
-  }
-  .tab.on { color: var(--accent); border-bottom-color: var(--accent); }
-
-  /* ── CONTENT ── */
-  .content { padding: 20px; display: none; }
-  .content.on { display: block; }
-
-  /* ── CARDS ── */
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--r);
-    padding: 16px;
-    margin-bottom: 12px;
-  }
-  .card-label {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 10px;
-  }
-
-  /* ── FORM ELEMENTS ── */
-  input[type=text], input[type=time], select {
-    width: 100%;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    padding: 11px 14px;
-    outline: none;
-    -webkit-appearance: none;
-  }
-  input[type=text]:focus, input[type=time]:focus {
-    border-color: var(--accent);
-  }
-  input[type=time] { color-scheme: dark; }
-
-  .time-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 8px;
-  }
-  .time-row input { flex: 1; }
-  .del-btn {
-    width: 38px; height: 38px;
-    background: none;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    color: var(--danger);
-    font-size: 18px;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-  .add-btn {
-    width: 100%;
-    padding: 10px;
-    background: none;
-    border: 1px dashed var(--border);
-    border-radius: 10px;
-    color: var(--muted);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    cursor: pointer;
-    margin-top: 4px;
-    -webkit-appearance: none;
-    touch-action: manipulation;
-  }
-
-  .freq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .freq-btn {
-    padding: 12px 8px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    color: var(--muted);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all .15s;
-    -webkit-appearance: none;
-    touch-action: manipulation;
-    user-select: none;
-    -webkit-user-select: none;
-  }
-  .freq-btn.on {
-    background: rgba(124,106,247,0.15);
-    border-color: var(--accent);
-    color: var(--accent);
-    font-weight: 500;
-  }
-
-  .primary-btn {
-    width: 100%;
-    padding: 14px;
-    background: var(--accent);
-    border: none;
-    border-radius: var(--r);
-    color: #fff;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    margin-top: 8px;
-    transition: opacity .15s, transform .1s;
-    -webkit-appearance: none;
-    touch-action: manipulation;
-    user-select: none;
-    -webkit-user-select: none;
-  }
-  .ghost-btn {
-    width: 100%;
-    padding: 13px;
-    background: none;
-    border: 1px solid var(--border);
-    border-radius: var(--r);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    font-weight: 500;
-    cursor: pointer;
-    margin-bottom: 12px;
-    transition: background .15s;
-    -webkit-appearance: none;
-    touch-action: manipulation;
-    user-select: none;
-    -webkit-user-select: none;
-  }
-
-  /* ── STATS ── */
-  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
-  .stat {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--r);
-    padding: 14px;
-    text-align: center;
-  }
-  .stat-n { font-size: 28px; font-weight: 600; color: var(--accent); }
-  .stat-l { font-size: 12px; color: var(--muted); margin-top: 2px; }
-
-  /* ── WORD CARDS ── */
-  .word-item {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--r);
-    padding: 16px;
-    margin-bottom: 10px;
-    animation: fadeUp .3s ease;
-  }
-  @keyframes fadeUp { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform:none; } }
-  .w-en { font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--text); margin-bottom: 2px; }
-  .w-vn { font-size: 14px; color: var(--accent2); margin-bottom: 10px; font-weight: 500; }
-  .w-detail { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 4px; }
-  .w-detail b { color: var(--text); font-weight: 500; }
-  .w-tag {
-    display: inline-block;
-    font-size: 11px;
-    padding: 2px 8px;
-    border-radius: 20px;
-    background: rgba(124,106,247,0.15);
-    color: var(--accent);
-    margin-bottom: 8px;
-  }
-  .w-mistake { color: rgba(255,107,107,0.8); }
-  .w-tip { color: rgba(78,205,196,0.8); }
-
-  /* ── LOADING SPINNER ── */
-  .spinner {
-    display: inline-block;
-    width: 16px; height: 16px;
-    border: 2px solid rgba(255,255,255,0.2);
-    border-top-color: #fff;
-    border-radius: 50%;
-    animation: spin .7s linear infinite;
-    vertical-align: -3px;
-    margin-right: 8px;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  /* ── QUIZ ── */
-  .quiz-wrap { padding-top: 8px; }
-  .progress-bar-wrap {
-    height: 3px;
-    background: var(--surface2);
-    border-radius: 2px;
-    margin-bottom: 24px;
-    overflow: hidden;
-  }
-  .progress-bar-fill {
-    height: 100%;
-    background: var(--accent);
-    border-radius: 2px;
-    transition: width .4s cubic-bezier(.4,0,.2,1);
-  }
-  .quiz-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-  .quiz-counter { font-size: 13px; color: var(--muted); }
-  .quiz-score {
-    background: rgba(78,205,196,0.15);
-    color: var(--accent2);
-    font-size: 13px;
-    font-weight: 500;
-    padding: 4px 12px;
-    border-radius: 20px;
-  }
-  .quiz-word {
-    font-family: 'DM Serif Display', serif;
-    font-size: 36px;
-    color: var(--text);
-    text-align: center;
-    padding: 24px 0 8px;
-    line-height: 1.1;
-  }
-  .quiz-hint { text-align: center; font-size: 13px; color: var(--muted); margin-bottom: 28px; }
-  .opts { display: flex; flex-direction: column; gap: 10px; }
-  .opt {
-    width: 100%;
-    padding: 16px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--r);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    text-align: left;
-    cursor: pointer;
-    transition: all .15s;
-    line-height: 1.4;
-  }
-  .opt:active { transform: scale(0.99); }
-  .opt.correct { background: rgba(78,205,196,0.1); border-color: var(--success); color: var(--success); }
-  .opt.wrong { background: rgba(255,107,107,0.1); border-color: var(--danger); color: var(--danger); }
-  .opt:disabled { cursor: default; }
-  .result-msg {
-    margin-top: 16px;
-    padding: 14px;
-    border-radius: var(--r);
-    font-size: 14px;
-    line-height: 1.6;
-    animation: fadeUp .25s ease;
-  }
-  .result-msg.ok { background: rgba(78,205,196,0.1); color: var(--accent2); border: 1px solid rgba(78,205,196,0.2); }
-  .result-msg.no { background: rgba(255,107,107,0.1); color: var(--danger); border: 1px solid rgba(255,107,107,0.2); }
-  .next-btn {
-    width: 100%;
-    margin-top: 12px;
-    padding: 14px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: var(--r);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    font-weight: 500;
-    cursor: pointer;
-  }
-  .score-screen { text-align: center; padding: 40px 0; }
-  .big-score { font-family: 'DM Serif Display', serif; font-size: 72px; color: var(--accent); }
-  .score-label { font-size: 16px; color: var(--muted); margin-top: 4px; margin-bottom: 32px; }
-
-  /* ── PROMPT PREVIEW ── */
-  .prompt-pre {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px;
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.7;
-    white-space: pre-wrap;
-    word-break: break-word;
-    margin-top: 10px;
-    max-height: 120px;
-    overflow-y: auto;
-  }
-  .copy-btn {
-    margin-top: 8px;
-    padding: 8px 14px;
-    background: none;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    color: var(--muted);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    cursor: pointer;
-  }
-
-  .day-label {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: .07em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin: 16px 0 8px;
-  }
-  .empty {
-    text-align: center;
-    padding: 48px 20px;
-    color: var(--muted);
-    font-size: 15px;
-    line-height: 1.7;
-  }
-  .empty-icon { font-size: 48px; margin-bottom: 12px; }
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap');
+:root{--bg:#0a0a0f;--s:#13131a;--s2:#1c1c26;--bd:rgba(255,255,255,0.08);--t:#f0f0f5;--m:#7a7a90;--a:#7c6af7;--a2:#4ecdc4;--err:#ff6b6b;--ok:#4ecdc4;--r:14px}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+html,body{background:var(--bg);color:var(--t);font-family:'DM Sans',sans-serif;min-height:100vh;min-height:-webkit-fill-available;overscroll-behavior:none;-webkit-overflow-scrolling:touch}
+.hdr{padding:52px 20px 0;background:linear-gradient(180deg,#1a1530 0%,transparent 100%)}
+.hdr-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.app-title{font-family:'DM Serif Display',serif;font-size:26px;letter-spacing:-0.5px}
+.badge{background:var(--s2);border:1px solid var(--bd);border-radius:20px;padding:6px 14px;font-size:13px;color:var(--a2);font-weight:500}
+.tabs{display:flex;border-bottom:1px solid var(--bd);margin-top:4px}
+.tab{flex:1;padding:10px 4px;background:none;border:none;border-bottom:2px solid transparent;color:var(--m);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none}
+.tab.on{color:var(--a);border-bottom-color:var(--a)}
+.pane{display:none;padding:20px}
+.pane.on{display:block}
+.card{background:var(--s);border:1px solid var(--bd);border-radius:var(--r);padding:16px;margin-bottom:12px}
+.lbl{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--m);margin-bottom:10px;display:block}
+select{width:100%;background:var(--s2);border:1px solid var(--bd);border-radius:10px;color:var(--t);font-family:'DM Sans',sans-serif;font-size:15px;padding:11px 14px;outline:none;-webkit-appearance:none;appearance:none}
+.freq-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fq{padding:12px 8px;background:var(--s2);border:1px solid var(--bd);border-radius:10px;color:var(--m);font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none;text-align:center}
+.fq.on{background:rgba(124,106,247,.15);border-color:var(--a);color:var(--a);font-weight:500}
+.time-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.time-row input[type=time]{flex:1;background:var(--s2);border:1px solid var(--bd);border-radius:10px;color:var(--t);font-family:'DM Sans',sans-serif;font-size:15px;padding:11px 14px;outline:none;color-scheme:dark}
+.del-btn{width:38px;height:38px;background:none;border:1px solid var(--bd);border-radius:10px;color:var(--err);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;touch-action:manipulation}
+.add-btn{width:100%;padding:10px;background:none;border:1px dashed var(--bd);border-radius:10px;color:var(--m);font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer;touch-action:manipulation;margin-top:4px}
+.pri{width:100%;padding:14px;background:var(--a);border:none;border-radius:var(--r);color:#fff;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:600;cursor:pointer;touch-action:manipulation;margin-top:8px;-webkit-appearance:none}
+.pri:disabled{opacity:.35;cursor:not-allowed}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.stat{background:var(--s);border:1px solid var(--bd);border-radius:var(--r);padding:14px;text-align:center}
+.stat-n{font-size:28px;font-weight:600;color:var(--a)}
+.stat-l{font-size:12px;color:var(--m);margin-top:2px}
+.word-item{background:var(--s);border:1px solid var(--bd);border-radius:var(--r);padding:16px;margin-bottom:10px}
+.w-en{font-family:'DM Serif Display',serif;font-size:20px;color:var(--t);margin-bottom:2px}
+.w-vn{font-size:14px;color:var(--a2);margin-bottom:10px;font-weight:500}
+.w-det{font-size:13px;color:var(--m);line-height:1.6;margin-bottom:4px}
+.w-det b{color:var(--t);font-weight:500}
+.w-tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;background:rgba(124,106,247,.15);color:var(--a);margin-bottom:8px}
+.day-lbl{font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--m);margin:16px 0 8px}
+.empty{text-align:center;padding:48px 20px;color:var(--m);font-size:15px;line-height:1.7}
+.empty-icon{font-size:48px;margin-bottom:12px}
+/* QUIZ */
+.prog-wrap{height:3px;background:var(--s2);border-radius:2px;margin-bottom:24px;overflow:hidden}
+.prog-fill{height:100%;background:var(--a);border-radius:2px;transition:width .4s}
+.q-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.q-cnt{font-size:13px;color:var(--m)}
+.q-sc{background:rgba(78,205,196,.15);color:var(--a2);font-size:13px;font-weight:500;padding:4px 12px;border-radius:20px}
+.q-word{font-family:'DM Serif Display',serif;font-size:36px;text-align:center;padding:24px 0 8px;line-height:1.1}
+.q-hint{text-align:center;font-size:13px;color:var(--m);margin-bottom:28px}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{width:100%;padding:16px;background:var(--s);border:1px solid var(--bd);border-radius:var(--r);color:var(--t);font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;touch-action:manipulation;line-height:1.4;-webkit-user-select:none;user-select:none}
+.opt.correct{background:rgba(78,205,196,.1);border-color:var(--ok);color:var(--ok)}
+.opt.wrong{background:rgba(255,107,107,.1);border-color:var(--err);color:var(--err)}
+.opt:disabled{cursor:default}
+.res-msg{margin-top:16px;padding:14px;border-radius:var(--r);font-size:14px;line-height:1.6}
+.res-msg.ok{background:rgba(78,205,196,.1);color:var(--a2);border:1px solid rgba(78,205,196,.2)}
+.res-msg.no{background:rgba(255,107,107,.1);color:var(--err);border:1px solid rgba(255,107,107,.2)}
+.next-btn{width:100%;margin-top:12px;padding:14px;background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);color:var(--t);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;touch-action:manipulation}
+.big-score{font-family:'DM Serif Display',serif;font-size:72px;color:var(--a);text-align:center;padding-top:40px}
+.score-lbl{font-size:16px;color:var(--m);text-align:center;margin:4px 0 32px}
+.filter-row{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px}
+.filter-btn{flex-shrink:0;padding:6px 14px;background:var(--s2);border:1px solid var(--bd);border-radius:20px;color:var(--m);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;touch-action:manipulation;white-space:nowrap}
+.filter-btn.on{background:rgba(124,106,247,.15);border-color:var(--a);color:var(--a)}
+.search-inp{width:100%;background:var(--s2);border:1px solid var(--bd);border-radius:10px;color:var(--t);font-family:'DM Sans',sans-serif;font-size:15px;padding:10px 14px;outline:none;margin-bottom:12px}
 </style>
 </head>
 <body>
-
-<div class="header">
-  <div class="header-row">
-    <div class="app-title">Vocab Quiz</div>
-    <div class="streak-badge" id="streak-badge">0 từ</div>
+<div class="hdr">
+  <div class="hdr-row">
+    <div class="app-title">Vocab Quiz Pro</div>
+    <div class="badge" id="hdr-badge">0 từ</div>
+  </div>
+  <div class="tabs">
+    <button class="tab on" onclick="goTab('schedule',this)">⏰ Lịch học</button>
+    <button class="tab" onclick="goTab('words',this)">📚 Từ vựng</button>
+    <button class="tab" onclick="goTab('quiz',this)">🧠 Quiz</button>
   </div>
 </div>
 
-<div class="tabs">
-  <button class="tab on" onclick="tab('schedule',this)">⏰ Lịch học</button>
-  <button class="tab" onclick="tab('words',this)">📚 Từ vựng</button>
-  <button class="tab" onclick="tab('quiz',this)">🧠 Quiz</button>
-</div>
-
-<!-- ════ TAB: SCHEDULE ════ -->
-<div id="tab-schedule" class="content on">
-
+<!-- SCHEDULE -->
+<div id="tab-schedule" class="pane on">
   <div class="card">
-    <div class="card-label">🏢 Ngành nghề của bạn</div>
-    <input type="text" id="industry" placeholder="vd: Marketing, IT, Kế toán, Bán lẻ...">
+    <span class="lbl">🏢 Chọn ngành nghề</span>
+    <select id="industry-sel" onchange="onIndustryChange()">
+      <option value="">-- Chọn ngành của bạn --</option>
+      <option value="it">💻 Công nghệ thông tin (IT)</option>
+      <option value="marketing">📣 Marketing & Truyền thông</option>
+      <option value="finance">💰 Tài chính & Kế toán</option>
+      <option value="hr">👥 Nhân sự (HR)</option>
+      <option value="sales">🤝 Kinh doanh & Bán hàng</option>
+      <option value="business">🏢 Văn phòng & Quản lý chung</option>
+      <option value="healthcare">🏥 Y tế & Chăm sóc sức khỏe</option>
+      <option value="logistics">🚚 Logistics & Chuỗi cung ứng</option>
+      <option value="legal">⚖️ Pháp lý & Hợp đồng</option>
+      <option value="education">🎓 Giáo dục & Đào tạo</option>
+      <option value="construction">🏗️ Xây dựng & Bất động sản</option>
+    </select>
+    <div id="industry-info" style="margin-top:10px;font-size:13px;color:var(--a2);display:none"></div>
   </div>
-
   <div class="card">
-    <div class="card-label">🔔 Giờ thông báo (tối đa 5)</div>
+    <span class="lbl">🔔 Giờ thông báo (tối đa 5)</span>
     <div id="time-list"></div>
     <button class="add-btn" id="add-time-btn" onclick="addTime()">+ Thêm giờ học</button>
   </div>
-
   <div class="card">
-    <div class="card-label">🔁 Số lần nhắc mỗi ngày</div>
-    <div class="freq-grid" id="freq-grid">
-      <button class="freq-btn on" onclick="setFreq(1,this)">1 lần / ngày</button>
-      <button class="freq-btn" onclick="setFreq(2,this)">2 lần / ngày</button>
-      <button class="freq-btn" onclick="setFreq(3,this)">3 lần / ngày</button>
-      <button class="freq-btn" onclick="setFreq(5,this)">5 lần / ngày</button>
+    <span class="lbl">🔁 Số lần nhắc mỗi ngày</span>
+    <div class="freq-grid">
+      <button class="fq on" onclick="setFreq(1,this)">1 lần / ngày</button>
+      <button class="fq" onclick="setFreq(2,this)">2 lần / ngày</button>
+      <button class="fq" onclick="setFreq(3,this)">3 lần / ngày</button>
+      <button class="fq" onclick="setFreq(5,this)">5 lần / ngày</button>
     </div>
   </div>
-
-  <button class="primary-btn" onclick="saveSettings()">💾 Lưu cài đặt</button>
+  <button class="pri" onclick="saveSettings()">💾 Lưu cài đặt</button>
 </div>
 
-<!-- ════ TAB: WORDS ════ -->
-<div id="tab-words" class="content">
+<!-- WORDS -->
+<div id="tab-words" class="pane">
   <div class="stats">
     <div class="stat"><div class="stat-n" id="st-total">0</div><div class="stat-l">Từ đã học</div></div>
     <div class="stat"><div class="stat-n" id="st-days">0</div><div class="stat-l">Ngày học</div></div>
   </div>
-
-  <button class="ghost-btn" id="gen-btn" onclick="generateWords()">✨ Sinh 15 từ vựng hôm nay</button>
-
-  <div id="prompt-section" style="display:none;margin-bottom:16px">
-    <div class="card-label" style="margin-bottom:6px">Prompt AI đã dùng:</div>
-    <div class="prompt-pre" id="prompt-display"></div>
-    <button class="copy-btn" onclick="copyPrompt()">📋 Copy prompt</button>
-  </div>
-
+  <input type="text" class="search-inp" id="search-inp" placeholder="🔍 Tìm từ vựng..." oninput="renderWords()">
+  <div class="filter-row" id="filter-row"></div>
   <div id="word-list"></div>
 </div>
 
-<!-- ════ TAB: QUIZ ════ -->
-<div id="tab-quiz" class="content">
+<!-- QUIZ -->
+<div id="tab-quiz" class="pane">
   <div id="quiz-area"></div>
 </div>
 
 <script>
-var S = {
-  times: ['12:00'],
-  freq: 1,
-  industry: '',
-  words: [],
-  qIdx: 0,
-  qList: [],
-  qScore: 0,
-  answered: false
-};
-try { var _s = JSON.parse(localStorage.getItem('vq2')||'{}'); Object.assign(S,_s); } catch(e){}
-function persist(){ try{ localStorage.setItem('vq2', JSON.stringify(S)); }catch(e){} }
+// ══════════════════════════════════════
+// DATABASE
+// ══════════════════════════════════════
+var DB = {};
 
-/* ── TABS ── */
-function tab(name, btn){
-  document.querySelectorAll('.content').forEach(function(c){ c.classList.remove('on'); });
-  document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('on'); });
+DB.it = [
+  {word:"Algorithm",meaning:"Thuật toán",example:"We need a better algorithm to sort this data.",situation:"Họp kỹ thuật, code review",mistake:"Không phân biệt được algorithm vs code",tip:"Algo = công thức giải quyết vấn đề",options:["Giao diện người dùng","Thuật toán","Cơ sở dữ liệu","Máy chủ"],answer:1},
+  {word:"API",meaning:"Giao diện lập trình ứng dụng",example:"We'll integrate via their REST API.",situation:"Họp kỹ thuật, tài liệu",mistake:"Dùng API như danh từ chung chung",tip:"API = cầu nối giữa 2 phần mềm",options:["Giao diện lập trình ứng dụng","Phần mềm diệt virus","Ngôn ngữ lập trình","Hệ điều hành"],answer:0},
+  {word:"Backend",meaning:"Phần xử lý phía máy chủ",example:"The backend handles all database queries.",situation:"Phân công công việc, họp team",mistake:"Nhầm backend với server vật lý",tip:"Back = phía sau, end = điểm cuối",options:["Giao diện người dùng","Phần xử lý phía máy chủ","Thiết kế đồ họa","Kiểm thử phần mềm"],answer:1},
+  {word:"Bug",meaning:"Lỗi phần mềm",example:"There's a critical bug in the payment module.",situation:"Báo cáo, email, họp",mistake:"Dùng 'error' thay 'bug' khi nói về code",tip:"Bug = con bọ = lỗi nhỏ trong code",options:["Tính năng mới","Lỗi phần mềm","Cập nhật hệ thống","Tài liệu kỹ thuật"],answer:1},
+  {word:"Cache",meaning:"Bộ nhớ đệm tạm thời",example:"Clear the cache to fix the display issue.",situation:"Hỗ trợ kỹ thuật, debug",mistake:"Đọc sai thành 'catch'",tip:"Cache = kho tạm để truy cập nhanh hơn",options:["Mật khẩu","Bộ nhớ đệm tạm thời","Kết nối mạng","Màn hình hiển thị"],answer:1},
+  {word:"Cloud computing",meaning:"Điện toán đám mây",example:"We moved our servers to cloud computing.",situation:"Báo cáo, đề xuất dự án",mistake:"Nghĩ cloud là lưu trữ đơn thuần",tip:"Cloud = đám mây = tài nguyên trên internet",options:["Máy tính cá nhân","Điện toán đám mây","Mạng nội bộ","Phần cứng máy tính"],answer:1},
+  {word:"Debugging",meaning:"Tìm và sửa lỗi code",example:"I spent all morning debugging this function.",situation:"Báo cáo tiến độ, họp team",mistake:"Nhầm debugging với testing",tip:"De-bug = loại bỏ bug",options:["Viết tài liệu","Tìm và sửa lỗi code","Thiết kế giao diện","Triển khai hệ thống"],answer:1},
+  {word:"Deployment",meaning:"Triển khai phần mềm lên môi trường thực",example:"The deployment to production is scheduled for Friday.",situation:"Lên kế hoạch, báo cáo",mistake:"Nhầm deployment với installation",tip:"Deploy = đưa code lên server thật",options:["Triển khai phần mềm lên môi trường thực","Viết code mới","Họp nhóm phát triển","Sao lưu dữ liệu"],answer:0},
+  {word:"Encryption",meaning:"Mã hóa dữ liệu",example:"All passwords are stored with encryption.",situation:"Báo cáo bảo mật, email kỹ thuật",mistake:"Nhầm encryption với compression",tip:"En-crypt = khóa dữ liệu bằng mật mã",options:["Nén dữ liệu","Sao lưu dữ liệu","Mã hóa dữ liệu","Truyền dữ liệu"],answer:2},
+  {word:"Framework",meaning:"Khung nền tảng lập trình",example:"React is our frontend framework of choice.",situation:"Thảo luận kỹ thuật, tuyển dụng",mistake:"Nhầm framework với library",tip:"Frame = khung = cấu trúc sẵn để xây lên",options:["Ngôn ngữ lập trình","Khung nền tảng lập trình","Cơ sở dữ liệu","Công cụ kiểm thử"],answer:1},
+  {word:"Frontend",meaning:"Phần giao diện người dùng",example:"The frontend team handles all UI components.",situation:"Phân công, mô tả công việc",mistake:"Nghĩ frontend chỉ là design",tip:"Front = phía trước, người dùng thấy được",options:["Phần giao diện người dùng","Phần xử lý dữ liệu","Hệ thống bảo mật","Quản lý máy chủ"],answer:0},
+  {word:"Git",meaning:"Hệ thống quản lý phiên bản code",example:"Please commit your changes to Git before leaving.",situation:"Làm việc nhóm, quản lý code",mistake:"Nhầm Git với GitHub",tip:"Git = lịch sử toàn bộ thay đổi code",options:["Ngôn ngữ lập trình","Công cụ thiết kế","Hệ thống quản lý phiên bản code","Trình duyệt web"],answer:2},
+  {word:"Agile",meaning:"Phương pháp phát triển linh hoạt",example:"We follow Agile methodology for all projects.",situation:"Họp nhóm, báo cáo dự án",mistake:"Nghĩ Agile = không có kế hoạch",tip:"Agile = linh hoạt = thích ứng nhanh",options:["Phương pháp phát triển linh hoạt","Ngôn ngữ lập trình","Công cụ quản lý","Quy trình kiểm thử"],answer:0},
+  {word:"Scalability",meaning:"Khả năng mở rộng hệ thống",example:"Scalability is a key concern for our platform.",situation:"Thiết kế hệ thống, thuyết trình",mistake:"Nhầm scalability với performance",tip:"Scale = tăng quy mô, ability = khả năng",options:["Khả năng mở rộng hệ thống","Tốc độ xử lý","Độ bảo mật","Tính dễ sử dụng"],answer:0},
+  {word:"Sprint",meaning:"Giai đoạn làm việc ngắn trong Agile",example:"This feature will be completed in the next sprint.",situation:"Họp Scrum, lên kế hoạch",mistake:"Nghĩ sprint = chạy nhanh",tip:"Sprint = chạy nước rút = làm nhanh 2 tuần",options:["Giai đoạn làm việc ngắn trong Agile","Phiên bản phần mềm","Báo cáo hàng tháng","Tài liệu yêu cầu"],answer:0}
+];
+
+DB.marketing = [
+  {word:"Brand awareness",meaning:"Độ nhận diện thương hiệu",example:"Our campaign increased brand awareness by 40%.",situation:"Báo cáo marketing, họp chiến lược",mistake:"Nhầm brand awareness với brand image",tip:"Aware = nhận biết = bao nhiêu người biết thương hiệu",options:["Doanh thu bán hàng","Độ nhận diện thương hiệu","Lợi nhuận thương hiệu","Chi phí quảng cáo"],answer:1},
+  {word:"Call to action",meaning:"Lời kêu gọi hành động",example:"Add a strong call to action at the end of the email.",situation:"Viết content, email marketing",mistake:"Không có CTA rõ ràng trong quảng cáo",tip:"CTA = nút/câu dẫn người đọc làm điều gì đó",options:["Tiêu đề quảng cáo","Lời kêu gọi hành động","Nội dung bài viết","Hình ảnh minh họa"],answer:1},
+  {word:"Conversion rate",meaning:"Tỷ lệ chuyển đổi",example:"Our conversion rate improved from 2% to 5%.",situation:"Báo cáo digital, họp performance",mistake:"Nhầm conversion rate với click rate",tip:"Convert = chuyển đổi = từ khách thăm → khách mua",options:["Tỷ lệ nhấp chuột","Tỷ lệ chuyển đổi","Tỷ lệ mở email","Tỷ lệ thoát trang"],answer:1},
+  {word:"Content marketing",meaning:"Tiếp thị bằng nội dung",example:"Our blog is the core of our content marketing strategy.",situation:"Họp chiến lược, đề xuất kế hoạch",mistake:"Nghĩ content marketing = đăng bài mạng xã hội",tip:"Content = nội dung hữu ích = thu hút KH tự nhiên",options:["Quảng cáo trả phí","Tiếp thị bằng nội dung","Tiếp thị qua email","Tiếp thị liên kết"],answer:1},
+  {word:"Customer journey",meaning:"Hành trình trải nghiệm khách hàng",example:"Map the customer journey to find pain points.",situation:"Họp chiến lược, nghiên cứu thị trường",mistake:"Chỉ tập trung vào giai đoạn mua hàng",tip:"Journey = hành trình = từ biết đến mua đến trung thành",options:["Hành trình trải nghiệm khách hàng","Chiến lược giá","Kênh phân phối","Chương trình khuyến mãi"],answer:0},
+  {word:"Engagement rate",meaning:"Tỷ lệ tương tác",example:"Our Instagram engagement rate is above industry average.",situation:"Báo cáo social media, họp marketing",mistake:"Nhầm engagement với reach",tip:"Engage = tương tác = like, comment, share",options:["Số lượng người theo dõi","Tỷ lệ tương tác","Số lượng bài đăng","Chi phí quảng cáo"],answer:1},
+  {word:"SEO",meaning:"Tối ưu hóa công cụ tìm kiếm",example:"Good SEO brings free organic traffic.",situation:"Digital marketing, họp kỹ thuật",mistake:"Nghĩ SEO là nhồi từ khóa vào bài",tip:"Search Engine Optimize = giúp Google tìm thấy bạn",options:["Quảng cáo Google","Tối ưu hóa công cụ tìm kiếm","Thiết kế website","Email marketing"],answer:1},
+  {word:"Target audience",meaning:"Đối tượng mục tiêu",example:"Define your target audience before creating content.",situation:"Lập kế hoạch marketing, họp sáng tạo",mistake:"Xác định target audience quá rộng",tip:"Target = nhắm mục tiêu = đúng người, đúng thời điểm",options:["Đối tượng mục tiêu","Khách hàng hiện tại","Đối thủ cạnh tranh","Đối tác kinh doanh"],answer:0},
+  {word:"ROI",meaning:"Tỷ lệ hoàn vốn đầu tư",example:"The campaign ROI was 300%.",situation:"Báo cáo tài chính, thuyết phục ban lãnh đạo",mistake:"Tính ROI chỉ dựa trên doanh thu",tip:"ROI = lợi nhuận / chi phí × 100%",options:["Tỷ lệ hoàn vốn đầu tư","Doanh thu thuần","Lợi nhuận gộp","Chi phí marketing"],answer:0},
+  {word:"Funnel",meaning:"Phễu marketing/bán hàng",example:"We need to optimize the top of the funnel.",situation:"Họp chiến lược, phân tích bán hàng",mistake:"Bỏ qua giai đoạn trên đỉnh phễu",tip:"Funnel = phễu = rộng trên, hẹp dưới",options:["Phễu marketing/bán hàng","Chiến dịch quảng cáo","Kênh phân phối","Nhóm khách hàng"],answer:0},
+  {word:"Pain point",meaning:"Điểm đau/vấn đề khách hàng gặp phải",example:"Identify customer pain points before pitching.",situation:"Nghiên cứu KH, họp bán hàng",mistake:"Giả định pain point thay vì hỏi KH",tip:"Pain = đau = vấn đề khiến KH khó chịu",options:["Điểm mạnh của sản phẩm","Điểm đau/vấn đề khách hàng gặp phải","Lợi thế cạnh tranh","Tính năng nổi bật"],answer:1},
+  {word:"Unique selling proposition",meaning:"Đề xuất bán hàng độc đáo",example:"Our USP is 24/7 customer support.",situation:"Thuyết trình, họp chiến lược",mistake:"USP quá chung chung, không khác biệt",tip:"USP = lý do duy nhất KH nên chọn bạn",options:["Đề xuất bán hàng độc đáo","Chính sách giá","Chính sách đổi trả","Chương trình khuyến mãi"],answer:0},
+  {word:"Persona",meaning:"Hình mẫu khách hàng đại diện",example:"We have 3 buyer personas for our product.",situation:"Nghiên cứu thị trường, lập chiến lược",mistake:"Tạo persona dựa trên giả định không có data",tip:"Persona = nhân vật = hình mẫu KH điển hình",options:["Hình mẫu khách hàng đại diện","Phân tích đối thủ","Danh sách khách hàng","Nhóm khách hàng VIP"],answer:0},
+  {word:"Organic reach",meaning:"Lượt tiếp cận tự nhiên không trả phí",example:"Organic reach on Facebook has declined.",situation:"Báo cáo social media, họp digital",mistake:"Nhầm organic với paid reach",tip:"Organic = tự nhiên = không tốn tiền quảng cáo",options:["Lượt tiếp cận từ quảng cáo","Lượt tiếp cận tự nhiên không trả phí","Số người theo dõi mới","Tỷ lệ tương tác"],answer:1},
+  {word:"Viral marketing",meaning:"Tiếp thị lan truyền",example:"The video went viral and reached 10 million views.",situation:"Chiến dịch sáng tạo, họp marketing",mistake:"Cố ý tạo nội dung viral thường thất bại",tip:"Viral = như virus = lan nhanh từ người này sang người khác",options:["Tiếp thị lan truyền","Quảng cáo trả phí","Email marketing","Tiếp thị trực tiếp"],answer:0}
+];
+
+DB.finance = [
+  {word:"Accounts payable",meaning:"Khoản phải trả (nợ nhà cung cấp)",example:"Accounts payable increased due to new inventory.",situation:"Báo cáo tài chính, họp kế toán",mistake:"Nhầm accounts payable với accounts receivable",tip:"Pay = trả = tiền mình nợ người khác",options:["Khoản phải trả","Khoản phải thu","Doanh thu","Chi phí hoạt động"],answer:0},
+  {word:"Balance sheet",meaning:"Bảng cân đối kế toán",example:"Review the balance sheet before the investor meeting.",situation:"Họp ban lãnh đạo, báo cáo tài chính",mistake:"Nhầm balance sheet với income statement",tip:"Balance = cân bằng = tài sản = nợ + vốn",options:["Báo cáo kết quả kinh doanh","Bảng cân đối kế toán","Báo cáo lưu chuyển tiền tệ","Kế hoạch ngân sách"],answer:1},
+  {word:"Cash flow",meaning:"Dòng tiền",example:"Positive cash flow is critical for survival.",situation:"Báo cáo tài chính, họp ban lãnh đạo",mistake:"Nghĩ lợi nhuận cao = dòng tiền tốt",tip:"Cash flow = tiền thực vào/ra, khác lợi nhuận trên giấy",options:["Lợi nhuận ròng","Doanh thu thuần","Dòng tiền","Vốn chủ sở hữu"],answer:2},
+  {word:"EBITDA",meaning:"Lợi nhuận trước lãi vay, thuế và khấu hao",example:"Our EBITDA margin improved to 25%.",situation:"Báo cáo tài chính, thuyết trình với nhà đầu tư",mistake:"Nhầm EBITDA với lợi nhuận ròng",tip:"E=Earnings B=Before I=Interest T=Tax D=Depreciation A=Amortization",options:["Lợi nhuận ròng sau thuế","Doanh thu thuần","Lợi nhuận trước lãi vay, thuế và khấu hao","Chi phí hoạt động"],answer:2},
+  {word:"Gross profit",meaning:"Lợi nhuận gộp",example:"Gross profit margin is 45% this quarter.",situation:"Báo cáo kinh doanh, phân tích tài chính",mistake:"Nhầm gross profit với net profit",tip:"Gross = tổng = doanh thu trừ giá vốn hàng bán",options:["Lợi nhuận sau tất cả chi phí","Lợi nhuận gộp","Doanh thu thuần","Thu nhập khác"],answer:1},
+  {word:"Revenue",meaning:"Doanh thu",example:"Revenue grew 30% compared to last year.",situation:"Báo cáo kinh doanh, họp ban lãnh đạo",mistake:"Nhầm revenue với profit",tip:"Revenue = tổng tiền bán được, chưa trừ chi phí",options:["Lợi nhuận ròng","Tiền mặt","Doanh thu","Vốn chủ sở hữu"],answer:2},
+  {word:"Budget",meaning:"Ngân sách",example:"We need to stay within the marketing budget.",situation:"Họp kế hoạch, phê duyệt chi tiêu",mistake:"Nhầm budget với forecast",tip:"Budget = giới hạn tiền được phép dùng",options:["Dự báo tài chính","Ngân sách","Doanh thu thực tế","Chi phí phát sinh"],answer:1},
+  {word:"Invoice",meaning:"Hóa đơn",example:"Please send the invoice within 3 days.",situation:"Giao dịch với KH/NCC, kế toán",mistake:"Nhầm invoice với receipt",tip:"Invoice = yêu cầu thanh toán, receipt = biên lai đã trả",options:["Biên lai thanh toán","Hợp đồng mua bán","Hóa đơn","Phiếu nhập kho"],answer:2},
+  {word:"Net profit",meaning:"Lợi nhuận ròng sau tất cả chi phí",example:"Net profit grew 20% year over year.",situation:"Báo cáo kinh doanh, họp ban lãnh đạo",mistake:"Nhầm net profit với gross profit",tip:"Net = lọc hết chi phí, còn lại mới là thật",options:["Lợi nhuận gộp","Doanh thu","Lợi nhuận ròng sau tất cả chi phí","Tiền mặt"],answer:2},
+  {word:"Profit margin",meaning:"Biên lợi nhuận",example:"Our profit margin is higher than competitors.",situation:"Phân tích kinh doanh, thuyết trình",mistake:"Chỉ nhìn doanh thu mà quên profit margin",tip:"Margin = phần lợi nhuận trên mỗi đồng doanh thu",options:["Tổng lợi nhuận","Biên lợi nhuận","Tốc độ tăng trưởng","Thị phần"],answer:1},
+  {word:"ROI",meaning:"Tỷ lệ hoàn vốn đầu tư",example:"The project ROI was 150% in the first year.",situation:"Đánh giá dự án, thuyết trình đầu tư",mistake:"Quên tính thời gian hoàn vốn",tip:"ROI = (lợi nhuận - chi phí) / chi phí × 100%",options:["Tỷ lệ hoàn vốn đầu tư","Tỷ lệ tăng trưởng","Tỷ lệ lợi nhuận gộp","Tỷ lệ chi phí"],answer:0},
+  {word:"Working capital",meaning:"Vốn lưu động",example:"Maintain sufficient working capital for operations.",situation:"Quản lý tài chính, lập kế hoạch",mistake:"Nhầm working capital với total assets",tip:"Working = tiền dùng để vận hành hàng ngày",options:["Tổng tài sản","Vốn dài hạn","Vốn lưu động","Vốn cố định"],answer:2},
+  {word:"Depreciation",meaning:"Khấu hao tài sản",example:"Calculate annual depreciation for the machinery.",situation:"Kế toán, báo cáo thuế",mistake:"Quên tính khấu hao khi tính chi phí",tip:"Depreciate = giảm giá trị theo thời gian",options:["Tăng giá trị tài sản","Khấu hao tài sản","Chi phí bảo trì","Chi phí vận hành"],answer:1},
+  {word:"Equity",meaning:"Vốn chủ sở hữu",example:"The investors provided equity financing.",situation:"Gọi vốn, báo cáo tài chính",mistake:"Nhầm equity với debt",tip:"Equity = phần sở hữu của chủ doanh nghiệp",options:["Nợ vay","Vốn chủ sở hữu","Doanh thu","Tài sản"],answer:1},
+  {word:"Break-even point",meaning:"Điểm hòa vốn",example:"We'll reach break-even point in Q3.",situation:"Lập kế hoạch kinh doanh, họp tài chính",mistake:"Không tính đủ chi phí cố định",tip:"Break even = không lời không lỗ = doanh thu = chi phí",options:["Điểm lợi nhuận tối đa","Điểm hòa vốn","Điểm tăng trưởng","Điểm cắt lỗ"],answer:1}
+];
+
+DB.hr = [
+  {word:"Attrition",meaning:"Tỷ lệ nghỉ việc tự nhiên",example:"Attrition rate dropped to 8% this year.",situation:"Báo cáo HR, họp ban lãnh đạo",mistake:"Nhầm attrition với turnover",tip:"Attrition = mòn dần = nhân viên nghỉ không thay thế",options:["Tỷ lệ tuyển dụng","Tỷ lệ nghỉ việc tự nhiên","Tỷ lệ thăng tiến","Tỷ lệ hài lòng"],answer:1},
+  {word:"Compensation package",meaning:"Gói phúc lợi và thù lao tổng thể",example:"Our compensation package includes health insurance.",situation:"Tuyển dụng, đàm phán lương",mistake:"Chỉ nói về lương cơ bản",tip:"Compensation = tất cả lương + thưởng + phúc lợi",options:["Lương cơ bản","Tiền thưởng","Gói phúc lợi và thù lao tổng thể","Bảo hiểm y tế"],answer:2},
+  {word:"Employee engagement",meaning:"Mức độ gắn kết nhân viên",example:"Employee engagement scores improved after the survey.",situation:"Khảo sát nhân viên, báo cáo HR",mistake:"Nhầm engagement với satisfaction",tip:"Engage = gắn kết = nhân viên tận tâm, không chỉ hài lòng",options:["Năng suất làm việc","Tỷ lệ đi làm đúng giờ","Mức độ gắn kết nhân viên","Kết quả đánh giá"],answer:2},
+  {word:"Onboarding",meaning:"Quy trình hội nhập nhân viên mới",example:"Good onboarding reduces early turnover.",situation:"Tuyển dụng, quản lý nhân sự",mistake:"Kết thúc onboarding sau ngày đầu tiên",tip:"On board = lên tàu = giúp người mới hòa nhập",options:["Quy trình tuyển dụng","Đánh giá thử việc","Quy trình hội nhập nhân viên mới","Đào tạo chuyên môn"],answer:2},
+  {word:"Performance appraisal",meaning:"Đánh giá hiệu suất nhân viên",example:"Annual performance appraisal is in December.",situation:"Đánh giá định kỳ, điều chỉnh lương",mistake:"Chỉ đánh giá kết quả, bỏ qua hành vi",tip:"Appraise = định giá = đánh giá toàn diện nhân viên",options:["Đào tạo nhân viên","Đánh giá hiệu suất nhân viên","Tuyển dụng nhân sự","Xây dựng văn hóa"],answer:1},
+  {word:"Retention",meaning:"Giữ chân nhân viên",example:"Employee retention is a top priority.",situation:"Chiến lược nhân sự, báo cáo HR",mistake:"Chỉ tăng lương để retention",tip:"Retain = giữ lại = chiến lược giữ người tài",options:["Tuyển dụng nhân viên mới","Đào tạo và phát triển","Giữ chân nhân viên","Đánh giá hiệu suất"],answer:2},
+  {word:"Turnover rate",meaning:"Tỷ lệ nghỉ việc",example:"High turnover rate indicates low morale.",situation:"Báo cáo HR, phân tích nhân sự",mistake:"Không phân biệt voluntary vs involuntary",tip:"Turn over = nhân viên vào rồi ra, đo bằng %/năm",options:["Tỷ lệ tuyển dụng thành công","Tỷ lệ nghỉ việc","Tỷ lệ thăng tiến","Tỷ lệ hài lòng công việc"],answer:1},
+  {word:"KPI",meaning:"Chỉ số đánh giá hiệu suất",example:"Set clear KPIs for every employee.",situation:"Đánh giá nhân viên, họp quản lý",mistake:"KPI quá nhiều và không đo được",tip:"KPI = thước đo cụ thể để biết hoàn thành không",options:["Chỉ số đánh giá hiệu suất","Mục tiêu cá nhân","Kế hoạch phát triển","Thang lương"],answer:0},
+  {word:"Recruitment",meaning:"Tuyển dụng nhân sự",example:"The recruitment process takes about 4 weeks.",situation:"Lập kế hoạch nhân sự, họp HR",mistake:"Recruitment chỉ là đăng tin tuyển dụng",tip:"Recruit = chiêu mộ = toàn bộ quy trình tìm và chọn người",options:["Đào tạo nhân viên","Tuyển dụng nhân sự","Quản lý hiệu suất","Phúc lợi nhân viên"],answer:1},
+  {word:"Succession planning",meaning:"Kế hoạch kế nhiệm",example:"We need succession planning for key positions.",situation:"Quản lý nhân tài, họp chiến lược",mistake:"Chỉ lập kế hoạch khi vị trí bị trống",tip:"Succession = nối tiếp = chuẩn bị người thay thế trước",options:["Kế hoạch tuyển dụng","Kế hoạch đào tạo","Kế hoạch kế nhiệm","Kế hoạch phúc lợi"],answer:2},
+  {word:"Talent acquisition",meaning:"Thu hút và tuyển dụng nhân tài",example:"Talent acquisition is more than just hiring.",situation:"Chiến lược HR, họp ban lãnh đạo",mistake:"Nhầm talent acquisition với recruitment",tip:"Talent = nhân tài, acquisition = tìm người giỏi chủ động",options:["Thu hút và tuyển dụng nhân tài","Đào tạo nhân tài","Đánh giá nhân tài","Giữ chân nhân tài"],answer:0},
+  {word:"Workforce planning",meaning:"Lập kế hoạch nhân lực",example:"Workforce planning aligns staffing with business goals.",situation:"Lập kế hoạch năm, họp chiến lược",mistake:"Chỉ lập kế hoạch ngắn hạn",tip:"Workforce = lực lượng lao động + plan = cần bao nhiêu người",options:["Lập kế hoạch tuyển dụng","Lập kế hoạch đào tạo","Lập kế hoạch nhân lực","Lập kế hoạch lương thưởng"],answer:2}
+];
+
+DB.sales = [
+  {word:"Closing",meaning:"Chốt đơn hàng",example:"Always be closing — follow up every lead.",situation:"Bán hàng trực tiếp, đào tạo sales",mistake:"Chốt quá sớm khi KH chưa sẵn sàng",tip:"Close = đóng lại = kết thúc thương vụ bằng đơn hàng",options:["Mở đầu cuộc gặp","Chốt đơn hàng","Xây dựng quan hệ","Tìm kiếm khách hàng"],answer:1},
+  {word:"Cold calling",meaning:"Gọi điện tiếp cận KH chưa biết",example:"Cold calling is still effective in B2B sales.",situation:"Tìm kiếm KH mới, đào tạo sales",mistake:"Không chuẩn bị script trước khi cold call",tip:"Cold = lạnh = gọi cho người chưa từng biết bạn",options:["Gọi lại khách hàng cũ","Gọi điện tiếp cận KH chưa biết","Gọi điện tư vấn","Gọi điện chăm sóc"],answer:1},
+  {word:"Commission",meaning:"Hoa hồng dựa trên doanh số",example:"Sales commission is 5% of deal value.",situation:"Đàm phán lương, động lực bán hàng",mistake:"Không rõ cách tính commission",tip:"Commission = % thưởng cho người bán được",options:["Lương cơ bản","Hoa hồng dựa trên doanh số","Tiền thưởng cuối năm","Phụ cấp"],answer:1},
+  {word:"Lead",meaning:"Khách hàng tiềm năng chưa xác nhận",example:"We generated 50 new leads from the event.",situation:"Tìm kiếm KH, báo cáo marketing",mistake:"Đối xử với mọi lead như khách sẵn sàng mua",tip:"Lead = dây dẫn = mối liên hệ chưa chắc sẽ mua",options:["Khách hàng đã mua hàng","Khách hàng tiềm năng chưa xác nhận","Đối tác kinh doanh","Khách hàng thân thiết"],answer:1},
+  {word:"Quota",meaning:"Chỉ tiêu doanh số",example:"Every sales rep has a monthly quota.",situation:"Quản lý đội bán hàng, đánh giá KPI",mistake:"Đặt quota không thực tế gây mất động lực",tip:"Quota = phần được giao = mục tiêu tối thiểu phải đạt",options:["Doanh số thực tế","Mức thưởng","Chỉ tiêu doanh số","Lương cơ bản"],answer:2},
+  {word:"Value proposition",meaning:"Đề xuất giá trị cho khách hàng",example:"Our value proposition is saving 50% of time.",situation:"Thuyết trình bán hàng, marketing",mistake:"Value proposition quá tập trung vào tính năng",tip:"Value = giá trị = lý do KH nên chọn bạn",options:["Danh sách tính năng sản phẩm","Chính sách giá","Đề xuất giá trị cho khách hàng","Chính sách hậu mãi"],answer:2},
+  {word:"Upselling",meaning:"Bán sản phẩm cao cấp hơn cho KH",example:"Upsell the premium plan when clients are satisfied.",situation:"Tư vấn bán hàng, chăm sóc KH",mistake:"Upsell trước khi KH hài lòng với sản phẩm hiện tại",tip:"Up = lên cao = nâng KH lên gói tốt hơn",options:["Giảm giá cho KH","Bán thêm sản phẩm khác","Hoàn tiền cho KH","Bán sản phẩm cao cấp hơn cho KH"],answer:3},
+  {word:"Negotiation",meaning:"Đàm phán",example:"Negotiation skills are critical for sales success.",situation:"Thương lượng hợp đồng, chốt deal",mistake:"Nhượng bộ giá ngay khi KH phản đối",tip:"Negotiate = tìm điểm win-win cho cả hai",options:["Đàm phán","Thuyết trình","Tư vấn","Báo giá"],answer:0},
+  {word:"Prospect",meaning:"Khách hàng tiềm năng đã được xác nhận",example:"Qualify prospects before spending time on demos.",situation:"Tìm kiếm KH, phân loại cơ hội",mistake:"Nhầm prospect với lead",tip:"Prospect = lead đã xác nhận có nhu cầu và ngân sách",options:["Khách hàng đã mua","Khách hàng tiềm năng đã được xác nhận","Đối tác phân phối","Nhà cung cấp"],answer:1},
+  {word:"Win rate",meaning:"Tỷ lệ thắng thầu/chốt deal thành công",example:"Our win rate improved from 20% to 35%.",situation:"Báo cáo sales, phân tích hiệu suất",mistake:"Không tracking win rate theo từng sản phẩm",tip:"Win = thắng, rate = % deal được chốt thành công",options:["Tổng số deal","Tỷ lệ thắng thầu/chốt deal thành công","Doanh thu trung bình mỗi deal","Thời gian chốt deal"],answer:1}
+];
+
+DB.business = [
+  {word:"Action item",meaning:"Việc cần làm được giao sau cuộc họp",example:"Let's list the action items before we close.",situation:"Cuộc họp, email tóm tắt họp",mistake:"Không ghi ai chịu trách nhiệm và deadline",tip:"Action = hành động, item = mục = việc cụ thể phải làm",options:["Chủ đề cuộc họp","Việc cần làm được giao sau cuộc họp","Kết quả cuộc họp","Tài liệu cuộc họp"],answer:1},
+  {word:"Agenda",meaning:"Chương trình/lịch trình cuộc họp",example:"Please review the agenda before the meeting.",situation:"Cuộc họp, email chuẩn bị",mistake:"Không gửi agenda trước, họp lan man",tip:"Agenda = danh sách những gì sẽ thảo luận",options:["Biên bản cuộc họp","Thành phần tham dự","Chương trình/lịch trình cuộc họp","Kết quả cuộc họp"],answer:2},
+  {word:"Deadline",meaning:"Hạn chót hoàn thành",example:"The deadline for the report is Friday 5PM.",situation:"Quản lý dự án, giao việc",mistake:"Đặt deadline không thực tế",tip:"Dead = chết, line = vạch = vạch cuối không được vượt",options:["Ngày bắt đầu","Thời gian ước tính","Hạn chót hoàn thành","Ngày xem xét"],answer:2},
+  {word:"Stakeholder",meaning:"Các bên liên quan đến dự án/quyết định",example:"Identify all stakeholders before starting the project.",situation:"Quản lý dự án, truyền thông",mistake:"Bỏ quên stakeholder quan trọng",tip:"Stake = cược, holder = người có quyền lợi liên quan",options:["Nhà đầu tư","Nhân viên trong team","Các bên liên quan đến dự án/quyết định","Khách hàng chính"],answer:2},
+  {word:"Milestone",meaning:"Cột mốc quan trọng trong dự án",example:"Hitting this milestone means we're on track.",situation:"Quản lý dự án, báo cáo tiến độ",mistake:"Quá nhiều milestone làm mất ý nghĩa",tip:"Mile stone = đá dặm = điểm kiểm tra quan trọng",options:["Cột mốc quan trọng trong dự án","Deadline hàng tuần","Cuộc họp định kỳ","Kết quả bàn giao"],answer:0},
+  {word:"Outsourcing",meaning:"Thuê ngoài dịch vụ/nhân lực",example:"We outsource IT support to reduce costs.",situation:"Quyết định kinh doanh, quản lý chi phí",mistake:"Outsource cả core business",tip:"Out = ngoài, source = nguồn = thuê bên ngoài làm thay",options:["Tuyển dụng thêm nhân sự","Thuê ngoài dịch vụ/nhân lực","Đào tạo nội bộ","Mua lại công ty"],answer:1},
+  {word:"Synergy",meaning:"Sức mạnh cộng hưởng (1+1>2)",example:"The merger created significant synergies.",situation:"Họp chiến lược, M&A",mistake:"Dùng synergy như từ thời thượng không thực chất",tip:"Syn = cùng + ergy = năng lượng = kết hợp tạo ra nhiều hơn tổng",options:["Sự cạnh tranh","Sức mạnh cộng hưởng (1+1>2)","Sự hợp tác đơn giản","Chi phí hợp tác"],answer:1},
+  {word:"Transparency",meaning:"Tính minh bạch",example:"Financial transparency builds investor trust.",situation:"Báo cáo, truyền thông nội bộ",mistake:"Transparency một chiều, chỉ chia sẻ tin tốt",tip:"Trans = xuyên suốt = không che giấu",options:["Tính bảo mật","Tính minh bạch","Tính nhất quán","Tính hiệu quả"],answer:1},
+  {word:"Follow up",meaning:"Theo dõi/liên hệ lại sau",example:"I'll follow up with the client next week.",situation:"Email, sau cuộc họp, bán hàng",mistake:"Quên follow up sau khi hứa",tip:"Follow = theo, up = lên = không bỏ dở",options:["Hủy lịch hẹn","Gửi báo giá","Theo dõi/liên hệ lại sau","Kết thúc dự án"],answer:2},
+  {word:"Brainstorming",meaning:"Động não tập thể tìm ý tưởng",example:"Let's have a brainstorming session tomorrow.",situation:"Họp sáng tạo, giải quyết vấn đề",mistake:"Phê bình ý tưởng trong khi brainstorm",tip:"Brain = não + storm = bão = tạo ý tưởng ào ạt",options:["Thuyết trình ý tưởng","Động não tập thể tìm ý tưởng","Phân tích vấn đề","Lập kế hoạch hành động"],answer:1}
+];
+
+DB.healthcare = [
+  {word:"Diagnosis",meaning:"Chẩn đoán bệnh",example:"The diagnosis confirmed stage 2 hypertension.",situation:"Tư vấn bệnh nhân, hồ sơ y tế",mistake:"Nhầm diagnosis với prognosis",tip:"Dia = xuyên, gnosis = kiến thức = hiểu rõ bệnh gì",options:["Điều trị bệnh","Chẩn đoán bệnh","Phòng ngừa bệnh","Tiên lượng bệnh"],answer:1},
+  {word:"Vital signs",meaning:"Dấu hiệu sinh tồn",example:"Check vital signs every 4 hours.",situation:"Theo dõi bệnh nhân, hồ sơ y tế",mistake:"Bỏ sót một trong các chỉ số vital signs",tip:"Vital = sống còn = nhiệt độ, huyết áp, nhịp tim, nhịp thở",options:["Kết quả xét nghiệm máu","Chỉ số BMI","Dấu hiệu sinh tồn","Kết quả chẩn đoán hình ảnh"],answer:2},
+  {word:"Prescription",meaning:"Đơn thuốc",example:"Always double-check the prescription before dispensing.",situation:"Kê đơn, dược phẩm",mistake:"Viết đơn thuốc không rõ liều và cách dùng",tip:"Pre-scribe = viết trước = bác sĩ chỉ định thuốc",options:["Kết quả xét nghiệm","Chỉ định phẫu thuật","Đơn thuốc","Giấy ra viện"],answer:2},
+  {word:"Informed consent",meaning:"Đồng ý có thông tin đầy đủ",example:"Obtain informed consent before surgery.",situation:"Trước thủ thuật, nghiên cứu lâm sàng",mistake:"Cho ký giấy mà không giải thích đủ",tip:"Informed = được thông báo, consent = tự nguyện đồng ý",options:["Đồng ý có thông tin đầy đủ","Giấy nhập viện","Đơn xin ra viện","Hợp đồng điều trị"],answer:0},
+  {word:"Triage",meaning:"Phân loại mức độ ưu tiên cấp cứu",example:"Triage patients by severity in the ER.",situation:"Cấp cứu, quản lý khối lượng bệnh nhân",mistake:"Không triage đúng dẫn đến bệnh nặng chờ lâu",tip:"Triage = phân loại = ưu tiên ai điều trị trước",options:["Điều trị bệnh nhân","Chẩn đoán bệnh nhân","Phân loại mức độ ưu tiên cấp cứu","Xuất viện bệnh nhân"],answer:2},
+  {word:"Patient safety",meaning:"An toàn bệnh nhân",example:"Patient safety is our top priority.",situation:"Quản lý bệnh viện, đào tạo y tế",mistake:"Nghĩ patient safety chỉ là tránh tai nạn vật lý",tip:"Patient safety = hệ thống phòng ngừa mọi sai sót",options:["Quyền bệnh nhân","Hài lòng bệnh nhân","An toàn bệnh nhân","Bảo hiểm y tế"],answer:2},
+  {word:"Clinical trial",meaning:"Thử nghiệm lâm sàng",example:"The drug is in Phase 3 clinical trial.",situation:"Nghiên cứu y khoa, báo cáo",mistake:"Nhầm clinical trial với lab test",tip:"Clinical = lâm sàng = thử trên người thật",options:["Xét nghiệm trong phòng lab","Thử nghiệm lâm sàng","Khám sức khỏe định kỳ","Điều tra dịch tễ"],answer:1},
+  {word:"Prognosis",meaning:"Tiên lượng bệnh (dự đoán kết quả)",example:"The prognosis is positive with early treatment.",situation:"Tư vấn bệnh nhân, lên kế hoạch điều trị",mistake:"Nhầm prognosis với diagnosis",tip:"Pro = trước, gnosis = biết = dự đoán bệnh diễn tiến thế nào",options:["Chẩn đoán bệnh","Phương pháp điều trị","Tiên lượng bệnh (dự đoán kết quả)","Nguyên nhân bệnh"],answer:2}
+];
+
+DB.logistics = [
+  {word:"Supply chain",meaning:"Chuỗi cung ứng",example:"Disruptions in the supply chain affect production.",situation:"Quản lý vận hành, họp chiến lược",mistake:"Nghĩ supply chain chỉ là vận chuyển",tip:"Supply chain = từ nguyên liệu đến tay người tiêu dùng",options:["Quy trình sản xuất","Hệ thống phân phối","Chuỗi cung ứng","Mạng lưới bán lẻ"],answer:2},
+  {word:"Lead time",meaning:"Thời gian từ đặt hàng đến nhận hàng",example:"Lead time for this supplier is 4 weeks.",situation:"Lập kế hoạch mua hàng, quản lý tồn kho",mistake:"Không tính lead time khi đặt hàng",tip:"Lead = dẫn đầu, time = bao lâu từ order đến nhận hàng",options:["Thời gian sản xuất","Thời gian vận chuyển","Thời gian từ đặt hàng đến nhận hàng","Thời gian thông quan"],answer:2},
+  {word:"Inventory",meaning:"Hàng tồn kho",example:"Conduct a monthly inventory count.",situation:"Quản lý kho, báo cáo tài chính",mistake:"Nhầm inventory với stock",tip:"Inventory = danh mục kiểm kê = toàn bộ hàng hóa đang có",options:["Đơn đặt hàng","Hàng tồn kho","Dự báo bán hàng","Kế hoạch sản xuất"],answer:1},
+  {word:"Last mile delivery",meaning:"Khâu giao hàng chặng cuối đến tay KH",example:"Last mile delivery is the most expensive part.",situation:"E-commerce, quản lý giao hàng",mistake:"Bỏ qua tối ưu last mile delivery",tip:"Last mile = đoạn từ kho đến nhà KH, tốn kém nhất",options:["Vận chuyển quốc tế","Vận chuyển nội địa dài","Khâu giao hàng chặng cuối đến tay KH","Bốc xếp tại kho"],answer:2},
+  {word:"Just-in-time",meaning:"Sản xuất/giao hàng đúng lúc cần",example:"Toyota pioneered just-in-time manufacturing.",situation:"Quản lý sản xuất, tối ưu tồn kho",mistake:"JIT không có buffer dự phòng khi có sự cố",tip:"JIT = không lưu kho = hàng đến đúng lúc cần",options:["Sản xuất hàng loạt","Sản xuất/giao hàng đúng lúc cần","Lưu kho dự phòng nhiều","Đặt hàng số lượng lớn"],answer:1},
+  {word:"ETA",meaning:"Thời gian dự kiến đến nơi",example:"What's the ETA for this shipment?",situation:"Theo dõi đơn hàng, giao tiếp với KH",mistake:"Đưa ra ETA không tính buffer time",tip:"ETA = Estimated Time of Arrival = dự kiến tới lúc mấy giờ",options:["Thời gian xuất phát","Thời gian dự kiến đến nơi","Thời gian bốc xếp","Thời gian thông quan"],answer:1},
+  {word:"Procurement",meaning:"Mua sắm/cung ứng hàng hóa",example:"Procurement process requires 3 vendor quotes.",situation:"Mua hàng, quản lý nhà cung cấp",mistake:"Nhầm procurement với purchasing",tip:"Procure = toàn bộ quy trình từ lập nhu cầu đến mua xong",options:["Thanh toán cho nhà cung cấp","Mua sắm/cung ứng hàng hóa","Kiểm soát chất lượng","Quản lý hợp đồng"],answer:1}
+];
+
+DB.legal = [
+  {word:"Compliance",meaning:"Tuân thủ quy định pháp luật",example:"Ensure full compliance with labor laws.",situation:"Quản lý rủi ro pháp lý, kiểm toán",mistake:"Nghĩ compliance chỉ là làm theo luật cơ bản",tip:"Comply = tuân theo = đáp ứng đầy đủ mọi quy định",options:["Kiểm tra nội bộ","Tuân thủ quy định pháp luật","Báo cáo tài chính","Đào tạo nhân viên"],answer:1},
+  {word:"Contract",meaning:"Hợp đồng",example:"Sign the contract before starting work.",situation:"Giao dịch kinh doanh, pháp lý",mistake:"Làm việc trước khi có hợp đồng",tip:"Contract = cam kết = ràng buộc pháp lý giữa các bên",options:["Đề xuất kinh doanh","Hợp đồng","Biên bản ghi nhớ","Thỏa thuận miệng"],answer:1},
+  {word:"Confidentiality agreement",meaning:"Thỏa thuận bảo mật thông tin",example:"Sign the confidentiality agreement before the demo.",situation:"Đàm phán kinh doanh, tuyển dụng",mistake:"Không có CA trước khi chia sẻ thông tin nhạy cảm",tip:"NDA = Non-Disclosure Agreement = không tiết lộ",options:["Hợp đồng lao động","Thỏa thuận bảo mật thông tin","Hợp đồng đại lý","Thỏa thuận hợp tác"],answer:1},
+  {word:"Liability",meaning:"Trách nhiệm pháp lý",example:"Limit your personal liability with an LLC.",situation:"Thành lập doanh nghiệp, quản lý rủi ro",mistake:"Nhầm liability với responsibility",tip:"Liable = chịu trách nhiệm pháp lý = phải đền bù",options:["Trách nhiệm đạo đức","Trách nhiệm pháp lý","Nghĩa vụ tài chính","Nghĩa vụ xã hội"],answer:1},
+  {word:"Intellectual property",meaning:"Sở hữu trí tuệ",example:"Protect your intellectual property with patents.",situation:"Kinh doanh, công nghệ, sáng tạo",mistake:"Nghĩ IP chỉ là bản quyền âm nhạc",tip:"IP = bằng sáng chế + bản quyền + nhãn hiệu",options:["Tài sản vật chất","Sở hữu trí tuệ","Quyền sở hữu đất đai","Tài sản tài chính"],answer:1},
+  {word:"Force majeure",meaning:"Bất khả kháng",example:"The pandemic triggered the force majeure clause.",situation:"Tranh chấp hợp đồng, rủi ro pháp lý",mistake:"Lạm dụng force majeure cho mọi trễ hạn",tip:"Force majeure = sức mạnh lớn hơn = thiên tai ngoài tầm kiểm soát",options:["Vi phạm hợp đồng","Hủy hợp đồng","Gia hạn hợp đồng","Bất khả kháng"],answer:3},
+  {word:"Breach of contract",meaning:"Vi phạm hợp đồng",example:"Late delivery constitutes a breach of contract.",situation:"Tranh chấp hợp đồng, tư vấn pháp lý",mistake:"Không phân biệt material vs minor breach",tip:"Breach = phá vỡ = không thực hiện đúng nghĩa vụ",options:["Hủy hợp đồng","Vi phạm hợp đồng","Sửa đổi hợp đồng","Gia hạn hợp đồng"],answer:1}
+];
+
+DB.education = [
+  {word:"Curriculum",meaning:"Chương trình giảng dạy",example:"The curriculum needs to be updated annually.",situation:"Thiết kế giáo dục, họp chuyên môn",mistake:"Nhầm curriculum với syllabus",tip:"Curriculum = tổng thể chương trình cả khóa",options:["Chương trình giảng dạy","Kế hoạch bài học","Tài liệu giáo khoa","Phương pháp đánh giá"],answer:0},
+  {word:"Assessment",meaning:"Đánh giá kết quả học tập",example:"Formative assessment helps track student progress.",situation:"Giảng dạy, thiết kế chương trình",mistake:"Nhầm assessment với testing",tip:"Assess = đo lường hiểu biết, không chỉ là thi",options:["Phương pháp giảng dạy","Đánh giá kết quả học tập","Chương trình học","Tài liệu giảng dạy"],answer:1},
+  {word:"E-learning",meaning:"Học trực tuyến qua internet",example:"E-learning reduces training costs significantly.",situation:"Đào tạo doanh nghiệp, giáo dục hiện đại",mistake:"Nghĩ e-learning chỉ là xem video",tip:"E = electronic = học qua thiết bị điện tử",options:["Học qua sách giáo khoa","Học trực tiếp trên lớp","Học trực tuyến qua internet","Học qua đài phát thanh"],answer:2},
+  {word:"Blended learning",meaning:"Học kết hợp trực tiếp và trực tuyến",example:"Blended learning improved student engagement.",situation:"Thiết kế khóa học, giáo dục hiện đại",mistake:"Nghĩ blended learning chỉ là thêm video",tip:"Blend = pha trộn = kết hợp tốt nhất hai hình thức",options:["Học trực tuyến hoàn toàn","Học trực tiếp truyền thống","Học kết hợp trực tiếp và trực tuyến","Học tự nghiên cứu"],answer:2},
+  {word:"Syllabus",meaning:"Đề cương chi tiết môn học",example:"Distribute the syllabus on the first day.",situation:"Bắt đầu khóa học, quản lý học phần",mistake:"Nhầm syllabus với curriculum",tip:"Syllabus = bản đồ 1 môn học = nội dung + lịch + đánh giá",options:["Giáo trình chính","Đề cương chi tiết môn học","Tài liệu tham khảo","Lịch thi"],answer:1},
+  {word:"Learning objective",meaning:"Mục tiêu học tập cụ thể",example:"State clear learning objectives at lesson start.",situation:"Soạn giáo án, thiết kế khóa học",mistake:"Learning objective quá chung chung",tip:"Objective = cụ thể đo được = sau bài học làm được gì",options:["Chủ đề bài học","Mục tiêu học tập cụ thể","Nội dung bài học","Phương pháp giảng dạy"],answer:1}
+];
+
+DB.construction = [
+  {word:"Blueprint",meaning:"Bản vẽ kỹ thuật/thiết kế chi tiết",example:"Review the blueprint before starting construction.",situation:"Quản lý dự án xây dựng, họp kỹ thuật",mistake:"Không kiểm tra blueprint kỹ trước khi thi công",tip:"Blue print = bản vẽ thiết kế gốc chi tiết",options:["Giấy phép xây dựng","Bản vẽ kỹ thuật/thiết kế chi tiết","Hợp đồng xây dựng","Báo cáo kiểm định"],answer:1},
+  {word:"Building permit",meaning:"Giấy phép xây dựng",example:"Obtain a building permit before construction starts.",situation:"Khởi công dự án, pháp lý xây dựng",mistake:"Bắt đầu xây dựng trước khi có giấy phép",tip:"Permit = cho phép = cơ quan chức năng cấp phép",options:["Giấy đăng ký đất đai","Hợp đồng mua bán","Giấy phép xây dựng","Chứng nhận hoàn công"],answer:2},
+  {word:"Contractor",meaning:"Nhà thầu xây dựng",example:"The general contractor manages all subcontractors.",situation:"Đấu thầu, quản lý dự án",mistake:"Nhầm general contractor với subcontractor",tip:"Contract = hợp đồng, or = người = người ký hợp đồng thi công",options:["Chủ đầu tư","Kỹ sư tư vấn","Nhà thầu xây dựng","Nhà cung cấp vật liệu"],answer:2},
+  {word:"Feasibility study",meaning:"Nghiên cứu khả thi",example:"Conduct a feasibility study before land purchase.",situation:"Lập dự án, quyết định đầu tư",mistake:"Bỏ qua feasibility study để tiết kiệm",tip:"Feasible = khả thi = nghiên cứu xem dự án có nên làm",options:["Khảo sát địa chất","Thiết kế sơ bộ","Nghiên cứu khả thi","Phân tích thị trường"],answer:2},
+  {word:"Project timeline",meaning:"Tiến độ dự án",example:"Update the project timeline after delays.",situation:"Quản lý dự án, báo cáo",mistake:"Không cập nhật timeline khi có thay đổi",tip:"Timeline = kế hoạch từng giai đoạn theo thời gian",options:["Ngân sách dự án","Tiến độ dự án","Nhân sự dự án","Chất lượng công trình"],answer:1},
+  {word:"Zoning",meaning:"Phân vùng quy hoạch sử dụng đất",example:"This area is zoned for commercial use only.",situation:"Mua bán bất động sản, xin phép xây dựng",mistake:"Không kiểm tra zoning trước khi mua đất",tip:"Zone = vùng = quy định đất dùng để làm gì",options:["Đo đạc diện tích đất","Phân vùng quy hoạch sử dụng đất","Đăng ký quyền sở hữu","Thẩm định giá đất"],answer:1}
+];
+
+var INDUSTRY_NAMES = {
+  it:'💻 Công nghệ thông tin',
+  marketing:'📣 Marketing',
+  finance:'💰 Tài chính & Kế toán',
+  hr:'👥 Nhân sự (HR)',
+  sales:'🤝 Kinh doanh & Bán hàng',
+  business:'🏢 Văn phòng & Quản lý',
+  healthcare:'🏥 Y tế',
+  logistics:'🚚 Logistics',
+  legal:'⚖️ Pháp lý',
+  education:'🎓 Giáo dục',
+  construction:'🏗️ Xây dựng & BĐS'
+};
+
+// ══════════════════════════════════════
+// STATE
+// ══════════════════════════════════════
+var S = {times:['12:00'],freq:1,industry:'',words:[],qIdx:0,qList:[],qScore:0,answered:false,filterIndustry:'all'};
+try{var _s=JSON.parse(localStorage.getItem('vqp')||'{}');Object.assign(S,_s);}catch(e){}
+function save(){try{localStorage.setItem('vqp',JSON.stringify(S));}catch(e){}}
+
+// ══════════════════════════════════════
+// TABS
+// ══════════════════════════════════════
+function goTab(name,btn){
+  document.querySelectorAll('.pane').forEach(function(p){p.classList.remove('on');});
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on');});
   document.getElementById('tab-'+name).classList.add('on');
   btn.classList.add('on');
-  if(name==='quiz') initQuiz();
   if(name==='words') renderWords();
+  if(name==='quiz') initQuiz();
   updateBadge();
 }
 
-/* ── SETTINGS ── */
+// ══════════════════════════════════════
+// SETTINGS
+// ══════════════════════════════════════
 function renderTimes(){
-  var el = document.getElementById('time-list');
-  el.innerHTML = S.times.map(function(t,i){
+  var el=document.getElementById('time-list');
+  el.innerHTML=S.times.map(function(t,i){
     return '<div class="time-row"><input type="time" value="'+t+'" onchange="S.times['+i+']=this.value">'
-      +(S.times.length>1 ? '<button class="del-btn" onclick="removeTime('+i+')">✕</button>' : '')
+      +(S.times.length>1?'<button class="del-btn" onclick="removeTime('+i+')">✕</button>':'')
       +'</div>';
   }).join('');
-  document.getElementById('add-time-btn').style.display = S.times.length>=5?'none':'block';
+  document.getElementById('add-time-btn').style.display=S.times.length>=5?'none':'block';
 }
-function addTime(){ if(S.times.length>=5)return; S.times.push('08:00'); renderTimes(); }
-function removeTime(i){ S.times.splice(i,1); renderTimes(); }
-function setFreq(n,btn){
-  S.freq=n;
-  document.querySelectorAll('.freq-btn').forEach(function(b){ b.classList.remove('on'); });
-  btn.classList.add('on');
+function addTime(){if(S.times.length>=5)return;S.times.push('08:00');renderTimes();}
+function removeTime(i){S.times.splice(i,1);renderTimes();}
+function setFreq(n,btn){S.freq=n;document.querySelectorAll('.fq').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');}
+function onIndustryChange(){
+  var val=document.getElementById('industry-sel').value;
+  var info=document.getElementById('industry-info');
+  if(val && DB[val]){
+    info.style.display='block';
+    info.textContent='✓ '+DB[val].length+' từ vựng có sẵn cho ngành này';
+  } else { info.style.display='none'; }
 }
 function saveSettings(){
-  S.industry = document.getElementById('industry').value.trim();
-  persist();
-  var b = document.querySelector('.primary-btn');
-  b.textContent='✅ Đã lưu!'; b.disabled=true;
+  S.industry=document.getElementById('industry-sel').value;
+  if(!S.industry){alert('Vui lòng chọn ngành nghề!');return;}
+  // Load words from DB
+  var existing = S.words.map(function(w){return w.word;});
+  var newWords = (DB[S.industry]||[]).filter(function(w){return existing.indexOf(w.word)===-1;});
+  newWords = newWords.map(function(w){var r=Object.assign({},w);r.industry=S.industry;r.learned=false;return r;});
+  S.words = S.words.concat(newWords);
+  save();
+  var b=document.querySelector('.pri');
+  b.textContent='✅ Đã lưu! '+newWords.length+' từ mới được thêm'; b.disabled=true;
   updateBadge();
-  setTimeout(function(){ b.textContent='💾 Lưu cài đặt'; b.disabled=false; }, 1500);
+  setTimeout(function(){b.textContent='💾 Lưu cài đặt';b.disabled=false;},2000);
 }
 function updateBadge(){
-  document.getElementById('streak-badge').textContent = S.words.length + ' từ';
-  var st = document.getElementById('st-total');
-  var sd = document.getElementById('st-days');
-  if(st){ st.textContent = S.words.length; }
-  if(sd){ sd.textContent = Math.ceil(S.words.length/15)||0; }
+  document.getElementById('hdr-badge').textContent=S.words.length+' từ';
+  var st=document.getElementById('st-total');
+  var sd=document.getElementById('st-days');
+  if(st) st.textContent=S.words.length;
+  if(sd) sd.textContent=Object.keys(INDUSTRY_NAMES).filter(function(k){return (DB[k]||[]).some(function(w){return S.words.some(function(sw){return sw.word===w.word;});});}).length;
 }
 
-/* ── GENERATE WORDS ── */
-function buildPrompt(){
-  var review = '';
-  if(S.words.length > 0){
-    var old = S.words.slice(-10);
-    review = '\n\nCác từ cũ cần ôn lại ('+S.words.length+' từ đã học, lấy 10 từ gần nhất):\n'
-      + old.map(function(w){ return '- '+w.word+': '+w.meaning; }).join('\n');
-  }
-  return 'Hãy đóng vai giáo viên tiếng Anh cho người đi làm. Tạo 15 từ/cụm từ tiếng Anh thường dùng trong công việc thuộc lĩnh vực '+(S.industry||'tổng hợp')+'.\n\nVới mỗi từ, trình bày:\n1. Nghĩa tiếng Việt dễ hiểu\n2. Ví dụ thực tế trong công việc\n3. Tình huống sử dụng: email, họp, báo cáo, trao đổi KH/đồng nghiệp\n4. Lỗi sai người Việt thường mắc\n5. Gợi ý ghi nhớ nhanh\n\nTRẢ LỜI CHỈ JSON ARRAY, không markdown, không giải thích:\n[{"word":"...","meaning":"...","example":"...","situation":"...","mistake":"...","tip":"...","options":["sai 1","đúng","sai 2","sai 3"],"answer":1}]'+review;
-}
-
-function generateWords(){
-  var btn = document.getElementById('gen-btn');
-  btn.innerHTML='<span class="spinner"></span>Đang sinh từ vựng...'; btn.disabled=true;
-  var prompt = buildPrompt();
-  document.getElementById('prompt-display').textContent = prompt;
-  document.getElementById('prompt-section').style.display='block';
-
-  fetch('/api/claude',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({
-      messages:[{role:'user',content:prompt}]
-    })
-  })
-  .then(function(r){ return r.json(); })
-  .then(function(data){
-    var text = (data.content||[]).map(function(c){ return c.text||''; }).join('');
-    var clean = text
-      .replace(/```json/g,'')
-      .replace(/```/g,'')
-      .trim();
-    var start = clean.indexOf('[');
-    var end = clean.lastIndexOf(']');
-    if(start === -1 || end === -1) throw new Error('Raw: ' + text.substring(0,200));
-    clean = clean.substring(start, end+1);
-    var arr = JSON.parse(clean);
-    var day = Math.floor(S.words.length/15)+1;
-    arr.forEach(function(w){ w.day=day; });
-    S.words = S.words.concat(arr);
-    persist(); renderWords(); updateBadge();
-    btn.innerHTML='✨ Sinh 15 từ vựng hôm nay'; btn.disabled=false;
-  })
-  .catch(function(err){
-    btn.innerHTML='⚠️ Lỗi — thử lại'; btn.disabled=false;
-    console.error('Lỗi:', err);
-    alert('Lỗi sinh từ vựng: ' + err.message + '\nVui lòng thử lại!');
-  });
-}
-
+// ══════════════════════════════════════
+// WORDS
+// ══════════════════════════════════════
 function renderWords(){
   updateBadge();
-  var el = document.getElementById('word-list');
-  if(!S.words.length){
-    el.innerHTML='<div class="empty"><div class="empty-icon">📚</div>Chưa có từ vựng nào.<br>Nhấn "Sinh từ vựng" để bắt đầu!</div>';
+  renderFilters();
+  var el=document.getElementById('word-list');
+  var query=(document.getElementById('search-inp')||{value:''}).value.toLowerCase();
+  var filtered=S.words.filter(function(w){
+    var matchSearch=!query||w.word.toLowerCase().indexOf(query)>-1||w.meaning.toLowerCase().indexOf(query)>-1;
+    var matchFilter=S.filterIndustry==='all'||w.industry===S.filterIndustry;
+    return matchSearch&&matchFilter;
+  });
+  if(!filtered.length){
+    el.innerHTML='<div class="empty"><div class="empty-icon">📚</div>'+(S.words.length?'Không tìm thấy từ phù hợp.':'Hãy chọn ngành và lưu cài đặt để bắt đầu!')+'</div>';
     return;
   }
   var grouped={};
-  S.words.forEach(function(w){ var d=w.day||1; if(!grouped[d]) grouped[d]=[]; grouped[d].push(w); });
+  filtered.forEach(function(w){var k=w.industry||'other';if(!grouped[k])grouped[k]=[];grouped[k].push(w);});
   var html='';
-  Object.keys(grouped).sort(function(a,b){return b-a;}).forEach(function(d){
-    html+='<div class="day-label">Ngày '+d+' — '+grouped[d].length+' từ</div>';
-    grouped[d].forEach(function(w){
+  Object.keys(grouped).forEach(function(k){
+    html+='<div class="day-lbl">'+(INDUSTRY_NAMES[k]||k)+' — '+grouped[k].length+' từ</div>';
+    grouped[k].forEach(function(w){
       html+='<div class="word-item">'
-        +'<div class="w-tag">'+(w.day?'Ngày '+w.day:'')+'</div>'
+        +'<span class="w-tag">'+(INDUSTRY_NAMES[w.industry]||'')+'</span>'
         +'<div class="w-en">'+w.word+'</div>'
         +'<div class="w-vn">'+w.meaning+'</div>';
-      if(w.example) html+='<div class="w-detail"><b>Ví dụ:</b> '+w.example+'</div>';
-      if(w.situation) html+='<div class="w-detail"><b>Dùng khi:</b> '+w.situation+'</div>';
-      if(w.mistake) html+='<div class="w-detail w-mistake"><b>Lỗi hay gặp:</b> '+w.mistake+'</div>';
-      if(w.tip) html+='<div class="w-detail w-tip"><b>Ghi nhớ:</b> '+w.tip+'</div>';
+      if(w.example) html+='<div class="w-det"><b>Ví dụ:</b> '+w.example+'</div>';
+      if(w.situation) html+='<div class="w-det"><b>Dùng khi:</b> '+w.situation+'</div>';
+      if(w.mistake) html+='<div class="w-det" style="color:rgba(255,107,107,.8)"><b>Lỗi hay gặp:</b> '+w.mistake+'</div>';
+      if(w.tip) html+='<div class="w-det" style="color:rgba(78,205,196,.8)"><b>Ghi nhớ:</b> '+w.tip+'</div>';
       html+='</div>';
     });
   });
   el.innerHTML=html;
 }
-
-function copyPrompt(){
-  var txt = document.getElementById('prompt-display').textContent;
-  if(navigator.clipboard){ navigator.clipboard.writeText(txt).then(function(){
-    var b=document.querySelector('.copy-btn');
-    b.textContent='✅ Đã copy!';
-    setTimeout(function(){ b.textContent='📋 Copy prompt'; },1500);
-  }); }
+function renderFilters(){
+  var el=document.getElementById('filter-row');
+  var industries=[...new Set(S.words.map(function(w){return w.industry;}).filter(Boolean))];
+  var html='<button class="filter-btn'+(S.filterIndustry==='all'?' on':'')+'" onclick="setFilter(\'all\',this)">Tất cả ('+S.words.length+')</button>';
+  industries.forEach(function(k){
+    var cnt=S.words.filter(function(w){return w.industry===k;}).length;
+    html+='<button class="filter-btn'+(S.filterIndustry===k?' on':'')+'" onclick="setFilter(\''+k+'\',this)">'+(INDUSTRY_NAMES[k]||k)+' ('+cnt+')</button>';
+  });
+  el.innerHTML=html;
+}
+function setFilter(k,btn){
+  S.filterIndustry=k;
+  renderWords();
 }
 
-/* ── QUIZ ── */
-function shuffle(arr){ var a=arr.slice(); for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i];a[i]=a[j];a[j]=t; } return a; }
-
+// ══════════════════════════════════════
+// QUIZ
+// ══════════════════════════════════════
+function shuffle(arr){var a=arr.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
 function initQuiz(){
-  if(!S.words.length){
-    document.getElementById('quiz-area').innerHTML='<div class="empty"><div class="empty-icon">🧠</div>Chưa có từ để luyện tập.<br>Hãy sinh từ vựng trước!</div>';
-    return;
-  }
-  if(!S.qList.length || S.qIdx>=Math.min(S.qList.length,10)){
-    S.qList = shuffle(S.words);
-    S.qIdx=0; S.qScore=0;
-  }
-  renderQuestion();
+  var el=document.getElementById('quiz-area');
+  if(!S.words.length){el.innerHTML='<div class="empty"><div class="empty-icon">🧠</div>Chưa có từ để luyện.<br>Hãy chọn ngành và lưu cài đặt trước!</div>';return;}
+  if(!S.qList.length||S.qIdx>=Math.min(S.qList.length,10)){S.qList=shuffle(S.words);S.qIdx=0;S.qScore=0;}
+  renderQ();
 }
-
-function renderQuestion(){
-  var total = Math.min(S.qList.length,10);
-  var w = S.qList[S.qIdx];
-  var pct = Math.round((S.qIdx/total)*100);
+function renderQ(){
+  var total=Math.min(S.qList.length,10);
+  var w=S.qList[S.qIdx];
+  var pct=Math.round((S.qIdx/total)*100);
   S.answered=false;
-
-  var opts = (w.options||[w.meaning,'...','...','...']).map(function(o,i){
+  var opts=(w.options||[w.meaning,'...','...','...']).map(function(o,i){
     return '<button class="opt" onclick="checkAns('+i+','+w.answer+',this)">'+o+'</button>';
   }).join('');
-
   document.getElementById('quiz-area').innerHTML=
-    '<div class="quiz-wrap">'
-    +'<div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:'+pct+'%"></div></div>'
-    +'<div class="quiz-meta"><span class="quiz-counter">'+(S.qIdx+1)+' / '+total+'</span><span class="quiz-score">+'+S.qScore+'</span></div>'
-    +'<div class="quiz-word">'+w.word+'</div>'
-    +'<div class="quiz-hint">Chọn nghĩa đúng trong tiếng Việt</div>'
+    '<div class="prog-wrap"><div class="prog-fill" style="width:'+pct+'%"></div></div>'
+    +'<div class="q-meta"><span class="q-cnt">'+(S.qIdx+1)+' / '+total+'</span><span class="q-sc">+'+S.qScore+'</span></div>'
+    +'<div class="q-word">'+w.word+'</div>'
+    +'<div class="q-hint">'+(INDUSTRY_NAMES[w.industry]||'')+' — Chọn nghĩa đúng</div>'
     +'<div class="opts">'+opts+'</div>'
-    +'<div id="q-result"></div>'
-    +'</div>';
+    +'<div id="q-res"></div>';
 }
-
-function checkAns(chosen, correct, btn){
-  if(S.answered) return;
+function checkAns(chosen,correct,btn){
+  if(S.answered)return;
   S.answered=true;
-  document.querySelectorAll('.opt').forEach(function(b,i){
-    b.disabled=true;
-    if(i===correct) b.classList.add('correct');
-    else if(i===chosen && chosen!==correct) b.classList.add('wrong');
-  });
-  var w = S.qList[S.qIdx];
-  var ok = chosen===correct;
-  if(ok) S.qScore++;
-  var msg = ok
-    ? '✅ Chính xác! '+(w.tip?'💡 '+w.tip:'')
-    : '❌ Chưa đúng — "'+w.word+'" nghĩa là: '+w.meaning+(w.tip?' | 💡 '+w.tip:'');
+  document.querySelectorAll('.opt').forEach(function(b,i){b.disabled=true;if(i===correct)b.classList.add('correct');else if(i===chosen&&chosen!==correct)b.classList.add('wrong');});
+  var w=S.qList[S.qIdx];
+  var ok=chosen===correct;
+  if(ok)S.qScore++;
+  var msg=ok?'✅ Chính xác! '+(w.tip?'💡 '+w.tip:''):'❌ Chưa đúng — "'+w.word+'" nghĩa là: '+w.meaning+(w.tip?' | 💡 '+w.tip:'');
   var total=Math.min(S.qList.length,10);
-  document.getElementById('q-result').innerHTML=
-    '<div class="result-msg '+(ok?'ok':'no')+'">'+msg+'</div>'
-    +'<button class="next-btn" onclick="nextQ()">'
-    +(S.qIdx+1>=total?'Xem kết quả →':'Tiếp theo →')+'</button>';
-  persist();
+  document.getElementById('q-res').innerHTML=
+    '<div class="res-msg '+(ok?'ok':'no')+'">'+msg+'</div>'
+    +'<button class="next-btn" onclick="nextQ()">'+(S.qIdx+1>=total?'Xem kết quả →':'Tiếp theo →')+'</button>';
+  save();
 }
-
 function nextQ(){
   S.qIdx++;
   var total=Math.min(S.qList.length,10);
   if(S.qIdx>=total){
     var pct=Math.round((S.qScore/total)*100);
-    var emoji = pct>=80?'🎉':pct>=50?'💪':'📖';
     document.getElementById('quiz-area').innerHTML=
-      '<div class="score-screen">'
-      +'<div class="big-score">'+S.qScore+'/'+total+'</div>'
-      +'<div class="score-label">'+emoji+' '+(pct>=80?'Xuất sắc!':pct>=50?'Khá tốt!':'Cần ôn thêm nhé')+'</div>'
-      +'<button class="primary-btn" onclick="S.qList=[];S.qIdx=0;S.qScore=0;persist();initQuiz()">🔁 Luyện lại</button>'
-      +'</div>';
+      '<div class="big-score">'+S.qScore+'/'+total+'</div>'
+      +'<div class="score-lbl">'+(pct>=80?'🎉 Xuất sắc!':pct>=50?'💪 Khá tốt!':'📖 Cần ôn thêm nhé')+'</div>'
+      +'<button class="pri" onclick="S.qList=[];S.qIdx=0;S.qScore=0;save();initQuiz()">🔁 Luyện lại</button>';
     return;
   }
-  renderQuestion();
+  renderQ();
 }
 
-/* ── INIT ── */
-document.getElementById('industry').value = S.industry||'';
-renderTimes(); updateBadge();
+// ══════════════════════════════════════
+// INIT
+// ══════════════════════════════════════
+if(S.industry) document.getElementById('industry-sel').value=S.industry;
+renderTimes();
+updateBadge();
 </script>
 </body>
 </html>
