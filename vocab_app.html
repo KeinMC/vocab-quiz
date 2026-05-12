@@ -540,7 +540,14 @@ function generateWords(){
   .then(function(r){ return r.json(); })
   .then(function(data){
     var text = (data.content||[]).map(function(c){ return c.text||''; }).join('');
-    var clean = text.replace(/```json|```/g,'').trim();
+    var clean = text
+      .replace(/```json/g,'')
+      .replace(/```/g,'')
+      .trim();
+    var start = clean.indexOf('[');
+    var end = clean.lastIndexOf(']');
+    if(start === -1 || end === -1) throw new Error('Không tìm thấy JSON array trong response');
+    clean = clean.substring(start, end+1);
     var arr = JSON.parse(clean);
     var day = Math.floor(S.words.length/15)+1;
     arr.forEach(function(w){ w.day=day; });
@@ -550,7 +557,8 @@ function generateWords(){
   })
   .catch(function(err){
     btn.innerHTML='⚠️ Lỗi — thử lại'; btn.disabled=false;
-    console.error(err);
+    console.error('Lỗi:', err);
+    alert('Lỗi sinh từ vựng: ' + err.message + '\nVui lòng thử lại!');
   });
 }
 
