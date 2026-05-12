@@ -530,12 +530,10 @@ function generateWords(){
   document.getElementById('prompt-display').textContent = prompt;
   document.getElementById('prompt-section').style.display='block';
 
-  fetch('https://api.anthropic.com/v1/messages',{
+  fetch('/api/claude',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify({
-      model:'claude-sonnet-4-20250514',
-      max_tokens:1000,
       messages:[{role:'user',content:prompt}]
     })
   })
