@@ -174,6 +174,53 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Plus Jakarta Sans',s
 .import-empty{text-align:center;color:var(--t3);font-size:13px;padding:16px 0}
 .toast{position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-20px);background:var(--s2);border:1px solid var(--bd2);border-radius:12px;padding:10px 20px;font-size:14px;color:var(--t1);z-index:300;opacity:0;transition:all .3s;white-space:nowrap;pointer-events:none}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+/* GRAMMAR MAIN TAB */
+.gm-wrap{padding:16px 20px 60px}
+.gm-search{width:100%;background:var(--s2);border:1px solid var(--bd);border-radius:10px;color:var(--t1);font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;padding:10px 14px;outline:none;margin-bottom:14px}
+.gm-filter-row{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none;margin-bottom:16px}
+.gm-filter-row::-webkit-scrollbar{display:none}
+.gm-chip{flex-shrink:0;padding:6px 14px;background:var(--s2);border:1px solid var(--bd);border-radius:20px;color:var(--t2);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;cursor:pointer;white-space:nowrap}
+.gm-chip.on{background:rgba(127,119,221,.15);border-color:var(--a);color:var(--a)}
+.gm-card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);margin-bottom:12px;overflow:hidden}
+.gm-card-hdr{padding:16px;cursor:pointer;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.gm-card-hdr-left{display:flex;flex-direction:column;gap:4px;flex:1}
+.gm-card-tags{display:flex;gap:6px;flex-wrap:wrap}
+.gm-tag{font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:2px 8px;border-radius:20px}
+.gm-tag.tense{background:rgba(127,119,221,.15);color:var(--a)}
+.gm-tag.voice{background:rgba(29,158,117,.15);color:var(--a2)}
+.gm-tag.condition{background:rgba(216,90,48,.15);color:var(--a3)}
+.gm-tag.clause{background:rgba(255,200,50,.1);color:#f0c040}
+.gm-tag.other{background:var(--s3);color:var(--t2)}
+.gm-card-title{font-family:'Playfair Display',serif;font-size:18px;color:var(--t1);line-height:1.2}
+.gm-card-subtitle{font-size:13px;color:var(--t3)}
+.gm-arrow{color:var(--t3);font-size:18px;transition:transform .25s;flex-shrink:0;margin-top:2px}
+.gm-arrow.open{transform:rotate(180deg)}
+.gm-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.gm-body.open{max-height:2000px}
+.gm-body-inner{padding:0 16px 20px;display:flex;flex-direction:column;gap:14px}
+.gm-rule-box{background:var(--s2);border-radius:10px;padding:14px}
+.gm-rule-lbl{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--a);margin-bottom:8px}
+.gm-rule-text{font-size:14px;color:var(--t2);line-height:1.75}
+.gm-rule-text b{color:var(--t1);font-weight:500}
+.gm-rule-text code{background:var(--s3);border:1px solid var(--bd2);border-radius:5px;padding:1px 6px;font-size:13px;color:var(--a);font-family:monospace}
+.gm-formula{background:rgba(127,119,221,.08);border:1px solid rgba(127,119,221,.2);border-radius:10px;padding:12px 14px;font-size:14px;color:var(--a);font-family:monospace;text-align:center;letter-spacing:.03em}
+.gm-examples{display:flex;flex-direction:column;gap:8px}
+.gm-ex{background:var(--s2);border-left:2px solid var(--a);border-radius:0 8px 8px 0;padding:10px 14px}
+.gm-ex-en{font-size:14px;color:var(--t1);font-style:italic;margin-bottom:3px;line-height:1.5}
+.gm-ex-en em{color:var(--a2);font-style:normal;font-weight:500}
+.gm-ex-vi{font-size:13px;color:var(--t3)}
+.gm-note{background:rgba(29,158,117,.07);border:1px solid rgba(29,158,117,.18);border-radius:10px;padding:12px 14px;font-size:13px;color:#9fe1cb;line-height:1.65}
+.gm-common-errors{background:rgba(216,90,48,.07);border:1px solid rgba(216,90,48,.18);border-radius:10px;padding:12px 14px}
+.gm-err-lbl{font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--a3);margin-bottom:8px}
+.gm-err-row{display:flex;flex-direction:column;gap:6px;font-size:13px;line-height:1.6}
+.gm-err-wrong{color:#f0997b}
+.gm-err-right{color:#9fe1cb}
+.gm-prompt-box{background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:14px;font-size:12px;color:var(--t2);font-family:monospace;white-space:pre-wrap;word-break:break-word;line-height:1.7;max-height:200px;overflow-y:auto;margin-bottom:10px}
+.gm-copy-btn{width:100%;padding:11px;background:rgba(127,119,221,.12);border:1px solid var(--a);border-radius:10px;color:var(--a);font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer}
+.gm-stats{display:flex;gap:8px;margin-bottom:16px}
+.gm-stat{flex:1;background:var(--s1);border:1px solid var(--bd);border-radius:12px;padding:12px;text-align:center}
+.gm-stat-n{font-size:24px;font-weight:600;color:var(--a);font-family:'Playfair Display',serif}
+.gm-stat-l{font-size:11px;color:var(--t3);margin-top:2px}
 </style>
 </head>
 <body>
@@ -190,6 +237,7 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Plus Jakarta Sans',s
   <div class="tabs">
     <button class="tab on" onclick="goTab('cards',this)">Thẻ từ</button>
     <button class="tab" onclick="goTab('quiz',this)">Quiz</button>
+    <button class="tab" onclick="goTab('grammar-main',this)">📖 Ngữ pháp</button>
     <button class="tab" onclick="goTab('import',this)">📥 Import</button>
   </div>
 </div>
@@ -208,6 +256,61 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Plus Jakarta Sans',s
 
 <div id="tab-quiz" class="pane">
   <div class="quiz-wrap" id="quiz-area"></div>
+</div>
+
+<div id="tab-grammar-main" class="pane">
+  <div class="gm-wrap">
+    <!-- Stats -->
+    <div class="gm-stats">
+      <div class="gm-stat"><div class="gm-stat-n" id="gm-total">0</div><div class="gm-stat-l">Chủ đề</div></div>
+      <div class="gm-stat"><div class="gm-stat-n" id="gm-examples-count">0</div><div class="gm-stat-l">Ví dụ</div></div>
+    </div>
+    <!-- Search -->
+    <input type="text" class="gm-search" id="gm-search" placeholder="🔍 Tìm chủ đề ngữ pháp..." oninput="renderGrammarMain()">
+    <!-- Filter chips -->
+    <div class="gm-filter-row" id="gm-filter-row"></div>
+    <!-- Grammar list -->
+    <div id="gm-list"></div>
+    <!-- Prompt section -->
+    <div class="gm-card" style="margin-top:8px">
+      <div class="gm-card-hdr" onclick="toggleGmPrompt()">
+        <div class="gm-card-hdr-left">
+          <div class="gm-card-tags"><span class="gm-tag other">AI Prompt</span></div>
+          <div class="gm-card-title">📋 Tạo bài tập với AI</div>
+          <div class="gm-card-subtitle">Copy prompt để AI sinh câu hỏi trắc nghiệm</div>
+        </div>
+        <span class="gm-arrow" id="gm-prompt-arrow">▾</span>
+      </div>
+      <div class="gm-body" id="gm-prompt-body">
+        <div class="gm-body-inner">
+          <div class="gm-rule-box">
+            <div class="gm-rule-lbl">Format JSON chuẩn cho quiz ngữ pháp</div>
+            <div class="gm-rule-text">Paste prompt bên dưới vào ChatGPT hoặc Claude, thay <b>[CHỦ ĐỀ]</b> và <b>[SỐ LƯỢNG]</b>:</div>
+          </div>
+          <div class="gm-prompt-box" id="gm-prompt-text">Tạo [SỐ LƯỢNG] câu hỏi trắc nghiệm tiếng Anh về chủ đề ngữ pháp: [CHỦ ĐỀ]
+
+Trả về JSON theo đúng format sau, không giải thích thêm:
+
+[
+  {
+    "question": "Câu hỏi hoặc câu cần điền vào chỗ trống",
+    "options": ["Đáp án A", "Đáp án B", "Đáp án C", "Đáp án D"],
+    "answer": 0,
+    "explanation": "Giải thích tại sao đáp án đúng (tiếng Việt)",
+    "grammar_point": "Điểm ngữ pháp được kiểm tra"
+  }
+]
+
+Lưu ý:
+- "answer" là index 0-3 của đáp án đúng trong mảng "options"
+- Câu hỏi nên đa dạng: điền vào chỗ trống, chọn từ đúng, sửa lỗi sai
+- Độ khó tăng dần từ câu 1 đến câu cuối
+- Ví dụ nên liên quan đến ngữ cảnh công việc / văn phòng</div>
+          <button class="gm-copy-btn" onclick="copyGmPrompt()">📋 Copy prompt</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div id="tab-import" class="pane">
@@ -1795,10 +1898,468 @@ goTab = function(name, btn) {
     renderImportIndustrySelect();
     renderImportHistory();
   }
+  if (name === 'grammar-main') {
+    renderGrammarMain();
+  }
 };
 
 // Load custom words khi khởi động
 loadCustomWords();
+</script>
+
+<script>
+// ═══════════════════════════════════
+// GRAMMAR DATABASE
+// ═══════════════════════════════════
+var GM_DB = [
+  {
+    id:'present-simple', tag:'tense', tagLabel:'Thì',
+    title:'Hiện tại đơn', subtitle:'Present Simple',
+    formula:'S + V(s/es) / S + do/does + not + V / Do/Does + S + V?',
+    rule:'Dùng để diễn đạt <b>sự thật hiển nhiên</b>, <b>thói quen lặp lại</b>, <b>lịch trình cố định</b>. Thêm <code>-s/-es</code> sau động từ với chủ ngữ he/she/it.',
+    examples:[
+      {en:'The meeting <em>starts</em> at 9AM every Monday.',vi:'Cuộc họp bắt đầu lúc 9 giờ mỗi thứ Hai.'},
+      {en:'She <em>sends</em> the report before noon.',vi:'Cô ấy gửi báo cáo trước buổi trưa.'},
+      {en:'We <em>do not work</em> on weekends.',vi:'Chúng tôi không làm việc vào cuối tuần.'},
+      {en:'<em>Does</em> your team <em>use</em> Agile?',vi:'Nhóm của bạn có dùng Agile không?'}
+    ],
+    note:'💡 Dấu hiệu nhận biết: always, usually, often, sometimes, never, every day/week/month',
+    errors:[
+      {wrong:'She send the email every day. ❌', right:'She sends the email every day. ✅'},
+      {wrong:'Does she works here? ❌', right:'Does she work here? ✅'}
+    ]
+  },
+  {
+    id:'present-continuous', tag:'tense', tagLabel:'Thì',
+    title:'Hiện tại tiếp diễn', subtitle:'Present Continuous',
+    formula:'S + am/is/are + V-ing',
+    rule:'Dùng cho <b>hành động đang xảy ra lúc nói</b>, <b>kế hoạch tương lai đã sắp xếp</b>, hoặc <b>xu hướng đang thay đổi</b>.',
+    examples:[
+      {en:'I <em>am currently debugging</em> the login issue.',vi:'Tôi đang debug vấn đề đăng nhập.'},
+      {en:'The team <em>is working</em> on the Q4 report.',vi:'Nhóm đang làm báo cáo Q4.'},
+      {en:'We <em>are meeting</em> the client tomorrow at 2PM.',vi:'Chúng tôi gặp khách hàng ngày mai lúc 2 giờ.'},
+      {en:'More companies <em>are adopting</em> remote work.',vi:'Ngày càng nhiều công ty đang áp dụng làm việc từ xa.'}
+    ],
+    note:'💡 Dấu hiệu: now, right now, at the moment, currently, these days, this week',
+    errors:[
+      {wrong:'I am understand the problem. ❌', right:'I understand the problem. ✅ (động từ trạng thái không dùng -ing)'},
+      {wrong:'She is send the email now. ❌', right:'She is sending the email now. ✅'}
+    ]
+  },
+  {
+    id:'present-perfect', tag:'tense', tagLabel:'Thì',
+    title:'Hiện tại hoàn thành', subtitle:'Present Perfect',
+    formula:'S + have/has + past participle (V3)',
+    rule:'Dùng khi <b>hành động trong quá khứ có liên quan đến hiện tại</b>, hoặc <b>kinh nghiệm không xác định thời gian</b>, hoặc <b>hành động vừa mới xảy ra</b>.',
+    examples:[
+      {en:'We <em>have deployed</em> the new version successfully.',vi:'Chúng tôi đã triển khai phiên bản mới thành công.'},
+      {en:'She <em>has worked</em> here for 5 years.',vi:'Cô ấy đã làm việc ở đây được 5 năm.'},
+      {en:'I <em>have just sent</em> you the report.',vi:'Tôi vừa gửi báo cáo cho bạn rồi.'},
+      {en:'<em>Have</em> you ever <em>used</em> Salesforce?',vi:'Bạn đã từng dùng Salesforce chưa?'}
+    ],
+    note:'💡 Dấu hiệu: already, yet, just, ever, never, since, for, recently, so far',
+    errors:[
+      {wrong:'I have went to the meeting. ❌', right:'I have gone to the meeting. ✅ (dùng V3)'},
+      {wrong:'She has worked here since 5 years. ❌', right:'She has worked here for 5 years. ✅ (for + khoảng thời gian)'}
+    ]
+  },
+  {
+    id:'past-simple', tag:'tense', tagLabel:'Thì',
+    title:'Quá khứ đơn', subtitle:'Past Simple',
+    formula:'S + V-ed (hoặc V2) / S + did not + V / Did + S + V?',
+    rule:'Dùng cho <b>hành động đã hoàn thành tại một thời điểm cụ thể trong quá khứ</b>. Luôn xác định được thời điểm.',
+    examples:[
+      {en:'We <em>launched</em> the product last March.',vi:'Chúng tôi ra mắt sản phẩm vào tháng 3 năm ngoái.'},
+      {en:'The meeting <em>ended</em> at 5PM yesterday.',vi:'Cuộc họp kết thúc lúc 5 giờ chiều hôm qua.'},
+      {en:'She <em>did not attend</em> the conference.',vi:'Cô ấy không tham dự hội nghị.'},
+      {en:'<em>Did</em> you <em>send</em> the proposal?',vi:'Bạn đã gửi đề xuất chưa?'}
+    ],
+    note:'💡 Dấu hiệu: yesterday, last week/month/year, ago, in 2020, when + mệnh đề',
+    errors:[
+      {wrong:'I did not sent the email. ❌', right:'I did not send the email. ✅ (sau did not → V nguyên thể)'},
+      {wrong:'Did she worked there? ❌', right:'Did she work there? ✅'}
+    ]
+  },
+  {
+    id:'past-continuous', tag:'tense', tagLabel:'Thì',
+    title:'Quá khứ tiếp diễn', subtitle:'Past Continuous',
+    formula:'S + was/were + V-ing',
+    rule:'Dùng cho <b>hành động đang xảy ra tại một thời điểm trong quá khứ</b>, hoặc <b>làm nền cho hành động khác xảy ra chen vào</b>.',
+    examples:[
+      {en:'I <em>was preparing</em> the slides when the client called.',vi:'Tôi đang chuẩn bị slides thì khách hàng gọi điện.'},
+      {en:'The team <em>was reviewing</em> the code at 3PM.',vi:'Nhóm đang review code lúc 3 giờ chiều.'},
+      {en:'While she <em>was presenting</em>, the projector broke down.',vi:'Trong khi cô ấy đang thuyết trình, máy chiếu hỏng.'}
+    ],
+    note:'💡 Hay dùng với "when" (khi đột nhiên) và "while" (trong lúc đang). While + past continuous, when + past simple.',
+    errors:[
+      {wrong:'I was work from home yesterday. ❌', right:'I was working from home yesterday. ✅'},
+      {wrong:'While I prepared the report, she called. ❌ (nếu muốn nhấn đang làm)', right:'While I was preparing the report, she called. ✅'}
+    ]
+  },
+  {
+    id:'past-perfect', tag:'tense', tagLabel:'Thì',
+    title:'Quá khứ hoàn thành', subtitle:'Past Perfect',
+    formula:'S + had + past participle (V3)',
+    rule:'Dùng cho <b>hành động xảy ra trước một hành động khác trong quá khứ</b>. Hành động "trước hơn" dùng past perfect.',
+    examples:[
+      {en:'By the time the manager arrived, we <em>had already fixed</em> the bug.',vi:'Khi quản lý đến, chúng tôi đã sửa xong lỗi rồi.'},
+      {en:'She <em>had submitted</em> the report before the deadline.',vi:'Cô ấy đã nộp báo cáo trước hạn chót.'},
+      {en:'The deal fell through because we <em>had not prepared</em> well.',vi:'Thương vụ thất bại vì chúng tôi đã không chuẩn bị tốt.'}
+    ],
+    note:'💡 Hay đi với: by the time, before, after, already, when, because. Hình dung: had + V3 = "đã... rồi" ở thời điểm quá khứ.',
+    errors:[
+      {wrong:'By 5PM, she finished the task. ❌ (nếu muốn nhấn hoàn thành trước đó)', right:'By 5PM, she had finished the task. ✅'},
+      {wrong:'He had went to the office. ❌', right:'He had gone to the office. ✅'}
+    ]
+  },
+  {
+    id:'future-simple', tag:'tense', tagLabel:'Thì',
+    title:'Tương lai đơn', subtitle:'Future Simple (will)',
+    formula:'S + will + V (nguyên thể)',
+    rule:'Dùng cho <b>quyết định ngay tại lúc nói</b>, <b>dự đoán</b>, <b>lời hứa</b>, <b>đề nghị tự nguyện</b>.',
+    examples:[
+      {en:'I <em>will send</em> you the contract this afternoon.',vi:'Tôi sẽ gửi hợp đồng cho bạn chiều nay.'},
+      {en:'The market <em>will grow</em> by 15% next year.',vi:'Thị trường sẽ tăng trưởng 15% năm tới.'},
+      {en:'<em>Will</em> you <em>be</em> available for a call tomorrow?',vi:'Bạn có rảnh để nói chuyện ngày mai không?'},
+      {en:'I <em>will help</em> you prepare the presentation.',vi:'Tôi sẽ giúp bạn chuẩn bị bài thuyết trình.'}
+    ],
+    note:'💡 Will ≠ Be going to: Will = quyết định tức thời / dự đoán. Be going to = kế hoạch đã có sẵn / bằng chứng hiện tại.',
+    errors:[
+      {wrong:'I will to send the report. ❌', right:'I will send the report. ✅ (will + V nguyên thể, không có "to")'},
+      {wrong:'She wills attend the meeting. ❌', right:'She will attend the meeting. ✅'}
+    ]
+  },
+  {
+    id:'future-going-to', tag:'tense', tagLabel:'Thì',
+    title:'Tương lai gần (be going to)', subtitle:'Future: Be going to',
+    formula:'S + am/is/are + going to + V',
+    rule:'Dùng cho <b>kế hoạch đã quyết định từ trước</b> hoặc <b>dự đoán dựa trên bằng chứng hiện tại</b>.',
+    examples:[
+      {en:'We <em>are going to launch</em> the app next month.',vi:'Chúng tôi sẽ ra mắt app vào tháng tới.'},
+      {en:'She <em>is going to present</em> the results tomorrow.',vi:'Cô ấy sẽ trình bày kết quả ngày mai.'},
+      {en:'Look at those numbers — we <em>are going to miss</em> the target.',vi:'Nhìn vào những con số đó — chúng ta sắp lỡ mục tiêu rồi.'}
+    ],
+    note:'💡 Be going to thường dùng khi đã có kế hoạch cụ thể. Will dùng khi quyết định ngay lúc đó.',
+    errors:[
+      {wrong:'I am going to sent the proposal. ❌', right:'I am going to send the proposal. ✅ (going to + V nguyên thể)'},
+      {wrong:'She is go to attend the conference. ❌', right:'She is going to attend the conference. ✅'}
+    ]
+  },
+  {
+    id:'passive-voice', tag:'voice', tagLabel:'Câu',
+    title:'Câu bị động', subtitle:'Passive Voice',
+    formula:'S + to be (chia theo thì) + V3 + (by + O)',
+    rule:'Dùng khi <b>chủ thể hành động không quan trọng hoặc không biết</b>, hoặc khi muốn <b>nhấn mạnh vào đối tượng chịu tác động</b>. Rất phổ biến trong văn bản kỹ thuật và báo cáo.',
+    examples:[
+      {en:'The report <em>was submitted</em> before the deadline.',vi:'Báo cáo đã được nộp trước hạn chót.'},
+      {en:'All data <em>is encrypted</em> before storage.',vi:'Tất cả dữ liệu được mã hóa trước khi lưu trữ.'},
+      {en:'The bug <em>has been fixed</em> by the dev team.',vi:'Lỗi đã được nhóm dev sửa.'},
+      {en:'New features <em>will be released</em> next sprint.',vi:'Các tính năng mới sẽ được phát hành trong sprint tới.'}
+    ],
+    note:'💡 Công thức theo thì: Is done (HTĐ) / Is being done (HTTD) / Has been done (HTHT) / Was done (QKĐ) / Will be done (TLĐ)',
+    errors:[
+      {wrong:'The email was send yesterday. ❌', right:'The email was sent yesterday. ✅ (dùng V3)'},
+      {wrong:'The project is being complete. ❌', right:'The project is being completed. ✅'}
+    ]
+  },
+  {
+    id:'conditionals-1', tag:'condition', tagLabel:'Điều kiện',
+    title:'Câu điều kiện loại 1', subtitle:'First Conditional — Có thể xảy ra',
+    formula:'If + S + V (HTĐ), S + will + V',
+    rule:'Dùng cho <b>điều kiện có thể xảy ra trong tương lai</b> — khả năng thực tế.',
+    examples:[
+      {en:'<em>If</em> we submit the proposal today, we <em>will win</em> the contract.',vi:'Nếu chúng ta nộp đề xuất hôm nay, chúng ta sẽ giành được hợp đồng.'},
+      {en:'<em>If</em> the server goes down, the team <em>will be notified</em> immediately.',vi:'Nếu server ngừng hoạt động, nhóm sẽ được thông báo ngay lập tức.'},
+      {en:'<em>If</em> you increase the budget, we <em>can</em> hire more developers.',vi:'Nếu bạn tăng ngân sách, chúng tôi có thể tuyển thêm developer.'}
+    ],
+    note:'💡 Mệnh đề if dùng thì hiện tại, mệnh đề chính dùng will/can/may + V. Có thể đổi thứ tự 2 mệnh đề.',
+    errors:[
+      {wrong:'If we will submit early, we will win. ❌', right:'If we submit early, we will win. ✅ (mệnh đề if không dùng will)'},
+      {wrong:'If he studies, he will passed. ❌', right:'If he studies, he will pass. ✅'}
+    ]
+  },
+  {
+    id:'conditionals-2', tag:'condition', tagLabel:'Điều kiện',
+    title:'Câu điều kiện loại 2', subtitle:'Second Conditional — Giả thuyết',
+    formula:'If + S + V-ed (QKĐ), S + would/could + V',
+    rule:'Dùng cho <b>tình huống giả thuyết không có thật ở hiện tại</b> hoặc <b>khó có thể xảy ra</b>.',
+    examples:[
+      {en:'<em>If</em> we <em>had</em> more resources, we <em>would launch</em> faster.',vi:'Nếu chúng tôi có thêm nguồn lực, chúng tôi sẽ ra mắt nhanh hơn.'},
+      {en:'<em>If</em> I <em>were</em> the CEO, I <em>would invest</em> in AI.',vi:'Nếu tôi là CEO, tôi sẽ đầu tư vào AI.'},
+      {en:'What <em>would</em> you <em>do</em> if the deadline <em>moved</em> up?',vi:'Bạn sẽ làm gì nếu deadline sớm hơn?'}
+    ],
+    note:'💡 "If I were you" (không phải "was") — dùng trong lời khuyên. Would = ở điều kiện giả thuyết.',
+    errors:[
+      {wrong:'If I was the manager, I will change this. ❌', right:'If I were the manager, I would change this. ✅'},
+      {wrong:'If we would have time, we would do it. ❌', right:'If we had time, we would do it. ✅'}
+    ]
+  },
+  {
+    id:'conditionals-3', tag:'condition', tagLabel:'Điều kiện',
+    title:'Câu điều kiện loại 3', subtitle:'Third Conditional — Quá khứ không có thật',
+    formula:'If + S + had + V3, S + would have + V3',
+    rule:'Dùng để nói về <b>điều kiện giả thuyết trong quá khứ — đã không xảy ra</b>. Thường thể hiện sự tiếc nuối.',
+    examples:[
+      {en:'<em>If</em> we <em>had tested</em> more, we <em>would have caught</em> the bug.',vi:'Nếu chúng tôi đã test nhiều hơn, chúng tôi đã phát hiện lỗi đó.'},
+      {en:'<em>If</em> she <em>had attended</em> the meeting, she <em>would have known</em> the plan.',vi:'Nếu cô ấy đã tham dự cuộc họp, cô ấy đã biết kế hoạch rồi.'},
+      {en:'We <em>would have won</em> the bid if we <em>had submitted</em> on time.',vi:'Chúng ta đã thắng thầu nếu nộp đúng hạn.'}
+    ],
+    note:'💡 Loại 3 = "giá mà hồi đó..." — diễn đạt sự tiếc nuối về quá khứ không thể thay đổi.',
+    errors:[
+      {wrong:'If we had more time, we would have won. ❌ (nhầm loại 2 và 3)', right:'If we had had more time, we would have won. ✅ (quá khứ: had had)'},
+      {wrong:'If she would have come, we would succeed. ❌', right:'If she had come, we would have succeeded. ✅'}
+    ]
+  },
+  {
+    id:'modal-verbs', tag:'other', tagLabel:'Trợ động từ',
+    title:'Trợ động từ tình thái', subtitle:'Modal Verbs',
+    formula:'S + modal + V (nguyên thể)',
+    rule:'Các modal verbs thể hiện <b>khả năng, cho phép, bổn phận, sự chắc chắn</b>. Sau modal không thêm <code>-s</code> và không dùng <code>to</code> (trừ have to, ought to).',
+    examples:[
+      {en:'You <em>must</em> submit the report by Friday.',vi:'Bạn phải nộp báo cáo trước thứ Sáu. (bắt buộc)'},
+      {en:'You <em>should</em> back up your data regularly.',vi:'Bạn nên sao lưu dữ liệu thường xuyên. (khuyên)'},
+      {en:'<em>Can</em> you join the call at 3PM?',vi:'Bạn có thể tham gia cuộc gọi lúc 3 giờ không? (khả năng/xin phép)'},
+      {en:'The server <em>might</em> be down for maintenance.',vi:'Máy chủ có thể đang bảo trì. (có thể, không chắc)'},
+      {en:'You <em>don\'t have to</em> attend if you\'re busy.',vi:'Bạn không cần phải tham dự nếu bận. (không bắt buộc)'}
+    ],
+    note:'💡 Must > Should > Can/May > Might (mức độ bắt buộc giảm dần). Must not = CẤM. Don\'t have to = không bắt buộc.',
+    errors:[
+      {wrong:'She musts finish the task. ❌', right:'She must finish the task. ✅ (không thêm s)'},
+      {wrong:'You should to review the code. ❌', right:'You should review the code. ✅ (không dùng to)'}
+    ]
+  },
+  {
+    id:'relative-clauses', tag:'clause', tagLabel:'Mệnh đề',
+    title:'Mệnh đề quan hệ', subtitle:'Relative Clauses',
+    formula:'Danh từ + who/which/that/where/when/whose + mệnh đề',
+    rule:'Dùng để <b>bổ sung thông tin cho danh từ đứng trước</b>. Who = người, Which = vật/sự việc, That = người/vật (không giới hạn), Where = nơi chốn.',
+    examples:[
+      {en:'The developer <em>who fixed</em> the bug received a bonus.',vi:'Developer người đã sửa lỗi đó nhận được thưởng.'},
+      {en:'The report <em>which was submitted</em> yesterday has an error.',vi:'Báo cáo được nộp hôm qua có lỗi.'},
+      {en:'This is the tool <em>that we use</em> for project management.',vi:'Đây là công cụ chúng tôi dùng để quản lý dự án.'},
+      {en:'The office <em>where we work</em> is downtown.',vi:'Văn phòng nơi chúng tôi làm việc ở trung tâm.'}
+    ],
+    note:'💡 Mệnh đề quan hệ xác định (defining): không có dấu phẩy, bắt buộc phải có. Không xác định (non-defining): có dấu phẩy, bỏ đi vẫn được.',
+    errors:[
+      {wrong:'The manager which approved the plan is away. ❌', right:'The manager who approved the plan is away. ✅ (người dùng who)'},
+      {wrong:'The tool that it helps us work faster. ❌', right:'The tool that helps us work faster. ✅ (không cần "it")'}
+    ]
+  },
+  {
+    id:'reported-speech', tag:'clause', tagLabel:'Mệnh đề',
+    title:'Câu tường thuật', subtitle:'Reported Speech',
+    formula:'S + said (that) + mệnh đề (lùi thì)',
+    rule:'Khi thuật lại lời nói trực tiếp, <b>thì của động từ lùi về quá khứ hơn</b>. Đại từ và trạng từ cũng thay đổi theo.',
+    examples:[
+      {en:'"We will launch next week." → She said they <em>would launch</em> the following week.',vi:'"Chúng tôi sẽ ra mắt tuần tới." → Cô ấy nói rằng họ sẽ ra mắt tuần sau.'},
+      {en:'"I am working on the report." → He said he <em>was working</em> on the report.',vi:'"Tôi đang làm báo cáo." → Anh ấy nói rằng anh đang làm báo cáo.'},
+      {en:'"Submit the proposal." → She told us <em>to submit</em> the proposal.',vi:'"Hãy nộp đề xuất." → Cô ấy yêu cầu chúng tôi nộp đề xuất.'}
+    ],
+    note:'💡 Bảng lùi thì: will→would, can→could, is/are→was/were, am doing→was doing, have done→had done',
+    errors:[
+      {wrong:'He said he will come. ❌ (lời nói trong quá khứ)', right:'He said he would come. ✅'},
+      {wrong:'She told to finish early. ❌', right:'She told us to finish early. ✅ (tell + tân ngữ + to V)'}
+    ]
+  },
+  {
+    id:'articles', tag:'other', tagLabel:'Mạo từ',
+    title:'Mạo từ a/an/the', subtitle:'Articles',
+    formula:'a/an + danh từ số ít (chưa xác định) | the + danh từ (đã xác định)',
+    rule:'<b>A/An</b>: lần đầu đề cập, chưa xác định. <b>The</b>: đã biết rõ, đã đề cập rồi, duy nhất. <b>Không dùng mạo từ</b>: danh từ số nhiều chung chung, tên riêng, ngôn ngữ, môn học.',
+    examples:[
+      {en:'We need <em>a</em> developer for this project.',vi:'Chúng tôi cần một developer cho dự án này. (chưa xác định ai)'},
+      {en:'<em>The</em> developer we hired last week is excellent.',vi:'Developer chúng tôi tuyển tuần trước rất xuất sắc. (đã biết người nào)'},
+      {en:'She speaks <em>English</em> and <em>French</em>.',vi:'Cô ấy nói tiếng Anh và tiếng Pháp. (ngôn ngữ không dùng the)'},
+      {en:'We had <em>a</em> meeting this morning. <em>The</em> meeting went well.',vi:'Chúng tôi có một cuộc họp sáng nay. Cuộc họp đó diễn ra tốt.'}
+    ],
+    note:'💡 A trước phụ âm (a meeting), An trước nguyên âm (an issue, an hour). "An hour" vì "h" câm.',
+    errors:[
+      {wrong:'I need an help with this. ❌', right:'I need help with this. ✅ (help là danh từ không đếm được)'},
+      {wrong:'The English is important. ❌', right:'English is important. ✅ (ngôn ngữ không dùng the)'}
+    ]
+  },
+  {
+    id:'prepositions-time', tag:'other', tagLabel:'Giới từ',
+    title:'Giới từ chỉ thời gian', subtitle:'Prepositions of Time: at/on/in',
+    formula:'at + giờ cụ thể | on + ngày | in + tháng/năm/mùa',
+    rule:'<b>AT</b>: thời điểm cụ thể (at 3PM, at noon, at night). <b>ON</b>: ngày cụ thể (on Monday, on July 4th). <b>IN</b>: khoảng thời gian dài hơn (in March, in 2024, in the morning).',
+    examples:[
+      {en:'The meeting is <em>at</em> 9AM <em>on</em> Monday.',vi:'Cuộc họp lúc 9 giờ sáng vào thứ Hai.'},
+      {en:'We launched the product <em>in</em> March.',vi:'Chúng tôi ra mắt sản phẩm vào tháng 3.'},
+      {en:'The deadline is <em>on</em> Friday <em>at</em> 5PM.',vi:'Hạn chót là thứ Sáu lúc 5 giờ chiều.'},
+      {en:'She joined the company <em>in</em> 2022.',vi:'Cô ấy gia nhập công ty năm 2022.'}
+    ],
+    note:'💡 Không dùng at/on/in trước: this, next, last, every. → "See you next Monday" (không có "on").',
+    errors:[
+      {wrong:'The report is due in Friday. ❌', right:'The report is due on Friday. ✅'},
+      {wrong:'I will call you at the morning. ❌', right:'I will call you in the morning. ✅'}
+    ]
+  },
+  {
+    id:'comparison', tag:'other', tagLabel:'So sánh',
+    title:'So sánh hơn và nhất', subtitle:'Comparatives & Superlatives',
+    formula:'adj-er + than | more + adj + than | the + adj-est | the most + adj',
+    rule:'Tính từ ngắn (1 âm tiết): thêm <code>-er/-est</code>. Tính từ dài (2+ âm tiết): dùng <code>more/most</code>. Một số bất quy tắc: good→better→best, bad→worse→worst.',
+    examples:[
+      {en:'This solution is <em>faster than</em> the previous one.',vi:'Giải pháp này nhanh hơn cái trước.'},
+      {en:'Cloud storage is <em>more cost-effective than</em> local servers.',vi:'Lưu trữ đám mây hiệu quả chi phí hơn server cục bộ.'},
+      {en:'She is <em>the best</em> developer on the team.',vi:'Cô ấy là developer giỏi nhất trong nhóm.'},
+      {en:'This is <em>the most efficient</em> approach we have tried.',vi:'Đây là cách tiếp cận hiệu quả nhất chúng tôi đã thử.'}
+    ],
+    note:'💡 As...as = ngang bằng: "This tool is as good as that one." Not as...as = kém hơn: "This is not as fast as before."',
+    errors:[
+      {wrong:'She is more smarter than him. ❌', right:'She is smarter than him. ✅ (không vừa more vừa -er)'},
+      {wrong:'This is the most fastest route. ❌', right:'This is the fastest route. ✅'}
+    ]
+  },
+  {
+    id:'gerund-infinitive', tag:'other', tagLabel:'Động từ',
+    title:'Danh động từ & Động từ nguyên thể', subtitle:'Gerund vs Infinitive',
+    formula:'V-ing (danh động từ) | to + V (động từ nguyên thể)',
+    rule:'Một số động từ theo sau bằng <b>V-ing</b> (enjoy, avoid, finish, suggest, consider). Một số theo sau bằng <b>to + V</b> (want, need, decide, plan, agree, promise). Một số dùng được cả hai nhưng nghĩa khác nhau.',
+    examples:[
+      {en:'We <em>finished reviewing</em> the code yesterday.',vi:'Chúng tôi đã review xong code hôm qua. (finish + V-ing)'},
+      {en:'She <em>agreed to attend</em> the conference.',vi:'Cô ấy đồng ý tham dự hội nghị. (agree + to V)'},
+      {en:'I <em>stopped to check</em> my email. (dừng lại để kiểm tra)',vi:'Tôi dừng lại để kiểm tra email.'},
+      {en:'I <em>stopped checking</em> my email. (bỏ thói quen kiểm tra)',vi:'Tôi đã bỏ thói quen kiểm tra email.'}
+    ],
+    note:'💡 Remember/forget/stop + to V (hành động tương lai) vs + V-ing (hành động đã xảy ra). Ví dụ: "Remember to send" vs "I remember sending".',
+    errors:[
+      {wrong:'We decided going with Option A. ❌', right:'We decided to go with Option A. ✅ (decide + to V)'},
+      {wrong:'Avoid to make the same mistake. ❌', right:'Avoid making the same mistake. ✅ (avoid + V-ing)'}
+    ]
+  }
+];
+
+// ═══════════════════════════════════
+// GRAMMAR MAIN RENDER
+// ═══════════════════════════════════
+var gmFilter = 'all';
+
+function renderGrammarMain() {
+  var search = (document.getElementById('gm-search')||{value:''}).value.toLowerCase();
+
+  // Filter chips
+  var filterEl = document.getElementById('gm-filter-row');
+  if (filterEl && !filterEl.children.length) {
+    var tags = [{k:'all',l:'Tất cả'},{k:'tense',l:'Thì'},{k:'voice',l:'Câu'},{k:'condition',l:'Điều kiện'},{k:'clause',l:'Mệnh đề'},{k:'other',l:'Khác'}];
+    filterEl.innerHTML = tags.map(function(t){
+      return '<button class="gm-chip'+(gmFilter===t.k?' on':'')+'" onclick="setGmFilter(\''+t.k+'\',this)">'+t.l+'</button>';
+    }).join('');
+  }
+
+  // Filter data
+  var filtered = GM_DB.filter(function(g) {
+    var matchTag = gmFilter === 'all' || g.tag === gmFilter;
+    var matchSearch = !search || g.title.toLowerCase().indexOf(search) > -1
+      || g.subtitle.toLowerCase().indexOf(search) > -1
+      || g.rule.toLowerCase().indexOf(search) > -1;
+    return matchTag && matchSearch;
+  });
+
+  // Stats
+  var totalEx = GM_DB.reduce(function(sum,g){ return sum + g.examples.length; }, 0);
+  var tn = document.getElementById('gm-total');
+  var te = document.getElementById('gm-examples-count');
+  if (tn) tn.textContent = GM_DB.length;
+  if (te) te.textContent = totalEx;
+
+  // Render list
+  var el = document.getElementById('gm-list');
+  if (!el) return;
+
+  if (!filtered.length) {
+    el.innerHTML = '<div class="empty">Không tìm thấy chủ đề phù hợp.</div>';
+    return;
+  }
+
+  el.innerHTML = filtered.map(function(g, i) {
+    var tagClass = g.tag || 'other';
+    return '<div class="gm-card">'
+      + '<div class="gm-card-hdr" onclick="toggleGmCard(\''+g.id+'\')">'
+        + '<div class="gm-card-hdr-left">'
+          + '<div class="gm-card-tags"><span class="gm-tag '+tagClass+'">'+g.tagLabel+'</span></div>'
+          + '<div class="gm-card-title">'+g.title+'</div>'
+          + '<div class="gm-card-subtitle">'+g.subtitle+'</div>'
+        + '</div>'
+        + '<span class="gm-arrow" id="gmarr-'+g.id+'">▾</span>'
+      + '</div>'
+      + '<div class="gm-body" id="gmbody-'+g.id+'">'
+        + '<div class="gm-body-inner">'
+          // Formula
+          + '<div class="gm-formula">'+g.formula+'</div>'
+          // Rule
+          + '<div class="gm-rule-box">'
+            + '<div class="gm-rule-lbl">Quy tắc</div>'
+            + '<div class="gm-rule-text">'+g.rule+'</div>'
+          + '</div>'
+          // Examples
+          + '<div>'
+            + '<div class="gm-rule-lbl" style="margin-bottom:8px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--a)">Ví dụ</div>'
+            + '<div class="gm-examples">'
+              + g.examples.map(function(ex){
+                return '<div class="gm-ex">'
+                  + '<div class="gm-ex-en">'+ex.en+'</div>'
+                  + '<div class="gm-ex-vi">'+ex.vi+'</div>'
+                + '</div>';
+              }).join('')
+            + '</div>'
+          + '</div>'
+          // Note
+          + (g.note ? '<div class="gm-note">'+g.note+'</div>' : '')
+          // Common errors
+          + (g.errors && g.errors.length
+            ? '<div class="gm-common-errors">'
+                + '<div class="gm-err-lbl">⚠️ Lỗi thường gặp</div>'
+                + '<div class="gm-err-row">'
+                  + g.errors.map(function(e){
+                    return '<div class="gm-err-wrong">'+e.wrong+'</div>'
+                      + '<div class="gm-err-right">'+e.right+'</div>';
+                  }).join('<div style="height:4px"></div>')
+                + '</div>'
+              + '</div>'
+            : '')
+        + '</div>'
+      + '</div>'
+    + '</div>';
+  }).join('');
+}
+
+function setGmFilter(k, btn) {
+  gmFilter = k;
+  document.querySelectorAll('.gm-chip').forEach(function(b){ b.classList.remove('on'); });
+  btn.classList.add('on');
+  renderGrammarMain();
+}
+
+function toggleGmCard(id) {
+  var body = document.getElementById('gmbody-'+id);
+  var arrow = document.getElementById('gmarr-'+id);
+  if (!body) return;
+  var isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  arrow.classList.toggle('open', !isOpen);
+}
+
+function toggleGmPrompt() {
+  var body = document.getElementById('gm-prompt-body');
+  var arrow = document.getElementById('gm-prompt-arrow');
+  var isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  arrow.classList.toggle('open', !isOpen);
+}
+
+function copyGmPrompt() {
+  var text = document.getElementById('gm-prompt-text').textContent;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(function(){ showToast('✅ Đã copy prompt!'); });
+  } else {
+    var ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    showToast('✅ Đã copy prompt!');
+  }
+}
 </script>
 </body>
 </html>
