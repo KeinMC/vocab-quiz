@@ -135,9 +135,23 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Plus Jakarta Sans',s
 .special-lbl{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--a3);margin-bottom:6px}
 .special-txt{font-size:13px;color:rgba(255,255,255,.8);line-height:1.7}
 .special-txt b{color:var(--t1);font-weight:500}
+/* SYNC STATUS */
+.sync-bar{position:fixed;bottom:0;left:0;right:0;z-index:200;padding:10px 20px;font-size:13px;font-weight:500;text-align:center;transform:translateY(100%);transition:transform .3s ease;display:flex;align-items:center;justify-content:center;gap:8px}
+.sync-bar.show{transform:translateY(0)}
+.sync-bar.offline{background:#1a1a1a;color:var(--t2);border-top:1px solid var(--bd)}
+.sync-bar.syncing{background:rgba(127,119,221,.15);color:var(--a);border-top:1px solid rgba(127,119,221,.3)}
+.sync-bar.success{background:rgba(29,158,117,.15);color:var(--a2);border-top:1px solid rgba(29,158,117,.3)}
+.sync-dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0}
+.sync-dot.pulse{animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 </style>
 </head>
 <body>
+<!-- SYNC STATUS BAR -->
+<div class="sync-bar" id="sync-bar">
+  <div class="sync-dot" id="sync-dot"></div>
+  <span id="sync-msg">Đang đồng bộ...</span>
+</div>
 <div class="hdr">
   <div class="hdr-top">
     <div class="app-name">Vocab<span>Pro</span></div>
@@ -1188,6 +1202,211 @@ function closePopupDirect(){
   document.getElementById('verb-popup').classList.remove('show');
   document.body.style.overflow='';
 }
+</script>
+
+<script>
+// ═══════════════════════════════════
+// OFFLINE + SYNC SYSTEM
+// ═══════════════════════════════════
+
+// Tạo device ID duy nhất và lưu vĩnh viễn
+function getDeviceId() {
+  var id = localStorage.getItem('vqp_device_id');
+  if (!id) {
+    id = 'dev_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    localStorage.setItem('vqp_device_id', id);
+  }
+  return id;
+}
+
+var DEVICE_ID = getDeviceId();
+var syncTimeout = null;
+var isSyncing = false;
+
+// Hiện thanh trạng thái sync
+function showSyncBar(type, msg) {
+  var bar = document.getElementById('sync-bar');
+  var dot = document.getElementById('sync-dot');
+  var msgEl = document.getElementById('sync-msg');
+  bar.className = 'sync-bar show ' + type;
+  dot.className = 'sync-dot' + (type === 'syncing' ? ' pulse' : '');
+  msgEl.textContent = msg;
+  if (type === 'success') {
+    setTimeout(function() { bar.classList.remove('show'); }, 2500);
+  }
+}
+
+function hideSyncBar() {
+  document.getElementById('sync-bar').classList.remove('show');
+}
+
+// Lưu data vào IndexedDB (offline storage)
+function saveToIndexedDB(data) {
+  var request = indexedDB.open('vocab-quiz-offline', 1);
+  request.onupgradeneeded = function(e) {
+    e.target.result.createObjectStore('pending', { keyPath: 'id' });
+    e.target.result.createObjectStore('synced', { keyPath: 'id' });
+  };
+  request.onsuccess = function(e) {
+    var db = e.target.result;
+    var tx = db.transaction('pending', 'readwrite');
+    tx.objectStore('pending').put({
+      id: 'progress',
+      device_id: DEVICE_ID,
+      data: data,
+      saved_at: Date.now()
+    });
+  };
+}
+
+// Đọc data từ IndexedDB
+function loadFromIndexedDB(callback) {
+  var request = indexedDB.open('vocab-quiz-offline', 1);
+  request.onupgradeneeded = function(e) {
+    e.target.result.createObjectStore('pending', { keyPath: 'id' });
+    e.target.result.createObjectStore('synced', { keyPath: 'id' });
+  };
+  request.onsuccess = function(e) {
+    var db = e.target.result;
+    var tx = db.transaction('pending', 'readonly');
+    var req = tx.objectStore('pending').get('progress');
+    req.onsuccess = function(e) {
+      callback(e.target.result ? e.target.result.data : null);
+    };
+    req.onerror = function() { callback(null); };
+  };
+  request.onerror = function() { callback(null); };
+}
+
+// Xóa pending sau khi sync xong
+function clearPendingIndexedDB() {
+  var request = indexedDB.open('vocab-quiz-offline', 1);
+  request.onsuccess = function(e) {
+    var db = e.target.result;
+    db.transaction('pending', 'readwrite').objectStore('pending').delete('progress');
+  };
+}
+
+// Sync lên Cloudflare D1
+function syncToServer(data) {
+  if (isSyncing) return;
+  if (!navigator.onLine) {
+    saveToIndexedDB(data);
+    showSyncBar('offline', '📶 Offline — đã lưu local, sẽ sync khi có mạng');
+    return;
+  }
+
+  isSyncing = true;
+  showSyncBar('syncing', '☁️ Đang đồng bộ...');
+
+  fetch('/api/sync', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ device_id: DEVICE_ID, data: data })
+  })
+  .then(function(res) { return res.json(); })
+  .then(function(result) {
+    isSyncing = false;
+    if (result.success) {
+      clearPendingIndexedDB();
+      showSyncBar('success', '✅ Đã đồng bộ lên cloud');
+    }
+  })
+  .catch(function() {
+    isSyncing = false;
+    saveToIndexedDB(data);
+    showSyncBar('offline', '📶 Không có mạng — đã lưu local');
+  });
+}
+
+// Lấy data từ server khi mở app lần đầu có mạng
+function loadFromServer() {
+  if (!navigator.onLine) return;
+  fetch('/api/sync?device_id=' + DEVICE_ID)
+  .then(function(res) { return res.json(); })
+  .then(function(result) {
+    if (!result.data) return;
+    var serverData = result.data;
+    var localRaw = localStorage.getItem('vqpv5');
+    var localData = localRaw ? JSON.parse(localRaw) : null;
+
+    // Dùng data mới hơn
+    var serverTime = result.updated_at || 0;
+    var localTime = localData ? (localData.saved_at || 0) : 0;
+
+    if (serverTime > localTime) {
+      // Server mới hơn → cập nhật local
+      serverData.saved_at = serverTime;
+      localStorage.setItem('vqpv5', JSON.stringify(serverData));
+      // Reload lại state
+      try { Object.assign(S, serverData); } catch(e) {}
+      renderChips();
+      document.getElementById('hdr-pill').textContent = (DB[S.industry]||[]).length + ' từ';
+      renderCard();
+      showSyncBar('success', '✅ Đã tải dữ liệu từ cloud');
+    }
+  })
+  .catch(function() {
+    // Không có mạng hoặc lỗi — dùng local
+  });
+}
+
+// Ghi đè hàm save gốc để tích hợp sync
+var _originalSave = save;
+save = function() {
+  // Lưu localStorage như cũ
+  try {
+    var dataToSave = { industry: S.industry, saved_at: Date.now() };
+    localStorage.setItem('vqpv5', JSON.stringify(dataToSave));
+  } catch(e) {}
+
+  // Debounce sync — chờ 3 giây sau lần thay đổi cuối
+  clearTimeout(syncTimeout);
+  syncTimeout = setTimeout(function() {
+    var data = { industry: S.industry, saved_at: Date.now() };
+    syncToServer(data);
+  }, 3000);
+};
+
+// Khi có mạng trở lại → sync data đang pending
+window.addEventListener('online', function() {
+  hideSyncBar();
+  loadFromIndexedDB(function(pendingData) {
+    if (pendingData) {
+      showSyncBar('syncing', '☁️ Kết nối lại — đang đồng bộ...');
+      setTimeout(function() { syncToServer(pendingData); }, 1000);
+    }
+  });
+});
+
+// Khi mất mạng
+window.addEventListener('offline', function() {
+  showSyncBar('offline', '📶 Offline — thay đổi sẽ tự sync khi có mạng');
+});
+
+// Đăng ký Service Worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/sw.js')
+    .then(function(reg) {
+      console.log('SW registered:', reg.scope);
+      // Lắng nghe message từ SW
+      navigator.serviceWorker.addEventListener('message', function(event) {
+        if (event.data && event.data.type === 'SYNC_SUCCESS') {
+          showSyncBar('success', '✅ Đã đồng bộ lên cloud');
+        }
+      });
+    })
+    .catch(function(err) {
+      console.log('SW registration failed:', err);
+    });
+  });
+}
+
+// Tải data từ server khi mở app
+window.addEventListener('load', function() {
+  setTimeout(loadFromServer, 1500);
+});
 </script>
 </body>
 </html>

@@ -1,0 +1,11 @@
+{
+  "name": "vocab-quiz",
+  "pages_build_output_dir": ".",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "vocab-quiz-db",
+      "database_id": "6617af8d-5454-41f3-89db-3a1d07f3e110"
+    }
+  ]
+}
