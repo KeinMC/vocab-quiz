@@ -221,6 +221,12 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Plus Jakarta Sans',s
 .gm-stat{flex:1;background:var(--s1);border:1px solid var(--bd);border-radius:12px;padding:12px;text-align:center}
 .gm-stat-n{font-size:24px;font-weight:600;color:var(--a);font-family:'Playfair Display',serif}
 .gm-stat-l{font-size:11px;color:var(--t3);margin-top:2px}
+/* MARK BUTTONS */
+.mark-btn{width:calc(100% - 40px);margin:0 20px 8px;padding:14px;border:none;border-radius:12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s}
+.mark-unlearned{background:var(--a2);color:#fff}
+.mark-learned{background:var(--s2);border:1px solid var(--bd);color:var(--t2)}
+.reset-row{padding:0 20px 24px;text-align:center}
+.reset-btn{background:none;border:none;color:var(--t3);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;cursor:pointer;text-decoration:underline}
 </style>
 </head>
 <body>
@@ -1149,9 +1155,56 @@ note:"💡 'Deviate from' = đi lệch khỏi — cụm từ quan trọng trong 
 // ═══════════════════════════════════
 // STATE
 // ═══════════════════════════════════
+var LEARNED_KEY = 'vqp_learned'; // { "industry:word": true }
+
 var S = {industry:'it', cardIdx:0, flipped:false};
 try{var _s=JSON.parse(localStorage.getItem('vqpv5')||'{}');if(_s.industry)S.industry=_s.industry;}catch(e){}
-function save(){try{localStorage.setItem('vqpv5',JSON.stringify({industry:S.industry}));}catch(e){}}
+
+// Đọc/ghi danh sách đã học
+function getLearnedMap(){
+  try{ return JSON.parse(localStorage.getItem(LEARNED_KEY)||'{}'); }catch(e){ return {}; }
+}
+function saveLearnedMap(map){
+  try{ localStorage.setItem(LEARNED_KEY, JSON.stringify(map)); }catch(e){}
+}
+function markAsLearned(industry, word){
+  var map = getLearnedMap();
+  map[industry+':'+word] = Date.now();
+  saveLearnedMap(map);
+}
+function isLearned(industry, word){
+  return !!getLearnedMap()[industry+':'+word];
+}
+function getUnlearnedWords(industry){
+  var words = DB[industry]||[];
+  var map = getLearnedMap();
+  return words.filter(function(w){ return !map[industry+':'+w.word]; });
+}
+function getLearnedWords(industry){
+  var words = DB[industry]||[];
+  var map = getLearnedMap();
+  return words.filter(function(w){ return !!map[industry+':'+w.word]; });
+}
+function resetLearned(industry){
+  var map = getLearnedMap();
+  var words = DB[industry]||[];
+  words.forEach(function(w){ delete map[industry+':'+w.word]; });
+  saveLearnedMap(map);
+}
+
+// Chọn random 1 từ chưa học — gọi khi Tasker mở app
+function pickRandomUnlearned(industry){
+  var unlearned = getUnlearnedWords(industry);
+  if(!unlearned.length) return null; // đã học hết
+  var idx = Math.floor(Math.random() * unlearned.length);
+  return unlearned[idx];
+}
+
+function save(){
+  try{
+    localStorage.setItem('vqpv5', JSON.stringify({industry:S.industry, saved_at:Date.now()}));
+  }catch(e){}
+}
 
 // ═══════════════════════════════════
 // TABS
@@ -1191,16 +1244,24 @@ function renderCard(){
     return;
   }
   var w=words[S.cardIdx];
-  var pct=Math.round(((S.cardIdx+1)/words.length)*100);
+  var learned = isLearned(S.industry, w.word);
+  var unlearnedCount = getUnlearnedWords(S.industry).length;
+  var learnedCount = getLearnedWords(S.industry).length;
+  var pct = words.length > 0 ? Math.round((learnedCount/words.length)*100) : 0;
+
   document.getElementById('card-area').innerHTML=
+    // Progress bar — dựa trên số từ đã học
     '<div class="progress-row">'
-      +'<span class="prog-txt">'+(S.cardIdx+1)+' / '+words.length+'</span>'
+      +'<span class="prog-txt" style="color:var(--a2)">✅ '+learnedCount+' đã học</span>'
       +'<div class="prog-bar"><div class="prog-fill" style="width:'+pct+'%"></div></div>'
-      +'<span class="prog-txt">'+pct+'%</span>'
+      +'<span class="prog-txt">📖 '+unlearnedCount+' còn lại</span>'
     +'</div>'
+    // Card
     +'<div class="flip-scene"><div class="flip-card" id="fc" onclick="flipCard()">'
       +'<div class="flip-front">'
-        +'<div class="card-industry">'+IND[S.industry]+'</div>'
+        +'<div class="card-industry">'+IND[S.industry]
+          +(learned?' <span style="color:var(--a2);font-size:11px">✅ Đã học</span>':'')
+        +'</div>'
         +'<div class="card-word">'+w.word+'</div>'
         +'<div class="card-phonetic">'+(w.phonetic||'')+'</div>'
         +'<div class="card-hint">Tap để xem nghĩa</div>'
@@ -1217,11 +1278,20 @@ function renderCard(){
         +'</div>'
       +'</div>'
     +'</div></div>'
+    // Nav + Mark button
     +'<div class="nav-row">'
       +'<button class="nav-btn" onclick="prevCard()">← Trước</button>'
       +'<button class="nav-btn primary" onclick="showVerbPopup()">📋 Động từ</button>'
       +'<button class="nav-btn" onclick="nextCard()">Tiếp →</button>'
+    +'</div>'
+    +'<button class="mark-btn '+(learned?'mark-learned':'mark-unlearned')+'" onclick="toggleLearned()">'
+      +(learned?'↩️ Học lại từ này':'✅ Đã nhớ từ này')
+    +'</button>'
+    // Reset section
+    +'<div class="reset-row">'
+      +'<button class="reset-btn" onclick="confirmReset()">🔄 Reset tiến độ ngành này</button>'
     +'</div>';
+
   S.flipped=false;
   renderGrammar(w);
 }
@@ -1240,6 +1310,47 @@ function prevCard(){
   var words=DB[S.industry]||[];
   S.cardIdx=(S.cardIdx-1+words.length)%words.length;
   renderCard();
+}
+
+// Đánh dấu đã học / bỏ đánh dấu
+function toggleLearned(){
+  var words=DB[S.industry]||[];
+  var w=words[S.cardIdx];
+  if(!w) return;
+  var learned = isLearned(S.industry, w.word);
+  if(learned){
+    // Bỏ đánh dấu
+    var map = getLearnedMap();
+    delete map[S.industry+':'+w.word];
+    saveLearnedMap(map);
+    showToast('↩️ Đã đưa "'+w.word+'" về chưa học');
+  } else {
+    markAsLearned(S.industry, w.word);
+    showToast('✅ "'+w.word+'" — đã nhớ!');
+    // Tự chuyển sang từ chưa học tiếp theo sau 800ms
+    setTimeout(function(){
+      var next = pickRandomUnlearned(S.industry);
+      if(next){
+        var idx = (DB[S.industry]||[]).indexOf(next);
+        if(idx > -1) S.cardIdx = idx;
+      }
+      renderCard();
+    }, 800);
+    return;
+  }
+  renderCard();
+}
+
+// Reset tiến độ ngành
+function confirmReset(){
+  var name = IND[S.industry];
+  var msg = 'Reset to\u00E0n b\u1ED9 ti\u1EBFn \u0111\u1ED9 c\u1EE7a "' + name + '"?\nT\u1EA5t c\u1EA3 t\u1EEB s\u1EBD v\u1EC1 tr\u1EA1ng th\u00E1i ch\u01B0a h\u1EEDc.';
+  if(confirm(msg)){
+    resetLearned(S.industry);
+    S.cardIdx = 0;
+    renderCard();
+    showToast('🔄 Đã reset tiến độ '+name, 2500);
+  }
 }
 
 // ═══════════════════════════════════
@@ -1346,11 +1457,40 @@ function nextQ(){
 }
 
 // ═══════════════════════════════════
-// INIT
+// INIT — Random từ chưa học khi mở app
 // ═══════════════════════════════════
 renderChips();
 document.getElementById('hdr-pill').textContent=(DB[S.industry]||[]).length+' từ';
-renderCard();
+
+// Chọn random từ chưa học để hiện khi mở app
+(function initOpenWord(){
+  var words = DB[S.industry]||[];
+  if(!words.length){ renderCard(); return; }
+
+  var unlearned = getUnlearnedWords(S.industry);
+
+  if(unlearned.length === 0){
+    // Đã học hết tất cả → thông báo và reset
+    S.cardIdx = 0;
+    renderCard();
+    showToast('🎉 Bạn đã học hết '+words.length+' từ! Bắt đầu lại từ đầu.', 4000);
+    setTimeout(function(){
+      var msg = '\uD83C\uDF89 Xu\u1EA5t s\u1EAFc! B\u1EA1n \u0111\u00E3 h\u1EEDc h\u1EBFt ' + words.length + ' t\u1EEB c\u1EE7a ' + IND[S.industry] + '.\n\nReset \u0111\u1EC3 h\u1EEDc l\u1EA1i t\u1EEB \u0111\u1EA7u?';
+      if(confirm(msg)){
+        resetLearned(S.industry);
+        S.cardIdx = 0;
+        renderCard();
+      }
+    }, 500);
+    return;
+  }
+
+  // Random 1 từ chưa học
+  var randomWord = unlearned[Math.floor(Math.random() * unlearned.length)];
+  var idx = words.indexOf(randomWord);
+  if(idx > -1) S.cardIdx = idx;
+  renderCard();
+})();
 </script>
 
 <!-- VERB POPUP -->
