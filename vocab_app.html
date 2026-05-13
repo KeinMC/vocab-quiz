@@ -144,6 +144,36 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Plus Jakarta Sans',s
 .sync-dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0}
 .sync-dot.pulse{animation:pulse 1.5s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+/* IMPORT */
+.import-wrap{padding:20px 20px 60px}
+.import-section{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:18px;margin-bottom:14px}
+.import-section-title{font-size:13px;font-weight:600;color:var(--t1);margin-bottom:8px;letter-spacing:.02em}
+.import-desc{font-size:13px;color:var(--t3);line-height:1.6;margin-bottom:12px}
+.prompt-box{background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:14px;font-size:12px;color:var(--t2);line-height:1.7;white-space:pre-wrap;word-break:break-word;max-height:180px;overflow-y:auto;margin-bottom:10px;font-family:monospace}
+.copy-prompt-btn{width:100%;padding:12px;background:rgba(127,119,221,.15);border:1px solid var(--a);border-radius:10px;color:var(--a);font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer}
+.upload-label{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:var(--s2);border:2px dashed var(--bd2);border-radius:12px;padding:28px 20px;cursor:pointer;transition:border-color .2s}
+.upload-label:active{border-color:var(--a)}
+.upload-icon{font-size:36px}
+.upload-text{font-size:15px;font-weight:500;color:var(--t1)}
+.upload-sub{font-size:13px;color:var(--t3)}
+.json-paste-area{width:100%;min-height:120px;background:var(--s2);border:1px solid var(--bd);border-radius:10px;color:var(--t1);font-family:monospace;font-size:13px;padding:12px;outline:none;resize:vertical;margin-bottom:10px}
+.import-btn{width:100%;padding:14px;background:var(--a);border:none;border-radius:12px;color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;margin-bottom:8px}
+.import-cancel-btn{width:100%;padding:12px;background:none;border:1px solid var(--bd);border-radius:12px;color:var(--t3);font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;cursor:pointer}
+.import-industry-sel{width:100%;background:var(--s2);border:1px solid var(--bd);border-radius:10px;color:var(--t1);font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;padding:11px 14px;outline:none;-webkit-appearance:none;margin-bottom:12px}
+.import-preview{background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:12px;margin-bottom:12px;max-height:200px;overflow-y:auto}
+.preview-word{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--bd);font-size:14px}
+.preview-word:last-child{border-bottom:none}
+.preview-en{font-weight:500;color:var(--t1)}
+.preview-vn{color:var(--t3);font-size:13px}
+.history-item{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--bd)}
+.history-item:last-child{border-bottom:none}
+.history-info{display:flex;flex-direction:column;gap:2px}
+.history-name{font-size:14px;font-weight:500;color:var(--t1)}
+.history-count{font-size:12px;color:var(--t3)}
+.history-del{background:none;border:1px solid rgba(216,90,48,.3);border-radius:8px;color:var(--a3);font-size:12px;padding:4px 10px;cursor:pointer}
+.import-empty{text-align:center;color:var(--t3);font-size:13px;padding:16px 0}
+.toast{position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-20px);background:var(--s2);border:1px solid var(--bd2);border-radius:12px;padding:10px 20px;font-size:14px;color:var(--t1);z-index:300;opacity:0;transition:all .3s;white-space:nowrap;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
 </head>
 <body>
@@ -160,6 +190,7 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Plus Jakarta Sans',s
   <div class="tabs">
     <button class="tab on" onclick="goTab('cards',this)">Thẻ từ</button>
     <button class="tab" onclick="goTab('quiz',this)">Quiz</button>
+    <button class="tab" onclick="goTab('import',this)">📥 Import</button>
   </div>
 </div>
 
@@ -177,6 +208,74 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Plus Jakarta Sans',s
 
 <div id="tab-quiz" class="pane">
   <div class="quiz-wrap" id="quiz-area"></div>
+</div>
+
+<div id="tab-import" class="pane">
+  <div class="import-wrap">
+
+    <!-- FORMAT CHUẨN -->
+    <div class="import-section">
+      <div class="import-section-title">📋 Format JSON chuẩn</div>
+      <div class="import-desc">Copy prompt này và dùng với AI (ChatGPT, Claude...) để tạo từ vựng đúng format:</div>
+      <div class="prompt-box" id="prompt-box">Hãy tạo danh sách từ vựng tiếng Anh chuyên ngành theo format JSON sau đây. Chỉ trả về JSON, không giải thích thêm:
+
+[
+  {
+    "word": "từ tiếng Anh",
+    "phonetic": "/phiên âm IPA/",
+    "meaning": "nghĩa tiếng Việt ngắn gọn",
+    "meaning_sub": "giải thích thêm bằng tiếng Việt",
+    "example": "Câu ví dụ tiếng Anh.",
+    "situation": "Tình huống dùng từ này",
+    "mistake": "Lỗi hay gặp khi dùng từ này",
+    "tip": "Mẹo ghi nhớ từ này",
+    "options": ["đáp án đúng", "đáp án sai 1", "đáp án sai 2", "đáp án sai 3"],
+    "answer": 0
+  }
+]
+
+Lưu ý: "answer" là index (0-3) của đáp án đúng trong mảng "options". Tạo [SỐ LƯỢNG] từ vựng chủ đề [CHỦ ĐỀ].</div>
+      <button class="copy-prompt-btn" onclick="copyPrompt()">📋 Copy prompt</button>
+    </div>
+
+    <!-- UPLOAD FILE -->
+    <div class="import-section">
+      <div class="import-section-title">📂 Upload file JSON</div>
+      <div class="import-desc">Chọn file JSON đã tạo từ AI để import vào app:</div>
+      <label class="upload-label" for="json-file-input">
+        <div class="upload-icon">📁</div>
+        <div class="upload-text">Nhấn để chọn file JSON</div>
+        <div class="upload-sub">Hỗ trợ .json</div>
+      </label>
+      <input type="file" id="json-file-input" accept=".json" style="display:none" onchange="handleFileImport(event)">
+    </div>
+
+    <!-- PASTE JSON -->
+    <div class="import-section">
+      <div class="import-section-title">📝 Hoặc paste JSON trực tiếp</div>
+      <textarea class="json-paste-area" id="json-paste" placeholder='[{"word":"Algorithm","meaning":"Thuật toán",...}]'></textarea>
+      <button class="import-btn" onclick="importFromPaste()">✅ Import JSON</button>
+    </div>
+
+    <!-- CHỌN NGÀNH -->
+    <div class="import-section" id="industry-select-section" style="display:none">
+      <div class="import-section-title">🏢 Gán vào ngành nghề</div>
+      <div class="import-desc">Chọn ngành để gán các từ vừa import:</div>
+      <select class="import-industry-sel" id="import-industry-sel">
+        <option value="">-- Chọn ngành --</option>
+      </select>
+      <div class="import-preview" id="import-preview"></div>
+      <button class="import-btn" onclick="confirmImport()">✅ Xác nhận import</button>
+      <button class="import-cancel-btn" onclick="cancelImport()">✕ Hủy</button>
+    </div>
+
+    <!-- IMPORT HISTORY -->
+    <div class="import-section">
+      <div class="import-section-title">📚 Ngành đã có từ custom</div>
+      <div id="import-history"></div>
+    </div>
+
+  </div>
 </div>
 
 <script>
@@ -1407,6 +1506,218 @@ if ('serviceWorker' in navigator) {
 window.addEventListener('load', function() {
   setTimeout(loadFromServer, 1500);
 });
+</script>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════
+// TOAST
+// ═══════════════════════════════════
+function showToast(msg, duration) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, duration || 2500);
+}
+
+// ═══════════════════════════════════
+// IMPORT SYSTEM
+// ═══════════════════════════════════
+var IMPORT_KEY = 'vqp_custom_words';
+var pendingImportWords = null;
+
+function loadCustomWords() {
+  try {
+    var raw = localStorage.getItem(IMPORT_KEY);
+    if (!raw) return;
+    var customDB = JSON.parse(raw);
+    Object.keys(customDB).forEach(function(industry) {
+      if (!DB[industry]) DB[industry] = [];
+      var existing = DB[industry].map(function(w){ return w.word.toLowerCase(); });
+      customDB[industry].forEach(function(w) {
+        if (existing.indexOf(w.word.toLowerCase()) === -1) {
+          w._custom = true;
+          DB[industry].push(w);
+        }
+      });
+    });
+  } catch(e) {}
+}
+
+function saveCustomWords() {
+  try {
+    var customDB = {};
+    Object.keys(DB).forEach(function(industry) {
+      var customs = DB[industry].filter(function(w){ return w._custom; });
+      if (customs.length) customDB[industry] = customs;
+    });
+    localStorage.setItem(IMPORT_KEY, JSON.stringify(customDB));
+  } catch(e) {}
+}
+
+function renderImportIndustrySelect() {
+  var sel = document.getElementById('import-industry-sel');
+  if (!sel) return;
+  sel.innerHTML = '<option value="">-- Chọn ngành --</option>'
+    + Object.keys(IND).map(function(k){
+      return '<option value="'+k+'">'+IND[k]+'</option>';
+    }).join('');
+}
+
+function renderImportHistory() {
+  var el = document.getElementById('import-history');
+  if (!el) return;
+  var hasCustom = false;
+  var html = '';
+  Object.keys(DB).forEach(function(industry) {
+    var customs = (DB[industry]||[]).filter(function(w){ return w._custom; });
+    if (!customs.length) return;
+    hasCustom = true;
+    html += '<div class="history-item">'
+      + '<div class="history-info">'
+        + '<div class="history-name">'+IND[industry]+'</div>'
+        + '<div class="history-count">'+customs.length+' từ đã import</div>'
+      + '</div>'
+      + '<button class="history-del" onclick="deleteCustomWords(\''+industry+'\')">🗑 Xóa</button>'
+    + '</div>';
+  });
+  el.innerHTML = hasCustom ? html : '<div class="import-empty">Chưa có từ nào được import</div>';
+}
+
+function parseImportJSON(text) {
+  try {
+    var data = JSON.parse(text.trim());
+    if (!Array.isArray(data)) throw new Error('JSON phải là một mảng []');
+    if (data.length === 0) throw new Error('Mảng JSON trống');
+    var valid = [];
+    var errors = [];
+    data.forEach(function(item, i) {
+      if (!item.word) { errors.push('Từ #'+(i+1)+' thiếu "word"'); return; }
+      if (!item.meaning) { errors.push('Từ #'+(i+1)+' thiếu "meaning"'); return; }
+      if (!item.options || item.options.length < 4) {
+        item.options = [item.meaning, '(không đúng)', '(không đúng)', '(không đúng)'];
+        item.answer = 0;
+      }
+      valid.push(item);
+    });
+    return { valid: valid, errors: errors };
+  } catch(e) {
+    return { valid: [], errors: [e.message] };
+  }
+}
+
+function showImportPreview(words) {
+  pendingImportWords = words;
+  var section = document.getElementById('industry-select-section');
+  var preview = document.getElementById('import-preview');
+  section.style.display = 'block';
+  preview.innerHTML = '<div style="font-size:12px;color:var(--t3);margin-bottom:8px">'+words.length+' từ sẽ được import:</div>'
+    + words.slice(0, 10).map(function(w) {
+      return '<div class="preview-word">'
+        + '<span class="preview-en">'+w.word+'</span>'
+        + '<span class="preview-vn">— '+w.meaning+'</span>'
+      + '</div>';
+    }).join('')
+    + (words.length > 10 ? '<div style="font-size:12px;color:var(--t3);padding-top:6px">...và '+(words.length-10)+' từ khác</div>' : '');
+  section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function confirmImport() {
+  var industry = document.getElementById('import-industry-sel').value;
+  if (!industry) { showToast('⚠️ Vui lòng chọn ngành!'); return; }
+  if (!pendingImportWords || !pendingImportWords.length) return;
+  if (!DB[industry]) DB[industry] = [];
+  var existing = DB[industry].map(function(w){ return w.word.toLowerCase(); });
+  var added = 0, skipped = 0;
+  pendingImportWords.forEach(function(w) {
+    if (existing.indexOf(w.word.toLowerCase()) === -1) {
+      w._custom = true;
+      w.industry = industry;
+      DB[industry].push(w);
+      existing.push(w.word.toLowerCase());
+      added++;
+    } else { skipped++; }
+  });
+  saveCustomWords();
+  pendingImportWords = null;
+  document.getElementById('industry-select-section').style.display = 'none';
+  document.getElementById('json-paste').value = '';
+  document.getElementById('json-file-input').value = '';
+  renderImportHistory();
+  document.getElementById('hdr-pill').textContent = (DB[S.industry]||[]).length + ' từ';
+  var msg = '✅ Đã import '+added+' từ vào '+IND[industry];
+  if (skipped) msg += ' ('+skipped+' trùng, bỏ qua)';
+  showToast(msg, 3000);
+  S.industry = industry; S.cardIdx = 0;
+  save(); renderChips(); renderCard();
+  document.getElementById('hdr-pill').textContent = (DB[industry]||[]).length + ' từ';
+  goTab('cards', document.querySelectorAll('.tab')[0]);
+}
+
+function cancelImport() {
+  pendingImportWords = null;
+  document.getElementById('industry-select-section').style.display = 'none';
+  document.getElementById('json-paste').value = '';
+}
+
+function importFromPaste() {
+  var text = document.getElementById('json-paste').value.trim();
+  if (!text) { showToast('⚠️ Vui lòng paste JSON vào ô trên'); return; }
+  var result = parseImportJSON(text);
+  if (result.errors.length && !result.valid.length) { showToast('❌ ' + result.errors[0], 3000); return; }
+  if (result.errors.length) showToast('⚠️ '+result.errors.length+' từ lỗi, import '+result.valid.length+' từ hợp lệ', 3000);
+  showImportPreview(result.valid);
+}
+
+function handleFileImport(event) {
+  var file = event.target.files[0];
+  if (!file) return;
+  if (!file.name.endsWith('.json')) { showToast('❌ Chỉ hỗ trợ file .json'); return; }
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var result = parseImportJSON(e.target.result);
+    if (result.errors.length && !result.valid.length) { showToast('❌ ' + result.errors[0], 3000); return; }
+    if (result.errors.length) showToast('⚠️ '+result.errors.length+' từ lỗi, import '+result.valid.length+' từ hợp lệ', 3000);
+    showImportPreview(result.valid);
+  };
+  reader.readAsText(file);
+}
+
+function deleteCustomWords(industry) {
+  DB[industry] = (DB[industry]||[]).filter(function(w){ return !w._custom; });
+  saveCustomWords();
+  renderImportHistory();
+  if (S.industry === industry) { S.cardIdx = 0; renderCard(); }
+  document.getElementById('hdr-pill').textContent = (DB[S.industry]||[]).length + ' từ';
+  showToast('🗑 Đã xóa từ custom của '+IND[industry]);
+}
+
+function copyPrompt() {
+  var text = document.getElementById('prompt-box').textContent;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(function(){ showToast('✅ Đã copy prompt!'); });
+  } else {
+    var ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    showToast('✅ Đã copy prompt!');
+  }
+}
+
+// Hook goTab để render import khi chuyển tab
+var _origGoTab = goTab;
+goTab = function(name, btn) {
+  _origGoTab(name, btn);
+  if (name === 'import') {
+    renderImportIndustrySelect();
+    renderImportHistory();
+  }
+};
+
+// Load custom words khi khởi động
+loadCustomWords();
 </script>
 </body>
 </html>
