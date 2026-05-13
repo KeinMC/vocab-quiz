@@ -1593,13 +1593,19 @@ function parseImportJSON(text) {
     if (data.length === 0) throw new Error('Mảng JSON trống');
     var valid = [];
     var errors = [];
+    // Dedup trong chính file import bằng Set O(1)
+    var seenInFile = Object.create(null);
     data.forEach(function(item, i) {
       if (!item.word) { errors.push('Từ #'+(i+1)+' thiếu "word"'); return; }
       if (!item.meaning) { errors.push('Từ #'+(i+1)+' thiếu "meaning"'); return; }
+      var key = normalizeWord(item.word);
+      if (seenInFile[key]) { errors.push('"'+item.word+'" bị trùng trong file import'); return; }
+      seenInFile[key] = true;
       if (!item.options || item.options.length < 4) {
         item.options = [item.meaning, '(không đúng)', '(không đúng)', '(không đúng)'];
         item.answer = 0;
       }
+      item.word = item.word.trim(); // clean whitespace
       valid.push(item);
     });
     return { valid: valid, errors: errors };
@@ -1608,19 +1614,78 @@ function parseImportJSON(text) {
   }
 }
 
+// ── DEDUP ENGINE ──────────────────────────────────────────
+// Normalize từ để so sánh: lowercase + trim + bỏ dấu câu
+function normalizeWord(w) {
+  return w.trim().toLowerCase()
+    .replace(/[^a-z0-9\s]/g, '')  // bỏ ký tự đặc biệt
+    .replace(/\s+/g, ' ');         // nhiều space → 1 space
+}
+
+// Normalize mạnh hơn: bỏ cả 's' cuối (plural)
+function normalizeStrong(w) {
+  var n = normalizeWord(w);
+  // Bỏ 's' hoặc 'es' cuối từ đơn (plural form)
+  if (n.indexOf(' ') === -1) {
+    if (n.endsWith('ies')) n = n.slice(0, -3) + 'y';
+    else if (n.endsWith('es') && n.length > 4) n = n.slice(0, -2);
+    else if (n.endsWith('s') && n.length > 3) n = n.slice(0, -1);
+  }
+  return n;
+}
+
+// Xây HashMap O(1) từ toàn bộ DB hiện tại
+// Trả về: { normalKey: true, strongKey: true, ... }
+function buildExistingHashMap(industry) {
+  var map = Object.create(null);
+  // Scan TẤT CẢ ngành (không chỉ ngành đang chọn)
+  // vì từ có thể trùng giữa các ngành khác nhau
+  var allWords = [];
+  Object.keys(DB).forEach(function(ind) {
+    (DB[ind]||[]).forEach(function(w) { allWords.push(w.word); });
+  });
+  allWords.forEach(function(word) {
+    map[normalizeWord(word)] = true;
+    map[normalizeStrong(word)] = true;
+  });
+  return map;
+}
+
+// Kiểm tra 1 từ có trùng không — O(1)
+function isDuplicate(word, hashMap) {
+  var n = normalizeWord(word);
+  var s = normalizeStrong(word);
+  return !!(hashMap[n] || hashMap[s]);
+}
+
 function showImportPreview(words) {
   pendingImportWords = words;
   var section = document.getElementById('industry-select-section');
   var preview = document.getElementById('import-preview');
   section.style.display = 'block';
-  preview.innerHTML = '<div style="font-size:12px;color:var(--t3);margin-bottom:8px">'+words.length+' từ sẽ được import:</div>'
+
+  // Pre-check trùng với DB hiện tại để hiện warning trong preview
+  var hashMap = buildExistingHashMap();
+  var dupCount = 0;
+  words.forEach(function(w) { if (isDuplicate(w.word, hashMap)) dupCount++; });
+
+  var dupNote = dupCount > 0
+    ? '<div style="font-size:12px;color:var(--a3);margin-bottom:8px">⚠️ Phát hiện '+dupCount+' từ có thể trùng — sẽ tự bỏ qua khi import</div>'
+    : '<div style="font-size:12px;color:var(--a2);margin-bottom:8px">✅ Không phát hiện từ trùng</div>';
+
+  preview.innerHTML = dupNote
+    + '<div style="font-size:12px;color:var(--t3);margin-bottom:8px">'+words.length+' từ trong file:</div>'
     + words.slice(0, 10).map(function(w) {
-      return '<div class="preview-word">'
-        + '<span class="preview-en">'+w.word+'</span>'
+      var dup = isDuplicate(w.word, hashMap);
+      return '<div class="preview-word" style="'+(dup?'opacity:.45':''')+'">'
+        + '<span class="preview-en">'+w.word+(dup?' <span style="color:var(--a3);font-size:11px">[trùng]</span>':'')+'</span>'
         + '<span class="preview-vn">— '+w.meaning+'</span>'
       + '</div>';
     }).join('')
-    + (words.length > 10 ? '<div style="font-size:12px;color:var(--t3);padding-top:6px">...và '+(words.length-10)+' từ khác</div>' : '');
+    + (words.length > 10
+      ? '<div style="font-size:12px;color:var(--t3);padding-top:6px">...và '+(words.length-10)+' từ khác</div>'
+      : '');
+
   section.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
@@ -1628,18 +1693,29 @@ function confirmImport() {
   var industry = document.getElementById('import-industry-sel').value;
   if (!industry) { showToast('⚠️ Vui lòng chọn ngành!'); return; }
   if (!pendingImportWords || !pendingImportWords.length) return;
+
   if (!DB[industry]) DB[industry] = [];
-  var existing = DB[industry].map(function(w){ return w.word.toLowerCase(); });
-  var added = 0, skipped = 0;
+
+  // Xây HashMap 1 lần duy nhất — O(n) setup, O(1) mỗi lookup
+  var hashMap = buildExistingHashMap(industry);
+
+  var added = 0, skipped = 0, dupWords = [];
+
   pendingImportWords.forEach(function(w) {
-    if (existing.indexOf(w.word.toLowerCase()) === -1) {
+    if (isDuplicate(w.word, hashMap)) {
+      skipped++;
+      dupWords.push(w.word);
+    } else {
       w._custom = true;
       w.industry = industry;
       DB[industry].push(w);
-      existing.push(w.word.toLowerCase());
+      // Thêm vào hashMap ngay để tránh trùng với từ tiếp theo trong batch
+      hashMap[normalizeWord(w.word)] = true;
+      hashMap[normalizeStrong(w.word)] = true;
       added++;
-    } else { skipped++; }
+    }
   });
+
   saveCustomWords();
   pendingImportWords = null;
   document.getElementById('industry-select-section').style.display = 'none';
@@ -1647,9 +1723,14 @@ function confirmImport() {
   document.getElementById('json-file-input').value = '';
   renderImportHistory();
   document.getElementById('hdr-pill').textContent = (DB[S.industry]||[]).length + ' từ';
-  var msg = '✅ Đã import '+added+' từ vào '+IND[industry];
-  if (skipped) msg += ' ('+skipped+' trùng, bỏ qua)';
-  showToast(msg, 3000);
+
+  var msg = '✅ Import '+added+' từ mới';
+  if (skipped) msg += ' — bỏ qua '+skipped+' trùng';
+  showToast(msg, 3500);
+
+  // Log chi tiết từ bị bỏ qua ra console để debug nếu cần
+  if (dupWords.length) console.log('[VocabPro] Từ trùng bị bỏ qua:', dupWords);
+
   S.industry = industry; S.cardIdx = 0;
   save(); renderChips(); renderCard();
   document.getElementById('hdr-pill').textContent = (DB[industry]||[]).length + ' từ';
