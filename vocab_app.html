@@ -35,12 +35,14 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Plus Jakarta Sans',s
 .prog-txt{font-size:13px;color:var(--t3)}
 .prog-bar{flex:1;height:3px;background:var(--s3);border-radius:2px;margin:0 12px;overflow:hidden}
 .prog-fill{height:100%;background:var(--a);border-radius:2px;transition:width .4s ease}
-.flip-scene{width:100%;perspective:1000px;margin-bottom:16px}
-.flip-card{width:100%;min-height:280px;position:relative;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.4,0,.2,1);cursor:pointer}
-.flip-card.flipped{transform:rotateY(180deg)}
-.flip-front,.flip-back{position:absolute;width:100%;min-height:280px;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--r);padding:28px 24px;display:flex;flex-direction:column}
-.flip-front{background:var(--s1);border:1px solid var(--bd)}
-.flip-back{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);border:1px solid rgba(127,119,221,.25);transform:rotateY(180deg)}
+.flip-scene{width:100%;margin-bottom:16px}
+.flip-card{width:100%;cursor:pointer}
+.flip-front,.flip-back{width:100%;backface-visibility:hidden;border-radius:var(--r);padding:28px 24px;display:flex;flex-direction:column;box-sizing:border-box;transition:opacity .3s ease}
+.flip-front{background:var(--s1);border:1px solid var(--bd);min-height:220px}
+.flip-back{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);border:1px solid rgba(127,119,221,.25);display:none}
+.flip-card.flipped .flip-front{display:none}
+.flip-card.flipped .flip-back{display:flex;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .card-industry{font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--a);margin-bottom:20px}
 .card-word{font-family:'Playfair Display',serif;font-size:42px;font-weight:700;color:var(--t1);line-height:1.1;margin-bottom:12px}
 .card-phonetic{font-size:15px;color:var(--t3);font-style:italic;margin-bottom:auto}
